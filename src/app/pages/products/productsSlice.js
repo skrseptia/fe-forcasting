@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAll, createItem, updateItem, deleteById, getId } from "./usersAPI";
+import {
+  getAll,
+  createItem,
+  updateItem,
+  deleteById,
+  getId,
+} from "./productsAPI";
 
 const initialState = {
   data: [],
@@ -13,34 +19,40 @@ const initialState = {
   dataId: null,
 };
 
-export const fetchAll = createAsyncThunk("users/fetchAll", async (payload) => {
-  const response = await getAll(payload);
-  return response;
-});
-export const fetchId = createAsyncThunk("users/fetchId", async (payload) => {
+export const fetchAll = createAsyncThunk(
+  "products/fetchAll",
+  async (payload) => {
+    const response = await getAll(payload);
+    return response;
+  }
+);
+export const fetchId = createAsyncThunk("products/fetchId", async (payload) => {
   const response = await getId(payload);
-  return response;
+  return response.data;
 });
 
-export const addItem = createAsyncThunk("users/addItem", async (payload) => {
+export const addItem = createAsyncThunk("products/addItem", async (payload) => {
   const response = await createItem(payload);
   return response;
 });
 
-export const editItem = createAsyncThunk("users/editItem", async (payload) => {
-  const response = await updateItem(payload);
-  return response;
-});
+export const editItem = createAsyncThunk(
+  "products/editItem",
+  async (payload) => {
+    const response = await updateItem(payload);
+    return response;
+  }
+);
 export const removeById = createAsyncThunk(
-  "users/removeById",
+  "products/removeById",
   async (payload) => {
     const response = await deleteById(payload);
     return response;
   }
 );
 
-export const usersSlice = createSlice({
-  name: "users",
+export const productsSlice = createSlice({
+  name: "products",
   initialState,
   reducers: {
     resetData: () => initialState,
@@ -88,12 +100,12 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = usersSlice.actions;
+export const { resetData, setSelected } = productsSlice.actions;
 
-export const selectData = (state) => state.users.data;
-export const selectDataId = (state) => state.users.dataId;
-export const selectLoading = (state) => state.users.loading;
-export const selectError = (state) => state.users.error;
-export const selectResult = (state) => state.users.result;
+export const selectData = (state) => state.products.data;
+export const selectDataId = (state) => state.products.dataId;
+export const selectLoading = (state) => state.products.loading;
+export const selectError = (state) => state.products.error;
+export const selectResult = (state) => state.products.result;
 
-export default usersSlice.reducer;
+export default productsSlice.reducer;

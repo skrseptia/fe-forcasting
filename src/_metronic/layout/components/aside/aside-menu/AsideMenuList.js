@@ -69,7 +69,7 @@ export function AsideMenuList({ layoutProps }) {
       pid: 0,
       menu_name: "Products",
       title: "Products",
-      url: "/produc",
+      url: "/products",
       icon: "/Design/Layers.svg",
       level: 1,
       hierarcy: "1",
