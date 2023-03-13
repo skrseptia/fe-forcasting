@@ -1,10 +1,12 @@
 import { all } from "redux-saga/effects";
 import { combineReducers } from "redux";
+import usersReducer from "../app/pages/users/usersSlice";
 
 import * as auth from "../app/modules/Auth/_redux/authRedux";
 
 export const rootReducer = combineReducers({
   auth: auth.reducer,
+  users: usersReducer,
 });
 
 export function* rootSaga() {

@@ -16,7 +16,7 @@
 //@import "./_metronic/_assets/sass/themes/layout/header/base/light.scss";
 // Dark
 // @import "./_metronic/_assets/sass/themes/layout/header/base/dark.scss";
-  
+
 // Header Menu themes
 // Light
 //@import "./_metronic/_assets/sass/themes/layout/header/menu/light.scss";
@@ -45,20 +45,19 @@
 .example-highlight > pre {
   background: none transparent !important;
   margin: 0 !important;
-  padding-top: 0.5rem; 
-  code { 
-      overflow-y: auto;
-      display: block;
+  padding-top: 0.5rem;
+  code {
+    overflow-y: auto;
+    display: block;
 
-      span {
-        background: none transparent !important;
-      }
+    span {
+      background: none transparent !important;
+    }
   }
 }
 
 .json > pre {
   background: none #fff !important;
-
 }
 
 .example-code > .json {
@@ -78,12 +77,12 @@
 .react-bootstrap-table {
   th {
     outline: none;
-   
-    &.sortable {  
+
+    &.sortable {
       .svg-icon-sort {
         opacity: 0;
       }
-  
+
       &:hover {
         cursor: pointer;
 
@@ -91,14 +90,29 @@
           opacity: 1;
         }
       }
-    }    
+    }
+  }
+
+  .table {
+    thead {
+      th,
+      td {
+        background-color: #474747 !important;
+      }
+    }
   }
 
   .table.table-head-custom thead tr {
     .sortable-active {
-        color: $primary !important;
+      color: $primary !important;
     }
   }
+}
+.otp-field {
+  width: 38px;
+  margin-right: 10px;
+  padding-left: 12px;
+  height: 40px;
 }
 
 .cursor-default {
@@ -107,4 +121,436 @@
 
 .display-block {
   display: block;
+}
+
+.react-bootstrap-table {
+  margin-bottom: 1rem;
+}
+
+.react-bootstrap-table-page-btns-ul {
+  float: right;
+  margin-top: 0px !important;
+}
+
+.react-bootstrap-table-pagination-list-hidden {
+  display: none;
+}
+.react-bootstrap-table-editing-cell {
+  max-width: 100px;
+}
+
+.menu-nav
+  > .menu-item.menu-item-open
+  > .menu-link
+  .menu-icon.svg-icon
+  svg
+  g
+  [fill] {
+  // transition: fill 0.3s ease;
+  fill: #e40109 !important;
+}
+
+.svg-icon svg g [fill] {
+  fill: #fff !important;
+}
+
+.aside-menu
+  .menu-nav
+  > .menu-item
+  .menu-submenu
+  .menu-item.menu-item-open
+  > .menu-link
+  .menu-bullet.menu-bullet-dot
+  > span {
+  background-color: #e40109 !important;
+}
+
+// .menu-bullet .menu-bullet-dot:hover {
+//   color: #e40109 !important;
+// }
+
+.otp-input input {
+  border: 0px solid rgba(209, 213, 219, 1);
+  background: #f7f5f5;
+  width: 30px !important;
+  margin: 0px !important;
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.react-tel-input {
+  width: 30px;
+}
+
+.react-tel-input input[type="tel"] {
+  width: 30px !important;
+  border: 1px solid rgba(209, 213, 219, 1) !important;
+}
+.hide {
+  display: none;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #ffffff;
+  background-color: #e40109 !important;
+  border-color: #e40109 !important;
+}
+
+.label-width-pending {
+  min-width: 80px !important;
+}
+.loading-overlay-wrapper {
+  position: unset !important;
+  .loading-overlay-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.ql-editor {
+  min-height: 100px !important;
+  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+// table.table-head-custom thead tr,
+// .table.table-head-custom thead th {
+//   min-width: 110px !important;
+// }
+
+.modal-70 {
+  min-width: 70%;
+}
+
+.hr-notif {
+  border-top: 1px solid #9c9c9c;
+}
+.MuiPickersToolbar-toolbar {
+  background-color: #f64e60 !important;
+}
+
+.input-box-table {
+  border-color: hsl(0, 0%, 80%);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  min-height: 38px;
+  width: 85px;
+  padding: 0 8px;
+  outline: 0 !important;
+  box-sizing: border-box;
+  text-align: right;
+}
+
+// .input-160{
+//   width: 160px;
+
+// }
+.alert {
+  // left: 50%;
+  z-index: 100;
+}
+
+.size-chart {
+  height: 500;
+  width: 500;
+}
+// 3rd-party Plugins
+@import "~highlight.js/styles/googlecode.css";
+@import "~perfect-scrollbar/css/perfect-scrollbar.css";
+
+// Theme Styles
+@import "./_metronic/_assets/sass/style.react.scss";
+
+// Default Layout themes
+@import "./_metronic/_assets/sass/themes/layout/header/base/light.scss";
+@import "./_metronic/_assets/sass/themes/layout/header/menu/light.scss";
+@import "./_metronic/_assets/sass/themes/layout/brand/dark.scss";
+@import "./_metronic/_assets/sass/themes/layout/aside/dark.scss";
+
+// Header themes
+// Light
+//@import "./_metronic/_assets/sass/themes/layout/header/base/light.scss";
+// Dark
+// @import "./_metronic/_assets/sass/themes/layout/header/base/dark.scss";
+
+// Header Menu themes
+// Light
+//@import "./_metronic/_assets/sass/themes/layout/header/menu/light.scss";
+// Dark
+// @import "./_metronic/_assets/sass/themes/layout/header/menu/dark.scss";
+
+// Brand themes
+.brand-dark {
+  @import "./_metronic/_assets/sass/themes/layout/brand/dark.scss";
+}
+// Light
+.brand-light {
+  @import "./_metronic/_assets/sass/themes/layout/brand/light.scss";
+}
+
+// Aside themes
+// Dark
+//@import "./_metronic/_assets/sass/themes/layout/aside/dark.scss";
+// Light
+// @import "./_metronic/_assets/sass/themes/layout/aside/light.scss";
+
+// .example-highlight {
+//   padding: 0rem 1.5rem 1.75rem !important;
+// }
+
+.example-highlight > pre {
+  background: none transparent !important;
+  margin: 0 !important;
+  padding-top: 0.5rem;
+  code {
+    overflow-y: auto;
+    display: block;
+
+    span {
+      background: none transparent !important;
+    }
+  }
+}
+
+.json > pre {
+  background: none #fff !important;
+}
+
+.example-code > .json {
+  background: none #fff !important;
+}
+
+.symbol.symbol-45 > svg {
+  width: 100%;
+  max-width: 45px;
+  height: 45px;
+}
+
+.react-bootstrap-table {
+  overflow-x: auto;
+}
+
+.react-bootstrap-table {
+  th {
+    outline: none;
+
+    &.sortable {
+      .svg-icon-sort {
+        opacity: 0;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        .svg-icon-sort {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .table {
+    thead {
+      th,
+      td {
+        background-color: #474747 !important;
+      }
+    }
+  }
+
+  .table.table-head-custom thead tr {
+    .sortable-active {
+      color: $primary !important;
+    }
+  }
+}
+.otp-field {
+  width: 38px;
+  margin-right: 10px;
+  padding-left: 12px;
+  height: 40px;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+.display-block {
+  display: block;
+}
+
+.react-bootstrap-table {
+  margin-bottom: 1rem;
+}
+
+.react-bootstrap-table-page-btns-ul {
+  float: right;
+  margin-top: 0px !important;
+}
+
+.react-bootstrap-table-pagination-list-hidden {
+  display: none;
+}
+.react-bootstrap-table-editing-cell {
+  max-width: 100px;
+}
+
+.menu-nav
+  > .menu-item.menu-item-open
+  > .menu-link
+  .menu-icon.svg-icon
+  svg
+  g
+  [fill] {
+  // transition: fill 0.3s ease;
+  fill: #e40109 !important;
+}
+
+.svg-icon svg g [fill] {
+  fill: #fff !important;
+}
+
+.aside-menu
+  .menu-nav
+  > .menu-item
+  .menu-submenu
+  .menu-item.menu-item-open
+  > .menu-link
+  .menu-bullet.menu-bullet-dot
+  > span {
+  background-color: #e40109 !important;
+}
+
+// .menu-bullet .menu-bullet-dot:hover {
+//   color: #e40109 !important;
+// }
+
+.otp-input input {
+  border: 0px solid rgba(209, 213, 219, 1);
+  background: #f7f5f5;
+  width: 30px !important;
+  margin: 0px !important;
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.react-tel-input {
+  width: 30px;
+}
+
+.react-tel-input input[type="tel"] {
+  width: 30px !important;
+  border: 1px solid rgba(209, 213, 219, 1) !important;
+}
+.hide {
+  display: none;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #ffffff;
+  background-color: #e40109 !important;
+  border-color: #e40109 !important;
+}
+
+.label-width-pending {
+  min-width: 80px !important;
+}
+.loading-overlay-wrapper {
+  position: unset !important;
+  .loading-overlay-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.ql-editor {
+  min-height: 100px !important;
+  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+// table.table-head-custom thead tr,
+// .table.table-head-custom thead th {
+//   min-width: 110px !important;
+// }
+
+.modal-70 {
+  min-width: 70%;
+}
+
+.hr-notif {
+  border-top: 1px solid #9c9c9c;
+}
+.MuiPickersToolbar-toolbar {
+  background-color: #f64e60 !important;
+}
+
+.input-box-table {
+  border-color: hsl(0, 0%, 80%);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  min-height: 38px;
+  width: 85px;
+  padding: 0 8px;
+  outline: 0 !important;
+  box-sizing: border-box;
+}
+.alert {
+  // left: 50%;
+  z-index: 100;
+}
+
+.size-chart {
+  height: 500;
+  width: 500;
+}
+
+.color-red {
+  color: red;
+}
+
+.disabled-row-table {
+  background-color: lightgrey;
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.enable-row-table {
+  cursor: pointer;
+}
+
+.filename-container {
+  display: flex;
+  align-items: center;
+  margin-top: 11px;
+  .div-filename {
+    display: inline;
+  }
+  svg {
+    color: red;
+    float: right;
+    cursor: pointer;
+  }
+}
+
+.alert {
+  left: -50%;
+  z-index: 100;
+}
+
+.react-bootstrap-table-editing-cell {
+min-width:100px !important;
 }
