@@ -83,7 +83,7 @@ export function AsideMenuList({ layoutProps }) {
       pid: 0,
       menu_name: "Orders",
       title: "Orders",
-      url: "/Orders",
+      url: "/orders",
       icon: "/Design/Layers.svg",
       level: 1,
       hierarcy: "1",

@@ -7,6 +7,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { UsersPage } from "./pages/users/UsersPage";
 import { UsersCreate } from "./pages/users/UsersCreate";
 import { ProductPage } from "./pages/products/ProductsPage";
+import { OrdersPage } from "./pages/orders/OrdersPage";
 
 const UserProfilepage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
@@ -36,6 +37,10 @@ export default function BasePage() {
         {/* users */}
         {/* <ContentRoute path="/users/create" component={UsersCreate} /> */}
         <ContentRoute path="/products" component={ProductPage} />
+
+        {/* orders */}
+        {/* <ContentRoute path="/users/create" component={UsersCreate} /> */}
+        <ContentRoute path="/orders" component={OrdersPage} />
 
         <Route path="/user-profile" component={UserProfilepage} />
         <Redirect to="error/error-v1" />
