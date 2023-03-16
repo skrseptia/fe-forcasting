@@ -8,6 +8,7 @@ import { UsersPage } from "./pages/users/UsersPage";
 import { UsersCreate } from "./pages/users/UsersCreate";
 import { ProductPage } from "./pages/products/ProductsPage";
 import { OrdersPage } from "./pages/orders/OrdersPage";
+import { UsersEdit } from "./pages/users/UsersEdit";
 
 const UserProfilepage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
@@ -31,6 +32,7 @@ export default function BasePage() {
         <ContentRoute path="/my-page" component={MyPage} />
 
         {/* users */}
+        <ContentRoute path="/users/edit/:id" component={UsersEdit} />
         <ContentRoute path="/users/create" component={UsersCreate} />
         <ContentRoute path="/users" component={UsersPage} />
 

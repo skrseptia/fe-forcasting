@@ -20,8 +20,6 @@ export const UsersPage = () => {
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
 
-  console.log(data, "data");
-
   // Filter
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -38,94 +36,26 @@ export const UsersPage = () => {
     };
     try {
       const response = await dispatch(fetchAll(params));
-      if (response.payload.data.status === 200) {
+      console.log(response, "asd");
+      if (response.payload.data.success === true) {
       } else {
-        showErrorDialog(response.payload.data.message);
+        showErrorDialog(response.payload.error);
       }
     } catch (error) {
-      showErrorDialog(error.message);
+      showErrorDialog(error);
     }
   };
-
-  // const handleTableChange = async (
-  //   type,
-  //   { page, sizePerPage, sortField, sortOrder, data }
-  // ) => {
-  //   if (type === "pagination") {
-  //     const params = {
-  //       wdd: request,
-  //       pageNo: page,
-  //       pageSize: sizePerPage,
-  //     };
-  //     try {
-  //       const response = await dispatch(fetchApprovalPo(params));
-  //       if (response.payload.data.status === 200) {
-  //         setOverlayLoading(false);
-  //       } else if (
-  //         response.payload.data.error === "10008" ||
-  //         response.payload.data.error === "10009"
-  //       ) {
-  //         const action = await showErrorDialog(response.payload.data.message);
-  //         if (action.isConfirmed) await history.push("/logout");
-  //       } else {
-  //         showErrorDialog(response.payload.data.message);
-  //         setOverlayLoading(false);
-  //       }
-  //     } catch (error) {
-  //       showErrorDialog(error.message);
-  //       setOverlayLoading(false);
-  //     }
-  //   } else {
-  //     let result;
-  //     if (sortOrder === "asc") {
-  //       result = data.sort((a, b) => {
-  //         if (a[sortField] > b[sortField]) {
-  //           return 1;
-  //         } else if (b[sortField] > a[sortField]) {
-  //           return -1;
-  //         }
-  //         return 0;
-  //       });
-  //       console.log(result, "asc");
-  //     } else {
-  //       result = data.sort((a, b) => {
-  //         if (a[sortField] > b[sortField]) {
-  //           return -1;
-  //         } else if (b[sortField] > a[sortField]) {
-  //           return 1;
-  //         }
-  //         return 0;
-  //       });
-  //       console.log(result, "desc");
-  //     }
-  //   }
-  // };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
-
-  const dummy = [
-    {
-      no: 1,
-      id: 1,
-      full_name: "Ikhsan Guntara",
-      email: "ikhsan.guntara98@gmail.com",
-      password: "adg222823",
-      image_url: "www.image.com",
-      phone: "628123456789",
-      address: "Narogong, Bekasi Timur",
-      user_type: "admin",
-    },
-  ];
-
   return loading ? (
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Users">
+      <CardHeader title="Users Merchant">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
@@ -148,6 +78,7 @@ export const UsersPage = () => {
                   <Form.Control
                     type="text"
                     onChange={(e) => setFullname(e.target.value)}
+                    onKeyPress={handleKeyPress}
                   />
                 </Col>
               </Form.Group>
@@ -164,6 +95,7 @@ export const UsersPage = () => {
                   <Form.Control
                     type="text"
                     onChange={(e) => setEmail(e.target.value)}
+                    onKeyPress={handleKeyPress}
                   />
                 </Col>
               </Form.Group>
@@ -179,10 +111,9 @@ export const UsersPage = () => {
         </Form>
 
         {/* Table */}
-        {/* {data && data.length > 0 && (
-       
-        )} */}
-        <UsersTable data={data.length > 0 ? data : dummy} loading={loading} />
+        {data && data.length > 0 && (
+          <UsersTable data={data} loading={loading} />
+        )}
       </CardBody>
     </Card>
   );

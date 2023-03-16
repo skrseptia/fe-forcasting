@@ -4,7 +4,7 @@ const URL = `${process.env.REACT_APP_API_TEMP}`;
 
 export const getAll = (payload) => {
   return axios
-    .get(`${URL}/users`, {
+    .get(`${URL}/merchants`, {
       params: payload,
     })
     .catch((error) => {
@@ -17,9 +17,11 @@ export const getAll = (payload) => {
       }
     });
 };
+
+
 export const getId = (id) => {
   return axios
-    .get(`${URL}/users/${id}`, {
+    .get(`${URL}/merchants/${id}`, {
       params: id,
     })
     .catch((error) => {
@@ -34,7 +36,7 @@ export const getId = (id) => {
 };
 
 export const createItem = (payload) => {
-  return axios.post(`${URL}/users`, payload).catch((error) => {
+  return axios.post(`${URL}/merchants`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {
@@ -44,11 +46,8 @@ export const createItem = (payload) => {
     }
   });
 };
-export const updateItem = (id, payload ) => {
-  console.log(payload, "payload asd");
-  console.log(id, "id asd");
-
-  return axios.put(`${URL}/users/${id}`, payload).catch((error) => {
+export const updateItem = (payload) => {
+  return axios.put(`${URL}/merchants/:id`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {
