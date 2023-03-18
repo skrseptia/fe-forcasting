@@ -45,8 +45,6 @@ export const createItem = (payload) => {
   });
 };
 export const updateItem = (id, payload ) => {
-  console.log(payload, "payload asd");
-  console.log(id, "id asd");
 
   return axios.put(`${URL}/users/${id}`, payload).catch((error) => {
     if (error.response) {

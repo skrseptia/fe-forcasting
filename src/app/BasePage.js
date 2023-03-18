@@ -9,6 +9,9 @@ import { UsersCreate } from "./pages/users/UsersCreate";
 import { ProductPage } from "./pages/products/ProductsPage";
 import { OrdersPage } from "./pages/orders/OrdersPage";
 import { UsersEdit } from "./pages/users/UsersEdit";
+import { MerchansPage } from "./pages/merchants/MerchantsPage";
+import { MerchantsCreate } from "./pages/merchants/MerchantsCreate";
+import { MerchantsEdit } from "./pages/merchants/MerchatsEdit";
 
 const UserProfilepage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
@@ -32,9 +35,15 @@ export default function BasePage() {
         <ContentRoute path="/my-page" component={MyPage} />
 
         {/* users */}
-        <ContentRoute path="/users/edit/:id" component={UsersEdit} />
-        <ContentRoute path="/users/create" component={UsersCreate} />
-        <ContentRoute path="/users" component={UsersPage} />
+        <ContentRoute
+          path="/master-data/users/edit/:id"
+          component={UsersEdit}
+        />
+        <ContentRoute
+          path="/master-data/users/create"
+          component={UsersCreate}
+        />
+        <ContentRoute path="/master-data/users" component={UsersPage} />
 
         {/* users */}
         {/* <ContentRoute path="/users/create" component={UsersCreate} /> */}
@@ -43,6 +52,17 @@ export default function BasePage() {
         {/* orders */}
         {/* <ContentRoute path="/users/create" component={UsersCreate} /> */}
         <ContentRoute path="/orders" component={OrdersPage} />
+
+        {/* merchatns */}
+        <ContentRoute
+          path="/master-data/merchants/edit/:id"
+          component={MerchantsEdit}
+        />
+        <ContentRoute
+          path="/master-data/merchants/create"
+          component={MerchantsCreate}
+        />
+        <ContentRoute path="/master-data/merchants" component={MerchansPage} />
 
         <Route path="/user-profile" component={UserProfilepage} />
         <Redirect to="error/error-v1" />

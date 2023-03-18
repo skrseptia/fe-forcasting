@@ -44,9 +44,9 @@ export const addItem = createAsyncThunk(
 );
 
 export const editItem = createAsyncThunk(
-  "merchants/editItem",
-  async (payload) => {
-    const response = await updateItem(payload);
+  "users/editItem",
+  async ({ id, payload }) => {
+    const response = await updateItem(id, payload);
     return response;
   }
 );
@@ -81,7 +81,7 @@ export const merchantsSlice = createSlice({
       })
       .addCase(fetchId.fulfilled, (state, action) => {
         state.loading = false;
-        state.dataId = action.payload.data;
+        state.dataId = action.payload.data.data;
       })
       .addCase(addItem.pending, (state) => {
         state.loading = true;

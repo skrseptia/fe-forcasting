@@ -30,12 +30,11 @@ export const addItem = createAsyncThunk("users/addItem", async (payload) => {
 export const editItem = createAsyncThunk(
   "users/editItem",
   async ({ id, payload }) => {
-    console.log(id, "id slice");
-    console.log(payload, "payload slice");
     const response = await updateItem(id, payload);
     return response;
   }
 );
+
 export const removeById = createAsyncThunk(
   "users/removeById",
   async (payload) => {

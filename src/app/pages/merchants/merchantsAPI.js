@@ -46,8 +46,9 @@ export const createItem = (payload) => {
     }
   });
 };
-export const updateItem = (payload) => {
-  return axios.put(`${URL}/merchants/:id`, payload).catch((error) => {
+export const updateItem = (id, payload ) => {
+
+  return axios.put(`${URL}/merchants/${id}`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {
