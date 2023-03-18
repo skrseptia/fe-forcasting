@@ -51,9 +51,9 @@ export function AsideMenuList({ layoutProps }) {
         {
           menu_id: 1,
           pid: 0,
-          menu_name: "Category",
-          title: "Category",
-          url: "/master-data/category",
+          menu_name: "Categories",
+          title: "Categories",
+          url: "/master-data/categories",
           icon: "/Design/Layers.svg",
           childs: [],
         },
