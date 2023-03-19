@@ -43,7 +43,7 @@ export const UsersTable = ({
           <div
             className="btn btn-icon btn-light btn-hover-primary btn-sm mr-3"
             onClick={() => {
-              history.push(`/users/edit/${row.id}`);
+              history.push(`/master-data/users/edit/${row.id}`);
             }}
           >
             <span className="svg-icon svg-icon-md svg-icon-primary">
