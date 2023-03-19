@@ -15,6 +15,9 @@ import { MerchantsEdit } from "./pages/merchants/MerchatsEdit";
 import { CategoriesPage } from "./pages/categories/CategoriesPage";
 import { CategoriesCreate } from "./pages/categories/CategoriesCreate";
 import { CategoriesEdit } from "./pages/categories/CategoriesEdit";
+import { StoresEdit } from "./pages/stores/StoresEdit";
+import { StoresCreate } from "./pages/stores/StoresCreate";
+import { StoresPage } from "./pages/stores/StoresPage";
 
 const UserProfilepage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
@@ -79,6 +82,21 @@ export default function BasePage() {
         <ContentRoute
           path="/master-data/categories"
           component={CategoriesPage}
+        />
+
+
+                {/* stores */}
+                <ContentRoute
+          path="/master-data/stores/edit/:id"
+          component={StoresEdit}
+        />
+        <ContentRoute
+          path="/master-data/stores/create"
+          component={StoresCreate}
+        />
+        <ContentRoute
+          path="/master-data/stores"
+          component={StoresPage}
         />
 
         <Route path="/user-profile" component={UserProfilepage} />
