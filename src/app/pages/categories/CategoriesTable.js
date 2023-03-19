@@ -42,7 +42,7 @@ export const CategoriesTable = ({
           <div
             className="btn btn-icon btn-light btn-hover-primary btn-sm mr-3"
             onClick={() => {
-              history.push(`/master-data/merchants/edit/${row.id}`);
+              history.push(`/master-data/categories/edit/${row.id}`);
             }}
           >
             <span className="svg-icon svg-icon-md svg-icon-primary">
@@ -60,14 +60,6 @@ export const CategoriesTable = ({
     {
       text: "No",
       dataField: "no",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-
-    {
-      text: "Code",
-      dataField: "code",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,

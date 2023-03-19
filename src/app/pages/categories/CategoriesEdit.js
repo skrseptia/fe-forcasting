@@ -16,7 +16,7 @@ import { useHistory, useParams } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 
-export const MerchantsEdit = () => {
+export const CategoriesEdit = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
@@ -34,7 +34,6 @@ export const MerchantsEdit = () => {
   useEffect(() => {
     if (dataId !== null) {
       setFullname(dataId.name);
-      setCode(dataId.code);
     }
   }, [dataId]);
 
@@ -42,7 +41,6 @@ export const MerchantsEdit = () => {
     const id = dataId.id;
     const payload = {
       name: fullname,
-      code: code,
     };
 
     try {
@@ -67,22 +65,6 @@ export const MerchantsEdit = () => {
       <CardHeader title="Edit Categories"></CardHeader>
       <CardBody>
         <Form>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Code <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setCode(e.target.value);
-                }}
-                value={code}
-              />
-            </Col>
-          </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>

@@ -13,6 +13,8 @@ import { MerchansPage } from "./pages/merchants/MerchantsPage";
 import { MerchantsCreate } from "./pages/merchants/MerchantsCreate";
 import { MerchantsEdit } from "./pages/merchants/MerchatsEdit";
 import { CategoriesPage } from "./pages/categories/CategoriesPage";
+import { CategoriesCreate } from "./pages/categories/CategoriesCreate";
+import { CategoriesEdit } from "./pages/categories/CategoriesEdit";
 
 const UserProfilepage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
@@ -66,14 +68,14 @@ export default function BasePage() {
         <ContentRoute path="/master-data/merchants" component={MerchansPage} />
 
         {/* categories */}
-        {/* <ContentRoute
+        <ContentRoute
           path="/master-data/categories/edit/:id"
-          component={MerchantsEdit}
+          component={CategoriesEdit}
         />
         <ContentRoute
           path="/master-data/categories/create"
-          component={MerchantsCreate}
-        /> */}
+          component={CategoriesCreate}
+        />
         <ContentRoute
           path="/master-data/categories"
           component={CategoriesPage}

@@ -41,9 +41,10 @@ export const CategoriesPage = () => {
     };
     try {
       const response = await dispatch(fetchAll(params));
+      console.log(response);
       if (response.payload.data.success === true) {
       } else {
-        showErrorDialog(response.payload.error);
+        showErrorDialog(response.payload.data.error);
       }
     } catch (error) {
       showErrorDialog(error);
@@ -76,7 +77,7 @@ export const CategoriesPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Fullname</b>
+                  <b>Name</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control
@@ -91,18 +92,6 @@ export const CategoriesPage = () => {
             {/* Right Row */}
 
             <Col sm={6}>
-              <Form.Group as={Row}>
-                <Form.Label column sm={3}>
-                  <b>Email</b>
-                </Form.Label>
-                <Col sm={6}>
-                  <Form.Control
-                    type="text"
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                  />
-                </Col>
-              </Form.Group>
               <Form.Group as={Row}>
                 <Col sm={3}>
                   <Button className="btn btn-danger" onClick={handleSearch}>

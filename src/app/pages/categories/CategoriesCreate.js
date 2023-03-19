@@ -9,21 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, selectLoading } from "./categoriesSlice";
 import { useHistory } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
-import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 
-export const MerchantsCreate = () => {
+export const CategoriesCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
   const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-
 
   const handleSave = async () => {
     const params = {
       name: fullname,
-      code: code,
     };
 
     console.log(params, "params");
@@ -46,25 +42,9 @@ export const MerchantsCreate = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Create  Merchant"></CardHeader>
+      <CardHeader title="Create  Categories"></CardHeader>
       <CardBody>
-      <Form>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Code <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setCode(e.target.value);
-                }}
-                value={code}
-              />
-            </Col>
-          </Form.Group>
+        <Form>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
@@ -75,7 +55,7 @@ export const MerchantsCreate = () => {
               <Form.Control
                 type="text"
                 onChange={(e) => {
-                  setFullname(e.target.value);
+                  setFullname(e.target.value.toLocaleUpperCase());
                 }}
                 value={fullname}
               />
