@@ -5,7 +5,7 @@ import {
   updateItem,
   deleteById,
   getId,
-} from "./productsAPI";
+} from "./transactionAPI";
 
 const initialState = {
   data: [],
@@ -20,39 +20,39 @@ const initialState = {
 };
 
 export const fetchAll = createAsyncThunk(
-  "products/fetchAll",
+  "orders/fetchAll",
   async (payload) => {
     const response = await getAll(payload);
     return response;
   }
 );
-export const fetchId = createAsyncThunk("products/fetchId", async (payload) => {
+export const fetchId = createAsyncThunk("orders/fetchId", async (payload) => {
   const response = await getId(payload);
-  return response;
+  return response.data;
 });
 
-export const addItem = createAsyncThunk("products/addItem", async (payload) => {
+export const addItem = createAsyncThunk("orders/addItem", async (payload) => {
   const response = await createItem(payload);
   return response;
 });
 
 export const editItem = createAsyncThunk(
-  "products/editItem",
+  "orders/editItem",
   async (payload) => {
     const response = await updateItem(payload);
     return response;
   }
 );
 export const removeById = createAsyncThunk(
-  "products/removeById",
+  "orders/removeById",
   async (payload) => {
     const response = await deleteById(payload);
     return response;
   }
 );
 
-export const productsSlice = createSlice({
-  name: "products",
+export const ordersSlice = createSlice({
+  name: "orders",
   initialState,
   reducers: {
     resetData: () => initialState,
@@ -67,7 +67,7 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchAll.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data.data;
+        state.data = action.payload.data;
       })
       .addCase(fetchId.pending, (state) => {
         state.loading = true;
@@ -100,12 +100,12 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = productsSlice.actions;
+export const { resetData, setSelected } = ordersSlice.actions;
 
-export const selectData = (state) => state.products.data;
-export const selectDataId = (state) => state.products.dataId;
-export const selectLoading = (state) => state.products.loading;
-export const selectError = (state) => state.products.error;
-export const selectResult = (state) => state.products.result;
+export const selectData = (state) => state.orders.data;
+export const selectDataId = (state) => state.orders.dataId;
+export const selectLoading = (state) => state.orders.loading;
+export const selectError = (state) => state.orders.error;
+export const selectResult = (state) => state.orders.result;
 
-export default productsSlice.reducer;
+export default ordersSlice.reducer;

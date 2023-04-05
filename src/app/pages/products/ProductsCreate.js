@@ -6,44 +6,70 @@ import {
   CardHeader,
 } from "../../../_metronic/_partials/controls";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, selectLoading } from "./usersSlice";
+import { addItem, selectLoading } from "./productsSlice";
 import { useHistory } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
 import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
+import { fetchAll, selectData } from "../uom/uomSlice";
 
-export const UsersCreate = () => {
+export const ProductCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
+  const dataUom = useSelector(selectData);
 
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [type, setType] = useState("");
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [uom, setUom] = useState("");
+  const [price, setPrice] = useState("");
+  const [qty, setQty] = useState("");
+
+  useEffect(() => {
+    // Fetch data on first load
+    dispatch(fetchAll());
+  }, [dispatch]);
+
+  const uomOptions = dataUom.map((e) => {
+    return {
+      value: e.name,
+      label: e.name,
+    };
+  });
+
+  const getValueUom = (value, options) => {
+    const return_value = options.filter((val) => value === val.value);
+    return return_value;
+  };
+
+  const handleUomChange = (e, value) => {
+    if (e === null) {
+      value.uom = "";
+    } else {
+      value.uom = e.value;
+    }
+    setUom(value.uom);
+  };
 
   const handleSave = async () => {
     const params = {
-      full_name: fullname,
-      email: email,
-      password: password,
-      phone: phone,
-      address: address,
-      user_type: type,
+      name: name,
+      description: description,
+      uom: uom,
+      price: parseFloat(price),
+      qty: parseFloat(qty),
     };
 
     console.log(params, "params");
 
-    return;
     try {
       const response = await dispatch(addItem(params));
+      console.log(response, "response");
       if (response.payload.status === 200) {
         const action = await showSuccessDialog(response.payload.message);
         if (action.isConfirmed) history.goBack();
       } else {
-        showErrorDialog(response.payload.message);
+        showErrorDialog(response.payload.error);
       }
     } catch (error) {
       showErrorDialog(error.message);
@@ -55,70 +81,69 @@ export const UsersCreate = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Create Parameter"></CardHeader>
+      <CardHeader title="Create Product"></CardHeader>
       <CardBody>
         <Form>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
-                Fullname <b className="color-red">*</b>
+                Name <b className="color-red">*</b>
               </b>
             </Form.Label>
             <Col sm={3}>
               <Form.Control
                 type="text"
                 onChange={(e) => {
-                  setFullname(e.target.value);
+                  setName(e.target.value);
                 }}
-                value={fullname}
+                value={name}
               />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
-                Password <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                value={password}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                email <b className="color-red">*</b>
+                Description <b className="color-red">*</b>
               </b>
             </Form.Label>
             <Col sm={3}>
               <Form.Control
                 type="text"
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  setDescription(e.target.value);
                 }}
-                value={email}
+                value={description}
               />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
-                Phone <b className="color-red">*</b>
+                Uom <b className="color-red">*</b>
+              </b>
+            </Form.Label>
+            <Col sm={3}>
+              <Select
+                isClearable={true}
+                options={uomOptions}
+                value={getValueUom(uom, uomOptions)}
+                onChange={handleUomChange}
+              />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={2}>
+              <b>
+                Price <b className="color-red">*</b>
               </b>
             </Form.Label>
             <Col sm={3}>
               <Form.Control
-                type="text"
+                type="number"
                 onChange={(e) => {
-                  setPhone(e.target.value);
+                  setPrice(e.target.value);
                 }}
-                value={phone}
+                value={price}
               />
             </Col>
           </Form.Group>
@@ -126,32 +151,16 @@ export const UsersCreate = () => {
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
-                Address <b className="color-red">*</b>
+                Qty <b className="color-red">*</b>
               </b>
             </Form.Label>
             <Col sm={3}>
               <Form.Control
-                type="text"
+                type="number"
                 onChange={(e) => {
-                  setAddress(e.target.value);
+                  setQty(e.target.value);
                 }}
-                value={address}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Type <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setType(e.target.value);
-                }}
-                value={type}
+                value={qty}
               />
             </Col>
           </Form.Group>

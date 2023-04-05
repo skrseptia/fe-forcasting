@@ -9,19 +9,24 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { resetData, selectData, fetchAll, selectLoading } from "./ordersSlice";
+import {
+  resetData,
+  selectData,
+  fetchAll,
+  selectLoading,
+} from "./transactionSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
-import { OrdersTable } from "./OrdersTable";
+import { TransactionTable } from "./TransactionTable";
 
-export const OrdersPage = () => {
+export const TransactionPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
 
   // Filter
-  const [name, setName] = useState("");
+  const [no, setNo] = useState("");
   const [type, setType] = useState("");
 
   useEffect(() => {
@@ -31,12 +36,11 @@ export const OrdersPage = () => {
 
   const handleSearch = async () => {
     const params = {
-      name: name,
-      type: type,
+      no: no,
     };
     try {
       const response = await dispatch(fetchAll(params));
-      if (response.payload.data.status === 200) {
+      if (response.payload.data.success === true) {
       } else {
         showErrorDialog(response.payload.data.message);
       }
@@ -44,36 +48,22 @@ export const OrdersPage = () => {
       showErrorDialog(error.message);
     }
   };
-
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  const dummy = [
-    {
-      no: 1,
-      id: 1,
-      full_name: "Ikhsan Guntara",
-      email: "ikhsan.guntara98@gmail.com",
-      password: "adg222823",
-      image_url: "www.image.com",
-      phone: "628123456789",
-      address: "Narogong, Bekasi Timur",
-      user_type: "admin",
-    },
-  ];
 
   return loading ? (
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Orders">
+      <CardHeader title="Transaction">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
-            onClick={() => history.push("/products/create")}
+            onClick={() => history.push("/transaction/create")}
           >
             Create
           </Button>
@@ -86,12 +76,12 @@ export const OrdersPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Name</b>
+                  <b>No Transaction</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control
                     type="text"
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setNo(e.target.value)}
                   />
                 </Col>
               </Form.Group>
@@ -102,7 +92,7 @@ export const OrdersPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Type</b>
+                  <b>Date</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control
@@ -123,10 +113,9 @@ export const OrdersPage = () => {
         </Form>
 
         {/* Table */}
-        {/* {data && data.length > 0 && (
-       
-        )} */}
-        <OrdersTable data={data.length > 0 ? data : dummy} loading={loading} />
+        {data && data.length > 0 && (
+          <TransactionTable data={data} loading={loading} />
+        )}
       </CardBody>
     </Card>
   );

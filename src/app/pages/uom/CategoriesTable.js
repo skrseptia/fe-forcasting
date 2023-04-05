@@ -12,7 +12,11 @@ import { useHistory } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
 
-export const OrdersTable = ({ data, loading }) => {
+export const CategoriesTable = ({
+  data,
+
+  loading,
+}) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -38,7 +42,7 @@ export const OrdersTable = ({ data, loading }) => {
           <div
             className="btn btn-icon btn-light btn-hover-primary btn-sm mr-3"
             onClick={() => {
-              history.push(`/users/edit/${row.id}`);
+              history.push(`/master-data/categories/edit/${row.id}`);
             }}
           >
             <span className="svg-icon svg-icon-md svg-icon-primary">
@@ -60,38 +64,9 @@ export const OrdersTable = ({ data, loading }) => {
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-
     {
-      text: "fullname",
-      dataField: "full_name",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      text: "email",
-      dataField: "email",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      text: "phone",
-      dataField: "phone",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      text: "address",
-      dataField: "address",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      text: "user type",
-      dataField: "user_type",
+      text: "name",
+      dataField: "name",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
@@ -104,13 +79,6 @@ export const OrdersTable = ({ data, loading }) => {
     },
   ];
 
-  // const options = {
-  //   page: page,
-  //   sizePerPage: sizePerPage,
-  //   showTotal: true,
-  //   totalSize: totalSize,
-  //   sizePerPageList: sizePerPageList(totalSize),
-  // };
   return (
     <>
       <BootstrapTable
@@ -122,10 +90,7 @@ export const OrdersTable = ({ data, loading }) => {
         data={tableData}
         columns={columns}
         hover
-      >
-        {/* <PleaseWaitMessage entities={loading ? null : tableData} />
-        <NoRecordsFoundMessage entities={loading ? null : tableData} /> */}
-      </BootstrapTable>
+      ></BootstrapTable>
     </>
   );
 };

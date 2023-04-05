@@ -1,10 +1,10 @@
 const axios = require("axios").default;
 
-const URL = `${process.env.REACT_APP_API_TEMP}/products`;
+const URL = `${process.env.REACT_APP_API_TEMP}`;
 
 export const getAll = (payload) => {
   return axios
-    .get(URL, {
+    .get(`${URL}/uoms`, {
       params: payload,
     })
     .catch((error) => {
@@ -17,9 +17,11 @@ export const getAll = (payload) => {
       }
     });
 };
+
+
 export const getId = (id) => {
   return axios
-    .get(`${URL}/${id}`, {
+    .get(`${URL}/uoms/${id}`, {
       params: id,
     })
     .catch((error) => {
@@ -34,7 +36,7 @@ export const getId = (id) => {
 };
 
 export const createItem = (payload) => {
-  return axios.post(URL, payload).catch((error) => {
+  return axios.post(`${URL}/uoms`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {
@@ -44,8 +46,9 @@ export const createItem = (payload) => {
     }
   });
 };
-export const updateItem = (payload) => {
-  return axios.put(URL, payload).catch((error) => {
+export const updateItem = (id, payload ) => {
+
+  return axios.put(`${URL}/uoms/${id}`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {

@@ -1,11 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  getAll,
-  createItem,
-  updateItem,
-  deleteById,
-  getId,
-} from "./productsAPI";
+import { getAll, createItem, updateItem, deleteById, getId } from "./uomAPI";
 
 const initialState = {
   data: [],
@@ -19,40 +13,38 @@ const initialState = {
   dataId: null,
 };
 
-export const fetchAll = createAsyncThunk(
-  "products/fetchAll",
-  async (payload) => {
-    const response = await getAll(payload);
-    return response;
-  }
-);
-export const fetchId = createAsyncThunk("products/fetchId", async (payload) => {
+export const fetchAll = createAsyncThunk("uom/fetchAll", async (payload) => {
+  const response = await getAll(payload);
+  return response;
+});
+
+export const fetchId = createAsyncThunk("uom/fetchId", async (payload) => {
   const response = await getId(payload);
   return response;
 });
 
-export const addItem = createAsyncThunk("products/addItem", async (payload) => {
+export const addItem = createAsyncThunk("uom/addItem", async (payload) => {
   const response = await createItem(payload);
   return response;
 });
 
 export const editItem = createAsyncThunk(
-  "products/editItem",
-  async (payload) => {
-    const response = await updateItem(payload);
+  "users/editItem",
+  async ({ id, payload }) => {
+    const response = await updateItem(id, payload);
     return response;
   }
 );
 export const removeById = createAsyncThunk(
-  "products/removeById",
+  "uom/removeById",
   async (payload) => {
     const response = await deleteById(payload);
     return response;
   }
 );
 
-export const productsSlice = createSlice({
-  name: "products",
+export const merchantsSlice = createSlice({
+  name: "uom",
   initialState,
   reducers: {
     resetData: () => initialState,
@@ -74,7 +66,7 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchId.fulfilled, (state, action) => {
         state.loading = false;
-        state.dataId = action.payload.data;
+        state.dataId = action.payload.data.data;
       })
       .addCase(addItem.pending, (state) => {
         state.loading = true;
@@ -100,12 +92,12 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = productsSlice.actions;
+export const { resetData, setSelected } = merchantsSlice.actions;
 
-export const selectData = (state) => state.products.data;
-export const selectDataId = (state) => state.products.dataId;
-export const selectLoading = (state) => state.products.loading;
-export const selectError = (state) => state.products.error;
-export const selectResult = (state) => state.products.result;
+export const selectData = (state) => state.uom.data;
+export const selectDataId = (state) => state.uom.dataId;
+export const selectLoading = (state) => state.uom.loading;
+export const selectError = (state) => state.uom.error;
+export const selectResult = (state) => state.uom.result;
 
-export default productsSlice.reducer;
+export default merchantsSlice.reducer;

@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
 
-export const ProductsTable = ({ data, loading }) => {
+export const TransactionTable = ({ data, loading }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -62,47 +62,41 @@ export const ProductsTable = ({ data, loading }) => {
     },
 
     {
-      text: "code",
-      dataField: "code",
+      text: "fullname",
+      dataField: "full_name",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: "name",
-      dataField: "name",
+      text: "email",
+      dataField: "email",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: "description",
-      dataField: "description",
+      text: "phone",
+      dataField: "phone",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: "uom",
-      dataField: "uom",
+      text: "address",
+      dataField: "address",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: " qty",
-      dataField: "qty",
+      text: "user type",
+      dataField: "user_type",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      text: "price",
-      dataField: "price",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
+
     {
       text: "Action",
       dataField: "action",
@@ -110,6 +104,13 @@ export const ProductsTable = ({ data, loading }) => {
     },
   ];
 
+  // const options = {
+  //   page: page,
+  //   sizePerPage: sizePerPage,
+  //   showTotal: true,
+  //   totalSize: totalSize,
+  //   sizePerPageList: sizePerPageList(totalSize),
+  // };
   return (
     <>
       <BootstrapTable

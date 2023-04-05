@@ -90,9 +90,9 @@ export function AsideMenuList({ layoutProps }) {
     {
       menu_id: 1,
       pid: 0,
-      menu_name: "Orders",
-      title: "Orders",
-      url: "/orders",
+      menu_name: "Transaction",
+      title: "Transaction",
+      url: "/transaction",
       icon: "/Design/Layers.svg",
       childs: [],
     },

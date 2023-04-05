@@ -14,20 +14,20 @@ import {
   selectData,
   fetchAll,
   selectLoading,
-} from "./productsSlice";
+} from "./categoriesSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
-import { ProductsTable } from "./ProductsTable";
+import { CategoriesTable } from "./CategoriesTable";
 
-export const ProductPage = () => {
+export const CategoriesPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
 
   // Filter
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     // Reset on first load
@@ -36,17 +36,18 @@ export const ProductPage = () => {
 
   const handleSearch = async () => {
     const params = {
-      name: name,
-      description: description,
+      fullname: fullname,
+      email: email,
     };
     try {
       const response = await dispatch(fetchAll(params));
+      console.log(response);
       if (response.payload.data.success === true) {
       } else {
-        showErrorDialog(response.payload.data.message);
+        showErrorDialog(response.payload.data.error);
       }
     } catch (error) {
-      showErrorDialog(error.message);
+      showErrorDialog(error);
     }
   };
 
@@ -55,16 +56,15 @@ export const ProductPage = () => {
       handleSearch();
     }
   };
-
   return loading ? (
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Products">
+      <CardHeader title="Categories">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
-            onClick={() => history.push("/products/create")}
+            onClick={() => history.push("/master-data/categories/create")}
           >
             Create
           </Button>
@@ -82,8 +82,8 @@ export const ProductPage = () => {
                 <Col sm={6}>
                   <Form.Control
                     type="text"
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
+                    onChange={(e) => setFullname(e.target.value)}
+                    onKeyPress={handleKeyPress}
                   />
                 </Col>
               </Form.Group>
@@ -92,18 +92,6 @@ export const ProductPage = () => {
             {/* Right Row */}
 
             <Col sm={6}>
-              <Form.Group as={Row}>
-                <Form.Label column sm={3}>
-                  <b>Description</b>
-                </Form.Label>
-                <Col sm={6}>
-                  <Form.Control
-                    type="text"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
-                  />
-                </Col>
-              </Form.Group>
               <Form.Group as={Row}>
                 <Col sm={3}>
                   <Button className="btn btn-danger" onClick={handleSearch}>
@@ -117,7 +105,7 @@ export const ProductPage = () => {
 
         {/* Table */}
         {data && data.length > 0 && (
-          <ProductsTable data={data} loading={loading} />
+          <CategoriesTable data={data} loading={loading} />
         )}
       </CardBody>
     </Card>

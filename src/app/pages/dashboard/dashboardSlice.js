@@ -5,7 +5,7 @@ import {
   updateItem,
   deleteById,
   getId,
-} from "./ordersAPI";
+} from "./dashboardAPI";
 
 const initialState = {
   data: [],
@@ -19,40 +19,46 @@ const initialState = {
   dataId: null,
 };
 
-export const fetchAll = createAsyncThunk(
-  "orders/fetchAll",
+export const fetchDashboard = createAsyncThunk(
+  "dashboard/fetchDashboard",
   async (payload) => {
     const response = await getAll(payload);
     return response;
   }
 );
-export const fetchId = createAsyncThunk("orders/fetchId", async (payload) => {
-  const response = await getId(payload);
-  return response.data;
-});
+export const fetchDashboardId = createAsyncThunk(
+  "dashboard/PurchaseChaseId",
+  async (payload) => {
+    const response = await getId(payload);
+    return response.data;
+  }
+);
 
-export const addItem = createAsyncThunk("orders/addItem", async (payload) => {
-  const response = await createItem(payload);
-  return response;
-});
+export const addItem = createAsyncThunk(
+  "dashboard/addItem",
+  async (payload) => {
+    const response = await createItem(payload);
+    return response;
+  }
+);
 
 export const editItem = createAsyncThunk(
-  "orders/editItem",
+  "dashboard/editItem",
   async (payload) => {
     const response = await updateItem(payload);
     return response;
   }
 );
 export const removeById = createAsyncThunk(
-  "orders/removeById",
+  "dashboard/removeById",
   async (payload) => {
     const response = await deleteById(payload);
     return response;
   }
 );
 
-export const ordersSlice = createSlice({
-  name: "orders",
+export const dashboardSlice = createSlice({
+  name: "dashboard",
   initialState,
   reducers: {
     resetData: () => initialState,
@@ -62,17 +68,20 @@ export const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAll.pending, (state) => {
+      .addCase(fetchDashboard.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAll.fulfilled, (state, action) => {
+      .addCase(fetchDashboard.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data;
+        state.data = action.payload.data.data;
+        state.pageNo = action.payload.data.pageNo;
+        state.pageSize = action.payload.data.pageSize;
+        state.totalRecord = action.payload.data.totalRecord;
       })
-      .addCase(fetchId.pending, (state) => {
+      .addCase(fetchDashboardId.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchId.fulfilled, (state, action) => {
+      .addCase(fetchDashboardId.fulfilled, (state, action) => {
         state.loading = false;
         state.dataId = action.payload.data;
       })
@@ -100,12 +109,16 @@ export const ordersSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = ordersSlice.actions;
+export const { resetData, setSelected } = dashboardSlice.actions;
 
-export const selectData = (state) => state.orders.data;
-export const selectDataId = (state) => state.orders.dataId;
-export const selectLoading = (state) => state.orders.loading;
-export const selectError = (state) => state.orders.error;
-export const selectResult = (state) => state.orders.result;
+export const selectDashboard = (state) => state.dashboard.data;
+export const selectDashboardId = (state) => state.dashboard.dataId;
+export const selectLoading = (state) => state.dashboard.loading;
+export const selectError = (state) => state.dashboard.error;
+export const selectPageNo = (state) => state.dashboard.pageNo;
+export const selectPageSize = (state) => state.dashboard.pageSize;
+export const selectTotalRecord = (state) => state.dashboard.totalRecord;
+export const selectSelected = (state) => state.dashboard.selected;
+export const selectResult = (state) => state.dashboard.result;
 
-export default ordersSlice.reducer;
+export default dashboardSlice.reducer;
