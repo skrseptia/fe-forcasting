@@ -15,22 +15,6 @@ export function HeaderMenu({ layoutProps }) {
       id="kt_header_menu"
       className={`header-menu header-menu-mobile ${layoutProps.ktMenuClasses}`}
       {...layoutProps.headerMenuAttributes}
-    >
-      {/*begin::Header Nav*/}
-      <ul className={`menu-nav ${layoutProps.ulClasses}`}>
-        {/*begin::1 Level*/}
-        <li
-          className={`menu-item menu-item-rel ${getMenuItemActive(
-            "/dashboard"
-          )}`}
-        >
-          <NavLink className="menu-link" to="/dashboard">
-            <span className="menu-text">Dashboard</span>
-            {layoutProps.rootArrowEnabled && <i className="menu-arrow" />}
-          </NavLink>
-        </li>
-        {/*end::1 Level*/}
-      </ul>
-    </div>
+    ></div>
   );
 }
