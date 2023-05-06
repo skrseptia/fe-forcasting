@@ -24,6 +24,7 @@ export const ProductPage = () => {
   const history = useHistory();
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
+  console.log(data, "data");
 
   // Filter
   const [name, setName] = useState("");
@@ -33,6 +34,14 @@ export const ProductPage = () => {
     // Reset on first load
     dispatch(resetData());
   }, [dispatch]);
+
+  const initData = data.map((item, index) => {
+    return {
+      ...item,
+      no: index + 1,
+      uom: item.uom.name,
+    };
+  });
 
   const handleSearch = async () => {
     const params = {
@@ -117,7 +126,7 @@ export const ProductPage = () => {
 
         {/* Table */}
         {data && data.length > 0 && (
-          <ProductsTable data={data} loading={loading} />
+          <ProductsTable data={initData} loading={loading} />
         )}
       </CardBody>
     </Card>

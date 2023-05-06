@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 
-const URL = `${process.env.REACT_APP_API_TEMP}/products`;
+const URL = `${process.env.REACT_APP_API_URL}/products`;
 
 export const getAll = (payload) => {
   return axios

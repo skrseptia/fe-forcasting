@@ -25,7 +25,9 @@ export const ProductsTable = ({ data, loading }) => {
       };
     });
     setTableData(initData);
-  }, [data]);
+  }, []);
+
+
 
   const [tableData, setTableData] = useState(data);
 
@@ -54,8 +56,8 @@ export const ProductsTable = ({ data, loading }) => {
 
   const columns = [
     {
-      text: "No",
-      dataField: "no",
+      text: "id",
+      dataField: "id",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
