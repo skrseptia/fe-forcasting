@@ -14,19 +14,19 @@ import {
   selectData,
   fetchAll,
   selectLoading,
-} from "./merchantsSlice";
+} from "./transactionSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
-import { MerchatsTable } from "./MerchatsTable";
+import { TransactionTable } from "./TransactionTable";
 
-export const MerchansPage = () => {
+export const TransactionPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
 
   // Filter
-  const [fullname, setFullname] = useState("");
+  const [transaction, setTransaction] = useState("");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -36,8 +36,7 @@ export const MerchansPage = () => {
 
   const handleSearch = async () => {
     const params = {
-      fullname: fullname,
-      email: email,
+      transaction: transaction,
     };
     try {
       const response = await dispatch(fetchAll(params));
@@ -76,12 +75,12 @@ export const MerchansPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Fullname</b>
+                  <b>transaction</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control
                     type="text"
-                    onChange={(e) => setFullname(e.target.value)}
+                    onChange={(e) => setTransaction(e.target.value)}
                     onKeyPress={handleKeyPress}
                   />
                 </Col>
@@ -116,7 +115,7 @@ export const MerchansPage = () => {
 
         {/* Table */}
         {data && data.length > 0 && (
-          <MerchatsTable data={data} loading={loading} />
+          <TransactionTable data={data} loading={loading} />
         )}
       </CardBody>
     </Card>

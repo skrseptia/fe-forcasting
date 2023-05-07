@@ -7,11 +7,7 @@ import { DashboardPage } from "./pages/dashboard/DashboardPage";
 import { UsersPage } from "./pages/users/UsersPage";
 import { UsersCreate } from "./pages/users/UsersCreate";
 import { ProductPage } from "./pages/products/ProductsPage";
-import { TransactionPage } from "./pages/orders/TransactionPage";
 import { UsersEdit } from "./pages/users/UsersEdit";
-import { MerchansPage } from "./pages/merchants/MerchantsPage";
-import { MerchantsCreate } from "./pages/merchants/MerchantsCreate";
-import { MerchantsEdit } from "./pages/merchants/MerchatsEdit";
 import { CategoriesPage } from "./pages/categories/CategoriesPage";
 import { CategoriesCreate } from "./pages/categories/CategoriesCreate";
 import { CategoriesEdit } from "./pages/categories/CategoriesEdit";
@@ -19,7 +15,11 @@ import { StoresEdit } from "./pages/stores/StoresEdit";
 import { StoresCreate } from "./pages/stores/StoresCreate";
 import { StoresPage } from "./pages/stores/StoresPage";
 import { ProductCreate } from "./pages/products/ProductsCreate";
-import { TransactionCreate } from "./pages/orders/TransactionCreate";
+
+// transaction
+import { TransactionPage } from "./pages/transaction/TransactionPage";
+// import { TransactionCreate } from "./pages/orders/TransactionCreate";
+// import { TransactionCreate } from "./pages/orders/TransactionCreate";
 
 const UserProfilepage = lazy(() =>
   import("./modules/UserProfile/UserProfilePage")
@@ -58,19 +58,22 @@ export default function BasePage() {
         <ContentRoute path="/products" component={ProductPage} />
 
         {/* orders */}
-        <ContentRoute path="/transaction/create" component={TransactionCreate} />
+        {/* <ContentRoute
+          path="/transaction/create"
+          component={TransactionCreate}
+        /> */}
         <ContentRoute path="/transaction" component={TransactionPage} />
 
-        {/* merchatns */}
-        <ContentRoute
+        {/* transaction */}
+        {/* <ContentRoute
           path="/master-data/merchants/edit/:id"
           component={MerchantsEdit}
         />
         <ContentRoute
           path="/master-data/merchants/create"
           component={MerchantsCreate}
-        />
-        <ContentRoute path="/master-data/merchants" component={MerchansPage} />
+        /> */}
+        <ContentRoute path="/transaction" component={TransactionPage} />
 
         {/* categories */}
         <ContentRoute
@@ -85,17 +88,6 @@ export default function BasePage() {
           path="/master-data/categories"
           component={CategoriesPage}
         />
-
-        {/* stores */}
-        <ContentRoute
-          path="/master-data/stores/edit/:id"
-          component={StoresEdit}
-        />
-        <ContentRoute
-          path="/master-data/stores/create"
-          component={StoresCreate}
-        />
-        <ContentRoute path="/master-data/stores" component={StoresPage} />
 
         <Route path="/user-profile" component={UserProfilepage} />
         <Redirect to="error/error-v1" />

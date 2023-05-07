@@ -43,7 +43,7 @@ export const removeById = createAsyncThunk(
   }
 );
 
-export const merchantsSlice = createSlice({
+export const uomSlice = createSlice({
   name: "uom",
   initialState,
   reducers: {
@@ -92,7 +92,7 @@ export const merchantsSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = merchantsSlice.actions;
+export const { resetData, setSelected } = uomSlice.actions;
 
 export const selectData = (state) => state.uom.data;
 export const selectDataId = (state) => state.uom.dataId;
@@ -100,4 +100,4 @@ export const selectLoading = (state) => state.uom.loading;
 export const selectError = (state) => state.uom.error;
 export const selectResult = (state) => state.uom.result;
 
-export default merchantsSlice.reducer;
+export default uomSlice.reducer;

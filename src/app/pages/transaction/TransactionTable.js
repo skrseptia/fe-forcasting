@@ -11,8 +11,9 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
+import { formatCurrency } from "../../../utility";
 
-export const MerchatsTable = ({
+export const TransactionTable = ({
   data,
 
   loading,
@@ -66,6 +67,50 @@ export const MerchatsTable = ({
     },
 
     {
+      text: "transaction",
+      dataField: "trx_id",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+    },
+    {
+      text: "created by",
+      dataField: "created_by",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+    },
+    {
+      text: "customer",
+      dataField: "customer",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+    },
+    {
+      text: "total",
+      dataField: "total",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+      formatter: formatCurrency,
+    },
+    {
+      text: "Action",
+      dataField: "action",
+      formatter: actionFormatter,
+    },
+  ];
+
+  const columnsLine = [
+    {
+      text: "code",
+      dataField: "code",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+    },
+    {
       text: "name",
       dataField: "name",
       sort: true,
@@ -73,45 +118,33 @@ export const MerchatsTable = ({
       headerSortingClasses,
     },
     {
-      text: "email",
-      dataField: "email",
+      text: "qty",
+      dataField: "qty",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: "phone",
-      dataField: "phone",
+      text: "uom",
+      dataField: "uom",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: "address",
-      dataField: "address",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-
-    {
-      text: "latitude",
-      dataField: "latitude",
+      text: "price",
+      dataField: "price",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
     {
-      text: "longitude",
-      dataField: "longitude",
+      text: "sub total",
+      dataField: "sub_total",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
-    },
-    {
-      text: "Action",
-      dataField: "action",
-      formatter: actionFormatter,
+      formatter: formatCurrency,
     },
   ];
 
@@ -122,6 +155,20 @@ export const MerchatsTable = ({
   //   totalSize: totalSize,
   //   sizePerPageList: sizePerPageList(totalSize),
   // };
+
+  const expandRow = {
+    // onlyOneExpanding: true,
+    showExpandColumn: true,
+    expandByColumnOnly: true,
+    renderer: (row) => (
+      <BootstrapTable
+        keyField="id"
+        data={row.transaction_lines}
+        columns={columnsLine}
+      />
+    ),
+  };
+
   return (
     <>
       <BootstrapTable
@@ -133,6 +180,7 @@ export const MerchatsTable = ({
         data={tableData}
         columns={columns}
         hover
+        expandRow={expandRow}
       >
         {/* <PleaseWaitMessage entities={loading ? null : tableData} />
         <NoRecordsFoundMessage entities={loading ? null : tableData} /> */}

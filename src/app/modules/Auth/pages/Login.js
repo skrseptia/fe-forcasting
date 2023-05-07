@@ -19,12 +19,12 @@ import Swal from "sweetalert2";
 */
 
 const initialValues = {
-  email: "admin@mail.com",
-  password: "password",
+  email: "",
+  password: "",
 };
 
 if (process.env.NODE_ENV === "development") {
-  initialValues.username = "admin@mail.com";
+  initialValues.email = "admin@mail.com";
   initialValues.password = "password";
 }
 
@@ -77,7 +77,7 @@ function Login(props) {
     onSubmit: (values, { setStatus, setSubmitting }) => {
       enableLoading();
       setTimeout(() => {
-        login(values.username, values.password)
+        login(values.email, values.password)
           .then((response) => {
             console.log(response, "response");
             if (response.status === 200) {
@@ -93,7 +93,7 @@ function Login(props) {
               console.log("masuk else");
               Swal.fire({
                 title: "Error!",
-                text: `${response.data.message}`,
+                text: `${response.data.error}`,
                 icon: "error",
                 heightAuto: false,
                 confirmButtonText: "Ok",

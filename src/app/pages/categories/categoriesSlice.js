@@ -20,7 +20,7 @@ const initialState = {
 };
 
 export const fetchAll = createAsyncThunk(
-  "merchants/fetchAll",
+  "categories/fetchAll",
   async (payload) => {
     const response = await getAll(payload);
     return response;
@@ -28,7 +28,7 @@ export const fetchAll = createAsyncThunk(
 );
 
 export const fetchId = createAsyncThunk(
-  "merchants/fetchId",
+  "categories/fetchId",
   async (payload) => {
     const response = await getId(payload);
     return response;
@@ -36,7 +36,7 @@ export const fetchId = createAsyncThunk(
 );
 
 export const addItem = createAsyncThunk(
-  "merchants/addItem",
+  "categories/addItem",
   async (payload) => {
     const response = await createItem(payload);
     return response;
@@ -51,15 +51,15 @@ export const editItem = createAsyncThunk(
   }
 );
 export const removeById = createAsyncThunk(
-  "merchants/removeById",
+  "categories/removeById",
   async (payload) => {
     const response = await deleteById(payload);
     return response;
   }
 );
 
-export const merchantsSlice = createSlice({
-  name: "merchants",
+export const categoriesSlice = createSlice({
+  name: "categories",
   initialState,
   reducers: {
     resetData: () => initialState,
@@ -107,13 +107,13 @@ export const merchantsSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = merchantsSlice.actions;
+export const { resetData, setSelected } = categoriesSlice.actions;
 
-export const selectData = (state) => state.merchants.data;
-export const selectDataMerchants = (state) => state.merchants.dataMerchatns;
-export const selectDataId = (state) => state.merchants.dataId;
-export const selectLoading = (state) => state.merchants.loading;
-export const selectError = (state) => state.merchants.error;
-export const selectResult = (state) => state.merchants.result;
+export const selectData = (state) => state.categories.data;
+export const selectDatacategories = (state) => state.categories.dataMerchatns;
+export const selectDataId = (state) => state.categories.dataId;
+export const selectLoading = (state) => state.categories.loading;
+export const selectError = (state) => state.categories.error;
+export const selectResult = (state) => state.categories.result;
 
-export default merchantsSlice.reducer;
+export default categoriesSlice.reducer;

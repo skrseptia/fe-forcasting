@@ -6,28 +6,49 @@ import {
   CardHeader,
 } from "../../../_metronic/_partials/controls";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, selectLoading } from "./merchantsSlice";
-import { useHistory } from "react-router";
+import {
+  editItem,
+  selectDataId,
+  selectLoading,
+  fetchId,
+} from "./transactionSlice";
+import { useHistory, useParams } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
-import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 
-export const MerchantsCreate = () => {
+export const MerchantsEdit = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { id } = useParams();
   const loading = useSelector(selectLoading);
+  const dataId = useSelector(selectDataId);
+
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [type, setType] = useState("");
   const [address, setAddress] = useState("");
-  const [merchants, setMerchants] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
+  useEffect(() => {
+    // Fetch data on first load
+    dispatch(fetchId(id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (dataId !== null) {
+      setFullname(dataId.name);
+      setEmail(dataId.email);
+      setPhone(dataId.phone);
+      setAddress(dataId.address);
+      setLatitude(dataId.latitude);
+      setLongitude(dataId.longitude);
+    }
+  }, [dataId]);
+
   const handleSave = async () => {
-    const params = {
+    const id = dataId.id;
+    const payload = {
       name: fullname,
       email: email,
       phone: phone,
@@ -37,9 +58,8 @@ export const MerchantsCreate = () => {
       longitude: parseFloat(longitude),
     };
 
-    console.log(params, "params");
     try {
-      const response = await dispatch(addItem(params));
+      const response = await dispatch(editItem({ id, payload }));
       console.log(response, "response");
       if (response.payload.status === 200) {
         const action = await showSuccessDialog(response.payload.message);
@@ -57,7 +77,7 @@ export const MerchantsCreate = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Create  Merchant"></CardHeader>
+      <CardHeader title="Edit Merchant"></CardHeader>
       <CardBody>
         <Form>
           <Form.Group as={Row} className="mb-3">

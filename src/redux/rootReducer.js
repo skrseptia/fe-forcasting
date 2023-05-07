@@ -3,9 +3,10 @@ import { combineReducers } from "redux";
 import usersReducer from "../app/pages/users/usersSlice";
 import productsReducer from "../app/pages/products/productsSlice";
 import ordersReducer from "../app/pages/orders/transactionSlice";
-import merchantsReducer from "../app/pages/merchants/merchantsSlice";
 import storesReducer from "../app/pages/stores/storesSlice";
 import dashboardSlice from "../app/pages/dashboard/dashboardSlice";
+import transactionReducer from "../app/pages/transaction/transactionSlice";
+import categoriesReducer from "../app/pages/categories/categoriesSlice";
 import uomReducer from "../app/pages/uom/uomSlice";
 
 import * as auth from "../app/modules/Auth/_redux/authRedux";
@@ -15,9 +16,10 @@ export const rootReducer = combineReducers({
   users: usersReducer,
   products: productsReducer,
   orders: ordersReducer,
-  merchants: merchantsReducer,
+  transaction: transactionReducer,
   stores: storesReducer,
   uom: uomReducer,
+  categories: categoriesReducer,
 });
 
 export function* rootSaga() {

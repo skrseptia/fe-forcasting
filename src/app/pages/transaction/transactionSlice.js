@@ -5,7 +5,7 @@ import {
   updateItem,
   deleteById,
   getId,
-} from "./merchantsAPI";
+} from "./transactionAPI";
 
 const initialState = {
   data: [],
@@ -20,7 +20,7 @@ const initialState = {
 };
 
 export const fetchAll = createAsyncThunk(
-  "merchants/fetchAll",
+  "transaction/fetchAll",
   async (payload) => {
     const response = await getAll(payload);
     return response;
@@ -28,7 +28,7 @@ export const fetchAll = createAsyncThunk(
 );
 
 export const fetchId = createAsyncThunk(
-  "merchants/fetchId",
+  "transaction/fetchId",
   async (payload) => {
     const response = await getId(payload);
     return response;
@@ -36,7 +36,7 @@ export const fetchId = createAsyncThunk(
 );
 
 export const addItem = createAsyncThunk(
-  "merchants/addItem",
+  "transaction/addItem",
   async (payload) => {
     const response = await createItem(payload);
     return response;
@@ -51,15 +51,15 @@ export const editItem = createAsyncThunk(
   }
 );
 export const removeById = createAsyncThunk(
-  "merchants/removeById",
+  "transaction/removeById",
   async (payload) => {
     const response = await deleteById(payload);
     return response;
   }
 );
 
-export const merchantsSlice = createSlice({
-  name: "merchants",
+export const transactionSlice = createSlice({
+  name: "transaction",
   initialState,
   reducers: {
     resetData: () => initialState,
@@ -107,13 +107,13 @@ export const merchantsSlice = createSlice({
   },
 });
 
-export const { resetData, setSelected } = merchantsSlice.actions;
+export const { resetData, setSelected } = transactionSlice.actions;
 
-export const selectData = (state) => state.merchants.data;
-export const selectDataMerchants = (state) => state.merchants.dataMerchatns;
-export const selectDataId = (state) => state.merchants.dataId;
-export const selectLoading = (state) => state.merchants.loading;
-export const selectError = (state) => state.merchants.error;
-export const selectResult = (state) => state.merchants.result;
+export const selectData = (state) => state.transaction.data;
+export const selectDatatransaction = (state) => state.transaction.dataMerchatns;
+export const selectDataId = (state) => state.transaction.dataId;
+export const selectLoading = (state) => state.transaction.loading;
+export const selectError = (state) => state.transaction.error;
+export const selectResult = (state) => state.transaction.result;
 
-export default merchantsSlice.reducer;
+export default transactionSlice.reducer;

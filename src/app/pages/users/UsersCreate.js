@@ -11,13 +11,11 @@ import { useHistory } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
 import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
-import { fetchAll, selectData } from "../merchants/merchantsSlice";
 
 export const UsersCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
-  const merchantsData = useSelector(selectData);
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,29 +26,10 @@ export const UsersCreate = () => {
 
   useEffect(() => {
     // Fetch data on first load
-    dispatch(fetchAll());
   }, [dispatch]);
 
-  const merchantsOptions = merchantsData.map((e) => {
-    return {
-      value: e.id,
-      label: e.name,
-    };
-  });
 
-  const getValueMerchants = (value, options) => {
-    const return_value = options.filter((val) => value === val.value);
-    return return_value;
-  };
-
-  const handleMerchantsChange = (e, value) => {
-    if (e === null) {
-      value.merchants = "";
-    } else {
-      value.merchants = e.value;
-    }
-    setMerchants(value.merchants);
-  };
+  
 
   const handleSave = async () => {
     const params = {
@@ -168,21 +147,7 @@ export const UsersCreate = () => {
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Merchant <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Select
-                isClearable={true}
-                options={merchantsOptions}
-                value={getValueMerchants(merchants, merchantsOptions)}
-                onChange={handleMerchantsChange}
-              />
-            </Col>
-          </Form.Group>
+       
 
           <Row className="mt-6">
             <Button
