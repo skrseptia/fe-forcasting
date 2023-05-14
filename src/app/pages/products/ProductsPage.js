@@ -47,6 +47,8 @@ export const ProductPage = () => {
     const params = {
       name: name,
       description: description,
+      page: 1,
+      page_size: 10,
     };
     try {
       const response = await dispatch(fetchAll(params));

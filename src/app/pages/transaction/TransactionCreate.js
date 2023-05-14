@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  Col,
+  Row,
+  Modal,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import {
   Card,
   CardBody,
@@ -8,36 +16,63 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, selectLoading } from "./transactionSlice";
 import { useHistory } from "react-router";
-import { showSuccessDialog, showErrorDialog } from "../../../utility";
+import {
+  showSuccessDialog,
+  showErrorDialog,
+  showDialog,
+} from "../../../utility";
 import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
+import { fetchAll, selectData } from "../products/productsSlice";
+import BootstrapTable from "react-bootstrap-table-next";
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import cellEditFactory from "react-bootstrap-table2-editor";
+import SVG from "react-inlinesvg";
+import { toAbsoluteUrl } from "../../../_metronic/_helpers";
+import { select } from "redux-saga/effects";
 
-export const MerchantsCreate = () => {
+export const TransactionCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
-  const [fullname, setFullname] = useState("");
+  const dataItems = useSelector(selectData);
+
+  const [customer, setCustomer] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [type, setType] = useState("");
-  const [address, setAddress] = useState("");
-  const [merchants, setMerchants] = useState("");
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [tableItems, setTableItems] = useState([]);
+  const [data, setData] = useState([]);
+  const { SearchBar } = Search;
+
+  useEffect(() => {
+    // Fetch data on first load
+    dispatch(
+      fetchAll({
+        page: 1,
+        page_size: 1000,
+      })
+    );
+  }, [dispatch]);
+  console.log(dataItems, "dataItems");
+
+  useEffect(() => {
+    if (dataItems !== null) {
+      const initData = dataItems.map((item, index) => {
+        return {
+          ...item,
+          no: index + 1,
+        };
+      });
+      setTableItems(initData);
+    }
+  }, [dataItems]);
 
   const handleSave = async () => {
     const params = {
-      name: fullname,
-      email: email,
-      phone: phone,
-      image_url: "",
-      address: address,
-      latitude: parseFloat(latitude),
-      longitude: parseFloat(longitude),
+      data: data,
     };
 
     console.log(params, "params");
+    return;
     try {
       const response = await dispatch(addItem(params));
       console.log(response, "response");
@@ -53,126 +88,284 @@ export const MerchantsCreate = () => {
     }
   };
 
+  // Modal customer
+  const [show, setShow] = useState(false);
+  const [dataTable, setDataTable] = useState([]);
+
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleQty = (e, row, rowIndex, formatExtraData) => {
+    if (parseFloat(row.outstandinG_PO) > row.available) {
+      row.outstandinG_PO = row.available;
+      return;
+    } else if (row.outstandinG_PO < 0) {
+      row.outstandinG_PO = 0;
+      return;
+    }
+  };
+
+  const inputQty = (e, row, rowIndex, formatExtraData) => {
+    return (
+      <div>
+        <Form.Control value={row.qty} maxLength={255} type="number" />
+      </div>
+    );
+  };
+
+  const handleDelete = (row, rowIndex) => {
+    const items = data.filter((item) => item.id !== row.id);
+    setData(items);
+  };
+
+  const actionFormatter = (cell, row, rowIndex) => {
+    return (
+      <div>
+        <span className="mx-2"></span>
+        <OverlayTrigger
+          overlay={<Tooltip id="products-delete-tooltip">Delete</Tooltip>}
+        >
+          <div
+            className="btn btn-icon btn-light btn-hover-danger btn-sm"
+            onClick={(e) => handleDelete(row, rowIndex)}
+          >
+            <span className="svg-icon svg-icon-md svg-icon-danger">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")} />
+            </span>
+          </div>
+        </OverlayTrigger>
+      </div>
+    );
+  };
+
+  const columnsItems = [
+    {
+      text: "NO ",
+      dataField: "no",
+      editable: false,
+    },
+    {
+      text: "code",
+      dataField: "code",
+      editable: false,
+    },
+    {
+      text: "name",
+      dataField: "name",
+      editable: false,
+    },
+
+    {
+      text: "Qty",
+      dataField: "qty",
+      // formatter: inputQty,
+      // editorRenderer: (editorProps, value) => {
+      //   return <InputNumber {...editorProps} value={value} />;
+      // },
+      style: { minWidth: "110px" },
+    },
+    // {
+    //   text: "Action",
+    //   dataField: "action",
+    //   editable: false,
+    //   formatter: actionFormatter,
+    // },
+  ];
+
+  const columnsData = [
+    {
+      text: "NO ",
+      dataField: "no",
+      editable: false,
+    },
+    {
+      text: "code",
+      dataField: "code",
+      editable: false,
+    },
+    {
+      text: "name",
+      dataField: "name",
+      editable: false,
+    },
+
+    {
+      text: "Qty",
+      dataField: "qty",
+      formatter: inputQty,
+      // editorRenderer: (editorProps, value) => {
+      //   return <InputNumber {...editorProps} value={value} />;
+      // },
+      style: { minWidth: "110px" },
+    },
+    // {
+    //   text: "Action",
+    //   dataField: "action",
+    //   editable: false,
+    //   formatter: actionFormatter,
+    // },
+  ];
+
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const onSelectRow = {
+    mode: "checkbox",
+    // clickToSelect: true,
+    onSelectAll: (isSelect, rows) => {
+      if (isSelect) {
+        setSelectedRows(rows);
+      } else {
+        setSelectedRows([]);
+      }
+    },
+    onSelect: (row, isSelect) => {
+      if (isSelect) {
+        if (data.filter((e) => e.id === row.id).length > 0) {
+          showDialog("Already selected");
+          return false;
+        }
+        setSelectedRows([...selectedRows, row]);
+      } else {
+        const index = selectedRows.indexOf(row);
+        if (index > -1) {
+          selectedRows.splice(index, 1);
+        }
+      }
+      return true;
+    },
+  };
+
+  const handleSubmit = () => {
+    setData((data) => [...data, ...selectedRows]);
+    setSelectedRows([]);
+    handleClose();
+  };
+
   return loading ? (
     <LayoutSplashScreen />
   ) : (
-    <Card>
-      <CardHeader title="Create  Merchant"></CardHeader>
-      <CardBody>
-        <Form>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Name <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setFullname(e.target.value);
-                }}
-                value={fullname}
-              />
-            </Col>
-          </Form.Group>
+    <>
+      <Card>
+        <CardHeader title="Create  Merchant"></CardHeader>
+        <CardBody>
+          <Form>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={2}>
+                <b>
+                  Customer <b className="color-red">*</b>
+                </b>
+              </Form.Label>
+              <Col sm={3}>
+                <Form.Control
+                  type="text"
+                  onChange={(e) => {
+                    setCustomer(e.target.value);
+                  }}
+                  value={customer}
+                />
+              </Col>
+            </Form.Group>
 
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                email <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                value={email}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Phone <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                }}
-                value={phone}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Address <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="text"
-                onChange={(e) => {
-                  setAddress(e.target.value);
-                }}
-                value={address}
-              />
-            </Col>
-          </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm={2}>
+                <b>
+                  Customer <b className="color-red">*</b>
+                </b>
+              </Form.Label>
+              <Col sm={3}>
+                <Button variant="danger" onClick={handleShow}>
+                  Add items
+                </Button>
+              </Col>
+            </Form.Group>
+          </Form>
 
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Latitude <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="number"
-                onChange={(e) => {
-                  setLatitude(e.target.value);
-                }}
-                value={latitude}
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group as={Row} className="mb-3">
-            <Form.Label column sm={2}>
-              <b>
-                Longitude <b className="color-red">*</b>
-              </b>
-            </Form.Label>
-            <Col sm={3}>
-              <Form.Control
-                type="number"
-                onChange={(e) => {
-                  setLongitude(e.target.value);
-                }}
-                value={longitude}
-              />
-            </Col>
-          </Form.Group>
+          <BootstrapTable
+            wrapperClasses="table-responsive"
+            classes="table table-head-custom table-vertical-center overflow-hidden mt-7"
+            bootstrap4
+            bordered={false}
+            keyField="id"
+            data={data}
+            columns={columnsData}
+            cellEdit={cellEditFactory({
+              mode: "click",
+              blurToSave: true,
+            })}
+          />
+
+          <Button onClick={handleSave}>Save</Button>
+        </CardBody>
+      </Card>
+
+      <Modal show={show} onHide={handleClose} size="lg">
+        <Modal.Body>
+          <div
+            className="card-body pt-0   "
+            style={{
+              height: "650px",
+              overflowY: "scroll",
+            }}
+          >
+            <ToolkitProvider
+              keyField="id"
+              data={tableItems}
+              columns={columnsItems}
+              search
+            >
+              {(props) => (
+                <div>
+                  <Row>
+                    <Col>
+                      <h3> Product</h3>
+                    </Col>
+                    <Col>
+                      <div className="float-right">
+                        <SearchBar
+                          {...props.searchProps}
+                          placeholder="Search .."
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+
+                  <hr />
+                  <BootstrapTable
+                    wrapperClasses="table-responsive"
+                    classes="table table-head-custom table-vertical-center overflow-hidden"
+                    bootstrap4
+                    bordered={false}
+                    selectRow={onSelectRow}
+                    // cellEdit={cellEditFactory({
+                    //   mode: "click",
+                    //   blurToSave: true,
+                    // })}
+                    {...props.baseProps}
+                  />
+                </div>
+              )}
+            </ToolkitProvider>
+          </div>
+
           <Row className="mt-6">
             <Button
               variant="light"
               className="mr-3"
-              onClick={() => history.goBack()}
+              onClick={() => handleClose()}
             >
-              <i className="fa fa-arrow-left"></i>Back
+              <i className="fa fa-arrow-left"></i>Cancel
             </Button>
 
-            <Button variant="danger" onClick={handleSave}>
-              Save
+            <Button variant="warning" onClick={handleSubmit}>
+              Submit
             </Button>
           </Row>
-        </Form>
-      </CardBody>
-    </Card>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };

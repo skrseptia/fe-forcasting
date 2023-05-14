@@ -18,6 +18,7 @@ import { ProductCreate } from "./pages/products/ProductsCreate";
 
 // transaction
 import { TransactionPage } from "./pages/transaction/TransactionPage";
+import { TransactionCreate } from "./pages/transaction/TransactionCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 
@@ -58,10 +59,10 @@ export default function BasePage() {
         <ContentRoute path="/products" component={ProductPage} />
 
         {/* orders */}
-        {/* <ContentRoute
+        <ContentRoute
           path="/transaction/create"
           component={TransactionCreate}
-        /> */}
+        />
         <ContentRoute path="/transaction" component={TransactionPage} />
 
         {/* transaction */}

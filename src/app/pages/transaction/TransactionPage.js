@@ -37,6 +37,8 @@ export const TransactionPage = () => {
   const handleSearch = async () => {
     const params = {
       transaction: transaction,
+      page: 1,
+      page_size: 10,
     };
     try {
       const response = await dispatch(fetchAll(params));
@@ -62,7 +64,7 @@ export const TransactionPage = () => {
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
-            onClick={() => history.push("/master-data/merchants/create")}
+            onClick={() => history.push("/transaction/create")}
           >
             Create
           </Button>
