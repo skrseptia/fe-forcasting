@@ -8,7 +8,7 @@ import {
 } from "./dashboardAPI";
 
 const initialState = {
-  data: [],
+  data: null,
   loading: false,
   error: null,
   pageNo: 1,
@@ -74,9 +74,6 @@ export const dashboardSlice = createSlice({
       .addCase(fetchDashboard.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.data.data;
-        state.pageNo = action.payload.data.pageNo;
-        state.pageSize = action.payload.data.pageSize;
-        state.totalRecord = action.payload.data.totalRecord;
       })
       .addCase(fetchDashboardId.pending, (state) => {
         state.loading = true;

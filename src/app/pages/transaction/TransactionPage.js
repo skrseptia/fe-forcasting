@@ -14,6 +14,9 @@ import {
   selectData,
   fetchAll,
   selectLoading,
+  selectPageNo,
+  selectPageSize,
+  selectTotalRecord,
 } from "./transactionSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
@@ -24,6 +27,9 @@ export const TransactionPage = () => {
   const history = useHistory();
   const data = useSelector(selectData);
   const loading = useSelector(selectLoading);
+  const pageNo = useSelector(selectPageNo);
+  const pageSize = useSelector(selectPageSize);
+  const totalRecord = useSelector(selectTotalRecord);
 
   // Filter
   const [transaction, setTransaction] = useState("");
@@ -48,6 +54,49 @@ export const TransactionPage = () => {
       }
     } catch (error) {
       showErrorDialog(error);
+    }
+  };
+
+  const handleTableChange = async (
+    type,
+    { page, sizePerPage, sortField, sortOrder, data }
+  ) => {
+    if (type === "pagination") {
+      const params = {
+        transaction: transaction,
+        page: page,
+        page_size: sizePerPage,
+      };
+      try {
+        const response = await dispatch(fetchAll(params));
+        if (response.payload.data.success === true) {
+        } else {
+          showErrorDialog(response.payload.error);
+        }
+      } catch (error) {
+        showErrorDialog(error);
+      }
+    } else {
+      let result;
+      if (sortOrder === "asc") {
+        result = data.sort((a, b) => {
+          if (a[sortField] > b[sortField]) {
+            return 1;
+          } else if (b[sortField] > a[sortField]) {
+            return -1;
+          }
+          return 0;
+        });
+      } else {
+        result = data.sort((a, b) => {
+          if (a[sortField] > b[sortField]) {
+            return -1;
+          } else if (b[sortField] > a[sortField]) {
+            return 1;
+          }
+          return 0;
+        });
+      }
     }
   };
 
@@ -117,7 +166,14 @@ export const TransactionPage = () => {
 
         {/* Table */}
         {data && data.length > 0 && (
-          <TransactionTable data={data} loading={loading} />
+          <TransactionTable
+            data={data}
+            page={pageNo}
+            sizePerPage={pageSize}
+            totalSize={totalRecord}
+            onTableChange={handleTableChange}
+            loading={loading}
+          />
         )}
       </CardBody>
     </Card>

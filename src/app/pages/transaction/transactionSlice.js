@@ -75,6 +75,9 @@ export const transactionSlice = createSlice({
       .addCase(fetchAll.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.data.data;
+        state.pageNo = action.payload.data.page;
+        state.pageSize = action.payload.data.page_size;
+        state.totalRecord = action.payload.data.total_rows;
       })
       .addCase(fetchId.pending, (state) => {
         state.loading = true;
@@ -115,5 +118,8 @@ export const selectDataId = (state) => state.transaction.dataId;
 export const selectLoading = (state) => state.transaction.loading;
 export const selectError = (state) => state.transaction.error;
 export const selectResult = (state) => state.transaction.result;
+export const selectPageNo = (state) => state.transaction.pageNo;
+export const selectPageSize = (state) => state.transaction.pageSize;
+export const selectTotalRecord = (state) => state.transaction.totalRecord;
 
 export default transactionSlice.reducer;

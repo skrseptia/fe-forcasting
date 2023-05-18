@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 
-const URL = `${process.env.REACT_APP_API_URL}/api/Dashboard/getDataGrafik`;
+const URL = `${process.env.REACT_APP_API_URL}/reports/dashboard`;
 
 export const getAll = (payload) => {
   return axios

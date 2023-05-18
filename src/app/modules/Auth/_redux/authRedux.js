@@ -54,7 +54,7 @@ export const reducer = persistReducer(
   }
 );
 
-export const selectUser = (state) => state.auth.user.data;
+export const selectUser = (state) => state.auth.user.data.data;
 
 export const actions = {
   login: (authToken) => ({ type: actionTypes.Login, payload: { authToken } }),

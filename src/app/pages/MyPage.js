@@ -1,9 +1,15 @@
-import React from "react";
-import {useSubheader} from "../../_metronic/layout";
+import React, { useRef } from "react";
+import axios from "axios";
+import { DropzoneArea } from "material-ui-dropzone";
 
 export const MyPage = () => {
-  const suhbeader = useSubheader();
-  suhbeader.setTitle("My Custom title");
-
-  return (<>My Page</>);
+  return (
+    <div>
+      <DropzoneArea
+        acceptedFiles={["image/*"]}
+        dropzoneText={"Drag and drop an image here or click"}
+        onChange={(files) => console.log("Files:", files)}
+      />
+    </div>
+  );
 };

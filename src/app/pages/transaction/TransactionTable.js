@@ -11,11 +11,15 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
-import { formatCurrency } from "../../../utility";
+import { formatCurrency, formatDate, sizePerPageList } from "../../../utility";
+import paginationFactory from "react-bootstrap-table2-paginator";
 
 export const TransactionTable = ({
   data,
-
+  page,
+  sizePerPage,
+  onTableChange,
+  totalSize,
   loading,
 }) => {
   const dispatch = useDispatch();
@@ -23,14 +27,15 @@ export const TransactionTable = ({
 
   useEffect(() => {
     // Add number
+    const pageBefore = sizePerPage * (page - 1);
     const initData = data.map((item, index) => {
       return {
         ...item,
-        no: index + 1,
+        no: index + 1 + pageBefore,
       };
     });
     setTableData(initData);
-  }, [data]);
+  }, [data, sizePerPage, page]);
 
   const [tableData, setTableData] = useState(data);
 
@@ -96,6 +101,14 @@ export const TransactionTable = ({
       formatter: formatCurrency,
     },
     {
+      text: "Created Date",
+      dataField: "trx_date",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+      formatter: formatDate,
+    },
+    {
       text: "Action",
       dataField: "action",
       formatter: actionFormatter,
@@ -148,14 +161,6 @@ export const TransactionTable = ({
     },
   ];
 
-  // const options = {
-  //   page: page,
-  //   sizePerPage: sizePerPage,
-  //   showTotal: true,
-  //   totalSize: totalSize,
-  //   sizePerPageList: sizePerPageList(totalSize),
-  // };
-
   const expandRow = {
     // onlyOneExpanding: true,
     showExpandColumn: true,
@@ -169,9 +174,18 @@ export const TransactionTable = ({
     ),
   };
 
+  const options = {
+    page: page,
+    sizePerPage: sizePerPage,
+    showTotal: true,
+    totalSize: totalSize,
+    sizePerPageList: sizePerPageList(totalSize),
+  };
+
   return (
     <>
       <BootstrapTable
+        remote
         wrapperClasses="table-responsive"
         classes="table table-head-custom table-vertical-center overflow-hidden"
         bootstrap4
@@ -179,11 +193,13 @@ export const TransactionTable = ({
         keyField="id"
         data={tableData}
         columns={columns}
+        pagination={paginationFactory(options)}
+        onTableChange={onTableChange}
         hover
         expandRow={expandRow}
       >
-        {/* <PleaseWaitMessage entities={loading ? null : tableData} />
-        <NoRecordsFoundMessage entities={loading ? null : tableData} /> */}
+        <PleaseWaitMessage entities={loading ? null : tableData} />
+        <NoRecordsFoundMessage entities={loading ? null : tableData} />
       </BootstrapTable>
     </>
   );
