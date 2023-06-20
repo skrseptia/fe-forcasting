@@ -120,9 +120,7 @@ function Login(props) {
     <div className="login-form login-signin" id="kt_login_signin_form">
       {/* begin::Head */}
       <div className="text-center mb-10 mb-lg-20">
-        <h3 className="font-size-h1">
-          <FormattedMessage id="AUTH.LOGIN.TITLE" />
-        </h3>
+        <h3 className="font-size-h1">Login</h3>
         <p className="text-muted font-weight-bold">
           Enter your Email and Password
         </p>

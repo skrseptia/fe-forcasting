@@ -109,7 +109,7 @@ export const TransactionPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Users Merchant">
+      <CardHeader title="Transaction">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
@@ -126,7 +126,7 @@ export const TransactionPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>transaction</b>
+                  <b>Transaction</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control

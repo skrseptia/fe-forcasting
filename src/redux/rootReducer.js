@@ -9,6 +9,7 @@ import transactionReducer from "../app/pages/transaction/transactionSlice";
 import categoriesReducer from "../app/pages/categories/categoriesSlice";
 import uomReducer from "../app/pages/uom/uomSlice";
 import dashboardReducer from "../app/pages/dashboard/dashboardSlice";
+import metodelogiReducer from "../app/pages/metodologi/metologiSlice";
 
 import * as auth from "../app/modules/Auth/_redux/authRedux";
 
@@ -22,6 +23,7 @@ export const rootReducer = combineReducers({
   uom: uomReducer,
   categories: categoriesReducer,
   dashboard: dashboardReducer,
+  metodelogi: metodelogiReducer,
 });
 
 export function* rootSaga() {

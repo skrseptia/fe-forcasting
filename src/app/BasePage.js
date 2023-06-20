@@ -19,6 +19,7 @@ import { ProductCreate } from "./pages/products/ProductsCreate";
 // transaction
 import { TransactionPage } from "./pages/transaction/TransactionPage";
 import { TransactionCreate } from "./pages/transaction/TransactionCreate";
+import { MetodelogiPage } from "./pages/metodologi/MetodeLogiPage";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 
@@ -89,6 +90,8 @@ export default function BasePage() {
           path="/master-data/categories"
           component={CategoriesPage}
         />
+
+        <ContentRoute path="/metodelogi" component={MetodelogiPage} />
 
         <Route path="/user-profile" component={UserProfilepage} />
         <Redirect to="error/error-v1" />

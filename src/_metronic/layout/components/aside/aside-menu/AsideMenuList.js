@@ -96,6 +96,15 @@ export function AsideMenuList({ layoutProps }) {
       icon: "/Design/Layers.svg",
       childs: [],
     },
+    {
+      menu_id: 1,
+      pid: 0,
+      menu_name: "Prediksi Exponential Smoothing",
+      title: "Prediksi Exponential Smoothing",
+      url: "/metodelogi",
+      icon: "/Design/Layers.svg",
+      childs: [],
+    },
   ];
 
   return (

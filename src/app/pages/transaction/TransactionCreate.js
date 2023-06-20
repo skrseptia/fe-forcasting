@@ -20,6 +20,7 @@ import {
   showSuccessDialog,
   showErrorDialog,
   showDialog,
+  formatCurrency,
 } from "../../../utility";
 import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
@@ -41,6 +42,7 @@ export const TransactionCreate = () => {
   const [email, setEmail] = useState("");
   const [tableItems, setTableItems] = useState([]);
   const [data, setData] = useState([]);
+  const [report, setReport] = useState(null);
   const { SearchBar } = Search;
 
   useEffect(() => {
@@ -68,17 +70,23 @@ export const TransactionCreate = () => {
 
   const handleSave = async () => {
     const params = {
-      data: data,
+      customer: customer,
+      transaction_lines: data.map((item) => {
+        return {
+          product_id: item.id,
+          qty: parseInt(item.qty),
+        };
+      }),
     };
 
     console.log(params, "params");
-    return;
     try {
       const response = await dispatch(addItem(params));
       console.log(response, "response");
       if (response.payload.status === 200) {
         const action = await showSuccessDialog(response.payload.message);
-        if (action.isConfirmed) history.goBack();
+        if (action.isConfirmed) setReport(response.payload.data.data);
+        handleShowReport();
       } else {
         showErrorDialog(response.payload.error);
       }
@@ -120,6 +128,16 @@ export const TransactionCreate = () => {
   const handleDelete = (row, rowIndex) => {
     const items = data.filter((item) => item.id !== row.id);
     setData(items);
+  };
+
+  // Modal report
+  const [showReport, setShowReport] = useState(false);
+
+  const handleCloseReport = () => {
+    setShowReport(false);
+  };
+  const handleShowReport = () => {
+    setShowReport(true);
   };
 
   const actionFormatter = (cell, row, rowIndex) => {
@@ -174,6 +192,35 @@ export const TransactionCreate = () => {
     //   editable: false,
     //   formatter: actionFormatter,
     // },
+  ];
+
+  const columnsReport = [
+    {
+      text: "code",
+      dataField: "code",
+      editable: false,
+    },
+    {
+      text: "name",
+      dataField: "name",
+      editable: false,
+    },
+
+    {
+      text: "Qty",
+      dataField: "qty",
+      // formatter: inputQty,
+      // editorRenderer: (editorProps, value) => {
+      //   return <InputNumber {...editorProps} value={value} />;
+      // },
+      style: { minWidth: "110px" },
+    },
+    {
+      text: "Sub Total",
+      dataField: "sub_total",
+      editable: false,
+      formatter: formatCurrency,
+    },
   ];
 
   const columnsData = [
@@ -242,7 +289,7 @@ export const TransactionCreate = () => {
   const handleSubmit = () => {
     setData((data) => [...data, ...selectedRows]);
     setSelectedRows([]);
-    handleClose();
+    setShowReport();
   };
 
   return loading ? (
@@ -273,12 +320,12 @@ export const TransactionCreate = () => {
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={2}>
                 <b>
-                  Customer <b className="color-red">*</b>
+                  Items <b className="color-red">*</b>
                 </b>
               </Form.Label>
               <Col sm={3}>
                 <Button variant="danger" onClick={handleShow}>
-                  Add items
+                  Add
                 </Button>
               </Col>
             </Form.Group>
@@ -366,6 +413,61 @@ export const TransactionCreate = () => {
           </Row>
         </Modal.Body>
       </Modal>
+      {report && (
+        <Modal show={showReport} onHide={handleCloseReport} size="lg">
+          <Modal.Body>
+            <Form>
+              <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={2}>
+                  <b>No Transaction</b>
+                </Form.Label>
+                <Col sm={3}>
+                  <Form.Control type="text" value={report.trx_id} disabled />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={2}>
+                  <b>Customer</b>
+                </Form.Label>
+                <Col sm={3}>
+                  <Form.Control type="text" value={report.customer} disabled />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={2}>
+                  <b>Total</b>
+                </Form.Label>
+                <Col sm={3}>
+                  <Form.Control
+                    type="text"
+                    value={formatCurrency(report.total)}
+                    disabled
+                  />
+                </Col>
+              </Form.Group>
+            </Form>
+            <BootstrapTable
+              wrapperClasses="table-responsive"
+              classes="table table-head-custom table-vertical-center overflow-hidden"
+              bootstrap4
+              bordered={false}
+              keyField="id"
+              data={report.transaction_lines}
+              columns={columnsReport}
+            />
+
+            <Row className="mt-6">
+              <Button
+                variant="light"
+                className="mr-3"
+                onClick={() => handleCloseReport()}
+              >
+                <i className="fa fa-arrow-left"></i>Close
+              </Button>
+            </Row>
+          </Modal.Body>
+        </Modal>
+      )}
     </>
   );
 };
