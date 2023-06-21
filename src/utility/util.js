@@ -75,3 +75,8 @@ export const formatShortDate = (stringDate) => {
 //     return moment(stringDate).format("DD MMMM YYYY");
 //   }
 // };
+
+export const getValueOptions = (value, options) => {
+  const return_value = options.filter((val) => value === val.value);
+  return return_value;
+};

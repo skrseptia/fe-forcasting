@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { LayoutSplashScreen } from "../../../_metronic/layout";
-import { showErrorDialog } from "../../../utility";
+import { getValueOptions, showDialog, showErrorDialog } from "../../../utility";
 import {
   fetchmetodelogi,
   resetData,
@@ -36,12 +36,15 @@ import {
   BarElement,
   Title,
 } from "chart.js";
+import { fetchAll, selectData } from "../products/productsSlice";
+import Select from "react-select";
 
 export const MetodelogiPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const data = useSelector(selectmetodelogi);
   const loading = useSelector(selectLoading);
+  const dataProduct = useSelector(selectData);
 
   ChartJS.register(
     ArcElement,
@@ -65,9 +68,25 @@ export const MetodelogiPage = () => {
   useEffect(() => {
     // Reset on first load
     dispatch(resetData());
+
+    dispatch(
+      fetchAll({
+        page: 1,
+        page_size: 100,
+      })
+    );
   }, [dispatch]);
 
   const handleSearch = async () => {
+    if (startDate === "") {
+      return showDialog("Please Input Date");
+    }
+    if (endDate === "") {
+      return showDialog("Please Input Date");
+    }
+    if (product === "") {
+      return showDialog("Please Input product");
+    }
     const params = {
       start_date: startDate,
       end_date: endDate,
@@ -147,11 +166,22 @@ export const MetodelogiPage = () => {
     ],
   };
 
+  const productOptions = dataProduct.map((e) => {
+    return {
+      value: e.name,
+      label: e.name,
+    };
+  });
+
+  const handleChangeProduct = (value) => {
+    setProduct(value.value);
+  };
+
   return loading ? (
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Transaction"></CardHeader>
+      <CardHeader title="Prediksi Exponential Smoothing"></CardHeader>
       <CardBody>
         {/* Filter */}
         <Form className="mb-5">
@@ -191,10 +221,11 @@ export const MetodelogiPage = () => {
                   <b>Product Name</b>
                 </Form.Label>
                 <Col sm={6}>
-                  <Form.Control
-                    type="text"
-                    onChange={(e) => setProduct(e.target.value)}
-                    value={product}
+                  <Select
+                    options={productOptions}
+                    value={getValueOptions(product, productOptions)}
+                    onChange={handleChangeProduct}
+                    className="mt-4 ml-3"
                   />
                 </Col>
               </Form.Group>
