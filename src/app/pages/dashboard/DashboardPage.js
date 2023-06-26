@@ -20,6 +20,7 @@ import {
   getDatasetAtEvent,
   getElementAtEvent,
   getElementsAtEvent,
+  Line,
 } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -30,6 +31,8 @@ import {
   LinearScale,
   BarElement,
   Title,
+  PointElement,
+  LineElement,
 } from "chart.js";
 import { InteractionItem } from "chart.js";
 import SVG from "react-inlinesvg";
@@ -49,6 +52,8 @@ import {
   selectPageSize,
   selectTotalRecord,
   fetchDashboard,
+  fetchChart,
+  selectChart,
 } from "./dashboardSlice";
 export const DashboardPage = ({ className, symbolShape, baseColor }) => {
   const dispatch = useDispatch();
@@ -56,13 +61,13 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
   const user = useSelector(selectUser);
   const data = useSelector(selectDashboard);
   const loading = useSelector(selectLoading);
-  // const data = useSelector(selectDashboard);
+  const dataChart = useSelector(selectChart);
   // const loading = useSelector(selectLoading);
   // const pageNo = useSelector(selectPageNo);
   // const pageSize = useSelector(selectPageSize);
   // const totalRecord = useSelector(selectTotalRecord);
 
-  console.log(data, "data");
+  console.log(dataChart, "dataChart");
 
   ChartJS.register(
     ArcElement,
@@ -71,42 +76,93 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
     CategoryScale,
     LinearScale,
     BarElement,
-    Title
+    Title,
+    PointElement,
+    LineElement
   );
 
   const [labels, setLabels] = useState([]);
-  const [dataChart, setDataChart] = useState([]);
+  const [dataChartDaily, setDataChartDaily] = useState([]);
   const [dataTopTrx, setDataTopTrx] = useState([]);
   const [stock, setStock] = useState([]);
+
+  const [labelsMonthly, setLabelsMonthly] = useState([]);
+  const [dataMonthly, setDataMonthly] = useState([]);
 
   useEffect(() => {
     // Reset on first load
     // dispatch(resetData());
 
     dispatch(fetchDashboard());
+    dispatch(fetchChart());
   }, [dispatch]);
 
   useEffect(() => {
+    if (dataChart !== null) {
+      const listLabel = dataChart.daily_trx_amount_chart.labels;
+
+      const listDataDaily =
+        dataChart.daily_trx_amount_chart.datasets !== null
+          ? dataChart.daily_trx_amount_chart.datasets.map((item) => {
+              const red = Math.floor(Math.random() * 256);
+              const green = Math.floor(Math.random() * 256);
+              const blue = Math.floor(Math.random() * 256);
+              const alpha = Math.random();
+
+              return {
+                ...item,
+                backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                barThickness: 30,
+                categoryPercentage: 1,
+                borderRadius: 10,
+              };
+            })
+          : [];
+
+      setLabels(listLabel);
+      setDataChartDaily(listDataDaily);
+
+      const listLabelMonthly = dataChart.monthly_trx_amount_chart.labels;
+      const listDataMonthly = dataChart.monthly_trx_amount_chart.datasets.map(
+        (item) => {
+          const red = Math.floor(Math.random() * 256);
+          const green = Math.floor(Math.random() * 256);
+          const blue = Math.floor(Math.random() * 256);
+          const alpha = Math.random();
+          return {
+            ...item,
+            backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+            borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+            barThickness: 30,
+            categoryPercentage: 1,
+            borderRadius: 10,
+          };
+        }
+      );
+
+      setLabelsMonthly(listLabelMonthly);
+      setDataMonthly(listDataMonthly);
+    }
+  }, [dataChart]);
+
+  useEffect(() => {
     if (data !== null) {
-      const listLabel = data.monthly_trx_chart.map((item) => item.month);
-      const listData = data.monthly_trx_chart.map((item) => item.amount);
       const listTopTrx = data.top_10_trx.map((item, index) => {
         return {
           ...item,
           no: index + 1,
         };
       });
-      const listStock = data.stock_alert.map((item, index) => {
-        return {
-          ...item,
-          no: index + 1,
-        };
-      });
+      const listStock =
+        data.stock_alert !== null
+          ? data.stock_alert.map((item, index) => {
+              return {
+                ...item,
+                no: index + 1,
+              };
+            })
+          : [];
 
-      console.log(listStock, "listStock");
-      console.log(listTopTrx, "listTopTrx");
-      setLabels(listLabel);
-      setDataChart(listData);
       setDataTopTrx(listTopTrx);
       setStock(listStock);
     }
@@ -187,7 +243,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
       title: {
         display: true,
         align: "start",
-        text: "Transaction",
+        text: "Today",
         font: {
           size: 30,
         },
@@ -203,24 +259,48 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
     },
   };
 
+  const optionsMonthly = {
+    responsive: true,
+
+    plugins: {
+      legend: {
+        // display: false,
+        position: "bottom",
+      },
+      title: {
+        display: true,
+        align: "start",
+        text: "Monthly",
+        font: {
+          size: 30,
+        },
+        style: "italic",
+        padding: {
+          top: 10,
+          bottom: 30,
+        },
+      },
+    },
+    layout: {
+      padding: 20,
+    },
+  };
+
+  console.log(labelsMonthly, "labelsMonthly");
   const chart = {
     labels,
-    datasets: [
-      {
-        label: "Monthly Transaksi",
-        data: dataChart,
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-        barThickness: 40,
-        categoryPercentage: 1,
-        borderRadius: 10,
-      },
-    ],
+    datasets: dataChartDaily,
+  };
+
+  const chartMonthly = {
+    labels: labelsMonthly,
+    datasets: dataMonthly,
   };
 
   return loading ? (
     <LayoutSplashScreen />
   ) : (
-    data && (
+    data && dataChart && (
       <>
         <div className="container  pl-0 pr-0" style={{ marginBottom: "35px" }}>
           {/* header */}
@@ -334,9 +414,18 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
         </div>
         <Card>
           <CardBody>
-            <div style={{ heigth: "800px" }}>
-              <Bar options={options} data={chart} />
-            </div>
+            <Row>
+              <Col md={6}>
+                <div style={{ heigth: "800px" }}>
+                  <Bar options={options} data={chart} />
+                </div>
+              </Col>
+              <Col md={6}>
+                <div style={{ heigth: "800px" }}>
+                  <Line options={optionsMonthly} data={chartMonthly} />{" "}
+                </div>
+              </Col>
+            </Row>
           </CardBody>
         </Card>
 

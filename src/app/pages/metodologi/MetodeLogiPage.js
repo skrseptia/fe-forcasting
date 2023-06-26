@@ -35,9 +35,14 @@ import {
   LinearScale,
   BarElement,
   Title,
+  LineController,
+  BarController,
+  LineElement,
+  PointElement,
 } from "chart.js";
 import { fetchAll, selectData } from "../products/productsSlice";
 import Select from "react-select";
+import MultiSelectAll from "../../../utility/MultiSelectAll";
 
 export const MetodelogiPage = () => {
   const dispatch = useDispatch();
@@ -47,23 +52,27 @@ export const MetodelogiPage = () => {
   const dataProduct = useSelector(selectData);
 
   ChartJS.register(
-    ArcElement,
-    Tooltip,
-    Legend,
-    CategoryScale,
     LinearScale,
+    CategoryScale,
     BarElement,
-    Title
+    PointElement,
+    LineElement,
+    Legend,
+    Tooltip,
+    LineController,
+    BarController
   );
 
   // Filter
   const [startDate, setStartDate] = useState("2023-02-01");
   const [endDate, setEndDate] = useState("2023-05-31");
-  const [product, setProduct] = useState("Pupuk Kompos");
+  const [product, setProduct] = useState([]);
 
-  const [labels, setLabels] = useState(null);
   const [listQty, setListQty] = useState(null);
   const [listPredictions, setListPredictions] = useState(null);
+
+  const [labels, setLabels] = useState([]);
+  const [dataChartDaily, setDataChartDaily] = useState([]);
 
   useEffect(() => {
     // Reset on first load
@@ -90,30 +99,82 @@ export const MetodelogiPage = () => {
     const params = {
       start_date: startDate,
       end_date: endDate,
-      material: product,
+      product_id: product.toString(),
     };
+
+    console.log(params, "params");
     try {
       const response = await dispatch(fetchmetodelogi(params));
       console.log(response, "response");
       if (response.payload.data.success === true) {
-        if (response.payload.data.data.length > 0) {
-          const data = response.payload.data.data;
-          const listLabel = data.map((item) => item.Month);
-          const listQty = data.map((item) => item.TotalQty);
-          const listPredictions = data.map((item) => item.Predictions);
+        const dataChart = response.payload.data.data;
 
-          setLabels(listLabel);
-          setListQty(listQty);
-          setListPredictions(listPredictions);
+        const listLabel = dataChart.labels;
 
-          console.log(listLabel, "listLabel");
-          console.log(listQty, "listQty");
-        }
+        const listDataDaily =
+          dataChart.datasets !== null
+            ? dataChart.datasets.map((item) => {
+                const red = Math.floor(Math.random() * 256);
+                const green = Math.floor(Math.random() * 256);
+                const blue = Math.floor(Math.random() * 256);
+                const alpha = Math.random();
+                if (item.label.includes("Forecast")) {
+                  return {
+                    type: "line",
+                    borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                    borderWidth: 2,
+                    fill: false,
+                    ...item,
+                  };
+                } else {
+                  return {
+                    backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                    ...item,
+                  };
+                }
+              })
+            : [];
+
+        setLabels(listLabel);
+        setDataChartDaily(listDataDaily);
       } else {
         showErrorDialog(response.payload.error);
       }
     } catch (error) {
       showErrorDialog(error);
+    }
+  };
+
+  const productOptions = dataProduct.map((e) => {
+    return {
+      value: e.id,
+      label: e.name,
+    };
+  });
+
+  const handleChangeProduct = (value) => {
+    setProduct(value.value);
+  };
+
+  function getValueProduct(products) {
+    let output = [];
+    products.map((val) => {
+      const result = productOptions.filter((product) => val == product.value);
+      output.push(result[0]);
+    });
+    return output;
+  }
+  const handleProductChange = (selectedOptions) => {
+    if (selectedOptions) {
+      setProduct(
+        selectedOptions.map(function(selectedOptions) {
+          if (selectedOptions) {
+            return selectedOptions["value"];
+          }
+        })
+      );
+    } else {
+      setProduct([]);
     }
   };
 
@@ -127,8 +188,8 @@ export const MetodelogiPage = () => {
       },
       title: {
         display: true,
-        align: "center",
-        text: "Prediksi Exponential Smoothing",
+        align: "start",
+        text: "Today",
         font: {
           size: 30,
         },
@@ -146,35 +207,7 @@ export const MetodelogiPage = () => {
 
   const chart = {
     labels,
-    datasets: [
-      {
-        label: "Data Product",
-        data: listQty,
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-        barThickness: 40,
-        categoryPercentage: 1,
-        borderRadius: 10,
-      },
-      {
-        label: "Predictions",
-        data: listPredictions,
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        barThickness: 40,
-        categoryPercentage: 1,
-        borderRadius: 10,
-      },
-    ],
-  };
-
-  const productOptions = dataProduct.map((e) => {
-    return {
-      value: e.name,
-      label: e.name,
-    };
-  });
-
-  const handleChangeProduct = (value) => {
-    setProduct(value.value);
+    datasets: dataChartDaily,
   };
 
   return loading ? (
@@ -221,11 +254,17 @@ export const MetodelogiPage = () => {
                   <b>Product Name</b>
                 </Form.Label>
                 <Col sm={6}>
-                  <Select
+                  {/* <Select
                     options={productOptions}
                     value={getValueOptions(product, productOptions)}
                     onChange={handleChangeProduct}
                     className="mt-4 ml-3"
+                  /> */}
+                  <MultiSelectAll
+                    options={productOptions}
+                    value={getValueProduct(product)}
+                    onChange={handleProductChange}
+                    placeholder="Select"
                   />
                 </Col>
               </Form.Group>

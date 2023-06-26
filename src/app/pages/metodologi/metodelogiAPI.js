@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 
-const URL = `${process.env.REACT_APP_API_URL}/reports/metodologi`;
+const URL = `${process.env.REACT_APP_API_URL}/reports/exponential-smoothing`;
 
 export const getAll = (payload) => {
   return axios

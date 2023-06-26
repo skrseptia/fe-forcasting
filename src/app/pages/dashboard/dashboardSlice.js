@@ -5,10 +5,12 @@ import {
   updateItem,
   deleteById,
   getId,
+  getChart,
 } from "./dashboardAPI";
 
 const initialState = {
   data: null,
+  dataChart: null,
   loading: false,
   error: null,
   pageNo: 1,
@@ -23,6 +25,14 @@ export const fetchDashboard = createAsyncThunk(
   "dashboard/fetchDashboard",
   async (payload) => {
     const response = await getAll(payload);
+    return response;
+  }
+);
+
+export const fetchChart = createAsyncThunk(
+  "dashboard/fetchChart",
+  async (payload) => {
+    const response = await getChart(payload);
     return response;
   }
 );
@@ -75,6 +85,13 @@ export const dashboardSlice = createSlice({
         state.loading = false;
         state.data = action.payload.data.data;
       })
+      .addCase(fetchChart.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchChart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.dataChart = action.payload.data.data;
+      })
       .addCase(fetchDashboardId.pending, (state) => {
         state.loading = true;
       })
@@ -109,6 +126,7 @@ export const dashboardSlice = createSlice({
 export const { resetData, setSelected } = dashboardSlice.actions;
 
 export const selectDashboard = (state) => state.dashboard.data;
+export const selectChart = (state) => state.dashboard.dataChart;
 export const selectDashboardId = (state) => state.dashboard.dataId;
 export const selectLoading = (state) => state.dashboard.loading;
 export const selectError = (state) => state.dashboard.error;
