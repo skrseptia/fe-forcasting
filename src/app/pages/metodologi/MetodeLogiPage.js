@@ -64,7 +64,7 @@ export const MetodelogiPage = () => {
   );
 
   // Filter
-  const [startDate, setStartDate] = useState("2023-02-01");
+  const [startDate, setStartDate] = useState("2023-01-01");
   const [endDate, setEndDate] = useState("2023-05-31");
   const [product, setProduct] = useState([]);
 
@@ -73,6 +73,7 @@ export const MetodelogiPage = () => {
 
   const [labels, setLabels] = useState([]);
   const [dataChartDaily, setDataChartDaily] = useState([]);
+  const [forecastData, setForecastData] = useState({});
 
   useEffect(() => {
     // Reset on first load
@@ -93,7 +94,7 @@ export const MetodelogiPage = () => {
     if (endDate === "") {
       return showDialog("Please Input Date");
     }
-    if (product === "") {
+    if (product.length < 1) {
       return showDialog("Please Input product");
     }
     const params = {
@@ -135,6 +136,17 @@ export const MetodelogiPage = () => {
               })
             : [];
 
+        // Update forecastData state with the latest forecast values
+        for (const item of dataChart.datasets) {
+          if (item.label.includes("Forecast")) {
+            const labelName = item.label.replace("Forecast - ", "");
+            const lastData = item.data[item.data.length - 1];
+            setForecastData((prevState) => ({
+              ...prevState,
+              [labelName]: lastData,
+            }));
+          }
+        }
         setLabels(listLabel);
         setDataChartDaily(listDataDaily);
       } else {
@@ -165,11 +177,11 @@ export const MetodelogiPage = () => {
     return output;
   }
   const handleProductChange = (selectedOptions) => {
-    if (selectedOptions) {
+    if (selectedOptions && Array.isArray(selectedOptions)) {
       setProduct(
-        selectedOptions.map(function(selectedOptions) {
-          if (selectedOptions) {
-            return selectedOptions["value"];
+        selectedOptions.map(function(selectedOption) {
+          if (selectedOption) {
+            return selectedOption.value;
           }
         })
       );
@@ -278,6 +290,14 @@ export const MetodelogiPage = () => {
             </Col>
           </Form.Group>
         </Form>
+
+        <div className="mb-3">
+          {Object.keys(forecastData).map((label) => (
+            <h3 key={label} className="">
+              Hasil Prediksi {label} = {forecastData[label]}
+            </h3>
+          ))}
+        </div>
 
         <div style={{ heigth: "800px" }}>
           <Bar options={options} data={chart} />

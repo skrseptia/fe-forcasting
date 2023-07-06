@@ -20,6 +20,9 @@ import { ProductCreate } from "./pages/products/ProductsCreate";
 import { TransactionPage } from "./pages/transaction/TransactionPage";
 import { TransactionCreate } from "./pages/transaction/TransactionCreate";
 import { MetodelogiPage } from "./pages/metodologi/MetodeLogiPage";
+import { UomPage } from "./pages/uom/UomPage";
+import { UOmEdit } from "./pages/uom/UomEdit";
+import { UomCreate } from "./pages/uom/UomCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 
@@ -54,6 +57,17 @@ export default function BasePage() {
           component={UsersCreate}
         />
         <ContentRoute path="/master-data/users" component={UsersPage} />
+
+        {/* UOm */}
+        <ContentRoute
+          path="/master-data/uom/edit/:id"
+          component={UOmEdit}
+        />
+        <ContentRoute
+          path="/master-data/uom/create"
+          component={UomCreate}
+        />
+        <ContentRoute path="/master-data/uom" component={UomPage} />
 
         {/* users */}
         <ContentRoute path="/products/create" component={ProductCreate} />

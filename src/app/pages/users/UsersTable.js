@@ -33,7 +33,6 @@ export const UsersTable = ({
 
   const [tableData, setTableData] = useState(data);
 
-
   const actionFormatter = (e, row) => {
     return (
       <div>
@@ -90,13 +89,6 @@ export const UsersTable = ({
     {
       text: "address",
       dataField: "address",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      text: "user type",
-      dataField: "user_type",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,

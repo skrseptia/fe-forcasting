@@ -14,12 +14,12 @@ import {
   selectData,
   fetchAll,
   selectLoading,
-} from "./categoriesSlice";
+} from "./uomSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
-import { CategoriesTable } from "./CategoriesTable";
+import { UomTable } from "./UomTable";
 
-export const CategoriesPage = () => {
+export const UomPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const data = useSelector(selectData);
@@ -38,6 +38,8 @@ export const CategoriesPage = () => {
     const params = {
       fullname: fullname,
       email: email,
+      page: 1,
+      page_size: 100,
     };
     try {
       const response = await dispatch(fetchAll(params));
@@ -60,11 +62,11 @@ export const CategoriesPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Categories">
+      <CardHeader title="UOM">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
-            onClick={() => history.push("/master-data/categories/create")}
+            onClick={() => history.push("/master-data/uom/create")}
           >
             Create
           </Button>
@@ -104,9 +106,7 @@ export const CategoriesPage = () => {
         </Form>
 
         {/* Table */}
-        {data && data.length > 0 && (
-          <CategoriesTable data={data} loading={loading} />
-        )}
+        {data && data.length > 0 && <UomTable data={data} loading={loading} />}
       </CardBody>
     </Card>
   );

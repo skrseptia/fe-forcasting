@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
 
-export const CategoriesTable = ({
+export const UomTable = ({
   data,
 
   loading,
@@ -42,7 +42,7 @@ export const CategoriesTable = ({
           <div
             className="btn btn-icon btn-light btn-hover-primary btn-sm mr-3"
             onClick={() => {
-              history.push(`/master-data/categories/edit/${row.id}`);
+              history.push(`/master-data/uom/edit/${row.id}`);
             }}
           >
             <span className="svg-icon svg-icon-md svg-icon-primary">

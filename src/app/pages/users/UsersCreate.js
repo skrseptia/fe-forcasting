@@ -28,9 +28,6 @@ export const UsersCreate = () => {
     // Fetch data on first load
   }, [dispatch]);
 
-
-  
-
   const handleSave = async () => {
     const params = {
       full_name: fullname,
@@ -39,8 +36,7 @@ export const UsersCreate = () => {
       phone: phone,
       image_url: "",
       address: address,
-      user_type: "Merchant",
-      merchant_id: merchants.toString(),
+      role: "User",
     };
 
     console.log(params, "params");
@@ -147,7 +143,6 @@ export const UsersCreate = () => {
               />
             </Col>
           </Form.Group>
-       
 
           <Row className="mt-6">
             <Button

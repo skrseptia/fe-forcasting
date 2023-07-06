@@ -11,12 +11,12 @@ import {
   selectDataId,
   selectLoading,
   fetchId,
-} from "./categoriesSlice";
+} from "./uomSlice";
 import { useHistory, useParams } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 
-export const CategoriesEdit = () => {
+export const UOmEdit = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
@@ -62,7 +62,7 @@ export const CategoriesEdit = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Edit Categories"></CardHeader>
+      <CardHeader title="Edit UOM"></CardHeader>
       <CardBody>
         <Form>
           <Form.Group as={Row} className="mb-3">

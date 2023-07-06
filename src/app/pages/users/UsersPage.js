@@ -33,6 +33,8 @@ export const UsersPage = () => {
     const params = {
       fullname: fullname,
       email: email,
+      page: 1,
+      page_size: 100,
     };
     try {
       const response = await dispatch(fetchAll(params));
@@ -55,11 +57,11 @@ export const UsersPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Users Merchant">
+      <CardHeader title="Users">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
-            onClick={() => history.push("/users/create")}
+            onClick={() => history.push("/master-data/users/create")}
           >
             Create
           </Button>

@@ -48,7 +48,7 @@ export const ProductPage = () => {
       name: name,
       description: description,
       page: 1,
-      page_size: 10,
+      page_size: 100,
     };
     try {
       const response = await dispatch(fetchAll(params));

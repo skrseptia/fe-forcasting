@@ -37,7 +37,8 @@ export const CategoriesPage = () => {
   const handleSearch = async () => {
     const params = {
       fullname: fullname,
-      email: email,
+      page: 1,
+      page_size: 100,
     };
     try {
       const response = await dispatch(fetchAll(params));

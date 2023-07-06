@@ -6,12 +6,12 @@ import {
   CardHeader,
 } from "../../../_metronic/_partials/controls";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, selectLoading } from "./categoriesSlice";
+import { addItem, selectLoading } from "./uomSlice";
 import { useHistory } from "react-router";
 import { showSuccessDialog, showErrorDialog } from "../../../utility";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 
-export const CategoriesCreate = () => {
+export const UomCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
@@ -42,7 +42,7 @@ export const CategoriesCreate = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Create  Categories"></CardHeader>
+      <CardHeader title="Create  UOM"></CardHeader>
       <CardBody>
         <Form>
           <Form.Group as={Row} className="mb-3">
