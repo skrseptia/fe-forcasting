@@ -74,6 +74,7 @@ export const MetodelogiPage = () => {
   const [labels, setLabels] = useState([]);
   const [dataChartDaily, setDataChartDaily] = useState([]);
   const [forecastData, setForecastData] = useState({});
+  const [formulationData, setFormulationData] = useState([]);
 
   useEffect(() => {
     // Reset on first load
@@ -136,6 +137,15 @@ export const MetodelogiPage = () => {
               })
             : [];
 
+        const filteredData = dataChart.datasets
+          .filter((item) => item.label.includes("Formulation -"))
+          .map((item) => ({
+            label: item.label,
+            data: item.data.map((formulation) => ({
+              formulation,
+            })),
+          }));
+
         // Update forecastData state with the latest forecast values
         for (const item of dataChart.datasets) {
           if (item.label.includes("Forecast")) {
@@ -147,6 +157,8 @@ export const MetodelogiPage = () => {
             }));
           }
         }
+
+        setFormulationData(filteredData);
         setLabels(listLabel);
         setDataChartDaily(listDataDaily);
       } else {
@@ -291,16 +303,27 @@ export const MetodelogiPage = () => {
           </Form.Group>
         </Form>
 
+        <div style={{ heigth: "800px" }}>
+          <Bar options={options} data={chart} />
+        </div>
+
+        <div>
+          {formulationData.map((item) => (
+            <div key={item.label}>
+              <h3>{item.label}</h3>
+              {item.data.map((formulation) => (
+                <p key={formulation.formulation}>{formulation.formulation}</p>
+              ))}
+            </div>
+          ))}
+        </div>
+
         <div className="mb-3">
           {Object.keys(forecastData).map((label) => (
             <h3 key={label} className="">
               Hasil Prediksi {label} = {forecastData[label]}
             </h3>
           ))}
-        </div>
-
-        <div style={{ heigth: "800px" }}>
-          <Bar options={options} data={chart} />
         </div>
       </CardBody>
     </Card>
