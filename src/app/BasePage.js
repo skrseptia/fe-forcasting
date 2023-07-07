@@ -23,6 +23,7 @@ import { MetodelogiPage } from "./pages/metodologi/MetodeLogiPage";
 import { UomPage } from "./pages/uom/UomPage";
 import { UOmEdit } from "./pages/uom/UomEdit";
 import { UomCreate } from "./pages/uom/UomCreate";
+import { ProductsEdit } from "./pages/products/ProductsEdit.js";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 
@@ -70,6 +71,7 @@ export default function BasePage() {
         <ContentRoute path="/master-data/uom" component={UomPage} />
 
         {/* users */}
+        <ContentRoute path="/products/edit/:id" component={ProductsEdit} />
         <ContentRoute path="/products/create" component={ProductCreate} />
         <ContentRoute path="/products" component={ProductPage} />
 

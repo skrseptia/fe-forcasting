@@ -27,8 +27,6 @@ export const ProductsTable = ({ data, loading }) => {
     setTableData(initData);
   }, []);
 
-
-
   const [tableData, setTableData] = useState(data);
 
   const actionFormatter = (e, row) => {
@@ -40,7 +38,7 @@ export const ProductsTable = ({ data, loading }) => {
           <div
             className="btn btn-icon btn-light btn-hover-primary btn-sm mr-3"
             onClick={() => {
-              history.push(`/users/edit/${row.id}`);
+              history.push(`/products/edit/${row.id}`);
             }}
           >
             <span className="svg-icon svg-icon-md svg-icon-primary">

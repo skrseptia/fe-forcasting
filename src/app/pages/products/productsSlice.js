@@ -38,8 +38,10 @@ export const addItem = createAsyncThunk("products/addItem", async (payload) => {
 
 export const editItem = createAsyncThunk(
   "products/editItem",
-  async (payload) => {
-    const response = await updateItem(payload);
+  async ({ params, id }) => {
+    console.log(params, "payload");
+    console.log(id, "id");
+    const response = await updateItem(params, id);
     return response;
   }
 );
@@ -74,7 +76,7 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchId.fulfilled, (state, action) => {
         state.loading = false;
-        state.dataId = action.payload.data;
+        state.dataId = action.payload.data.data;
       })
       .addCase(addItem.pending, (state) => {
         state.loading = true;

@@ -44,8 +44,10 @@ export const createItem = (payload) => {
     }
   });
 };
-export const updateItem = (payload) => {
-  return axios.put(URL, payload).catch((error) => {
+export const updateItem = (payload, id) => {
+  console.log(payload, "payload api");
+  console.log(id, "id api");
+  return axios.put(`${URL}/${id}`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {

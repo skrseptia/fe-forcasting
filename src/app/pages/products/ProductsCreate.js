@@ -8,7 +8,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, selectLoading } from "./productsSlice";
 import { useHistory } from "react-router";
-import { showSuccessDialog, showErrorDialog } from "../../../utility";
+import {
+  showSuccessDialog,
+  showErrorDialog,
+  showDialog,
+} from "../../../utility";
 import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { fetchAll, selectData } from "../uom/uomSlice";
@@ -19,6 +23,7 @@ export const ProductCreate = () => {
   const loading = useSelector(selectLoading);
   const dataUom = useSelector(selectData);
 
+  const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [uom, setUom] = useState("");
@@ -27,12 +32,17 @@ export const ProductCreate = () => {
 
   useEffect(() => {
     // Fetch data on first load
-    dispatch(fetchAll());
+    dispatch(
+      fetchAll({
+        page: 1,
+        page_size: 100,
+      })
+    );
   }, [dispatch]);
 
   const uomOptions = dataUom.map((e) => {
     return {
-      value: e.name,
+      value: e.id,
       label: e.name,
     };
   });
@@ -52,10 +62,29 @@ export const ProductCreate = () => {
   };
 
   const handleSave = async () => {
+    if (code === "") {
+      return showDialog("Please input code");
+    }
+    if (name === "") {
+      return showDialog("Please input name");
+    }
+    if (description === "") {
+      return showDialog("Please input description");
+    }
+    if (uom === "") {
+      return showDialog("Please input uom");
+    }
+    if (price === "") {
+      return showDialog("Please input price");
+    }
+    if (qty === "") {
+      return showDialog("Please input qty");
+    }
     const params = {
+      code: code,
       name: name,
       description: description,
-      uom: uom,
+      uom_id: uom,
       price: parseFloat(price),
       qty: parseFloat(qty),
     };
@@ -84,6 +113,22 @@ export const ProductCreate = () => {
       <CardHeader title="Create Product"></CardHeader>
       <CardBody>
         <Form>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={2}>
+              <b>
+                Code <b className="color-red">*</b>
+              </b>
+            </Form.Label>
+            <Col sm={3}>
+              <Form.Control
+                type="text"
+                onChange={(e) => {
+                  setCode(e.target.value);
+                }}
+                value={code}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
