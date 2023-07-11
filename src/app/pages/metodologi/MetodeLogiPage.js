@@ -150,7 +150,8 @@ export const MetodelogiPage = () => {
         for (const item of dataChart.datasets) {
           if (item.label.includes("Forecast")) {
             const labelName = item.label.replace("Forecast - ", "");
-            const lastData = item.data[item.data.length - 1];
+            const lastData =
+              item.data[item.data.length - 1].toString() + "  " + item.uom;
             setForecastData((prevState) => ({
               ...prevState,
               [labelName]: lastData,
@@ -168,6 +169,8 @@ export const MetodelogiPage = () => {
       showErrorDialog(error);
     }
   };
+
+  console.log(forecastData, "data");
 
   const productOptions = dataProduct.map((e) => {
     return {
