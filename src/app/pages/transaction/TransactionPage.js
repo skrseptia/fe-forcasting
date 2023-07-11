@@ -33,7 +33,7 @@ export const TransactionPage = () => {
 
   // Filter
   const [transaction, setTransaction] = useState("");
-  const [email, setEmail] = useState("");
+  const [customer, setCustomer] = useState("");
 
   useEffect(() => {
     // Reset on first load
@@ -42,7 +42,8 @@ export const TransactionPage = () => {
 
   const handleSearch = async () => {
     const params = {
-      transaction: transaction,
+      no_trx: transaction,
+      customer: customer,
       page: 1,
       page_size: 10,
     };
@@ -132,7 +133,7 @@ export const TransactionPage = () => {
                   <Form.Control
                     type="text"
                     onChange={(e) => setTransaction(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    value={transaction}
                   />
                 </Col>
               </Form.Group>
@@ -143,13 +144,13 @@ export const TransactionPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Email</b>
+                  <b>Customer</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control
                     type="text"
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    onChange={(e) => setCustomer(e.target.value)}
+                    value={customer}
                   />
                 </Col>
               </Form.Group>

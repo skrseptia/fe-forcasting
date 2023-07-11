@@ -1,18 +1,19 @@
 /* eslint-disable jsx-a11y/role-supports-aria-props */
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl, checkIsActive } from "../../../../_helpers";
+import { useSelector } from "react-redux";
 // import Badge from "react-bootstrap/Badge";
-// import { selectUser } from "../../../../../app/modules/Auth/_redux/authRedux";
-// import { useSelector } from "react-redux";
+import { selectUser } from "../../../../../app/modules/Auth/_redux/authRedux";
 // import IconButton from "@material-ui/core/IconButton";
 
 export function AsideMenuList({ layoutProps }) {
   const location = useLocation();
-  // const user = useSelector(selectUser);
+  const user = useSelector(selectUser);
+  const [items, setItem] = useState([]);
 
   const getMenuItemActive = (url, hasSubmenu = false) => {
     return checkIsActive(location, url)
@@ -21,82 +22,158 @@ export function AsideMenuList({ layoutProps }) {
       : "";
   };
 
-  const items = [
-    {
-      menu_id: 1,
-      pid: 0,
-      menu_name: "dashboard",
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: "/Design/Layers.svg",
-      childs: [],
-    },
-    {
-      menu_id: 1,
-      pid: 0,
-      menu_name: "Master Data",
-      title: "Master Data",
-      url: "/master-data",
-      icon: "/Design/Layers.svg",
-      childs: [
+  useEffect(() => {
+    // Fetch data on first load
+    if (user.role === "Administrator") {
+      const data = [
         {
           menu_id: 1,
           pid: 0,
-          menu_name: "UOM",
-          title: "UOM",
-          url: "/master-data/uom",
+          menu_name: "dashboard",
+          title: "Dashboard",
+          url: "/dashboard",
           icon: "/Design/Layers.svg",
           childs: [],
         },
         {
           menu_id: 1,
           pid: 0,
-          menu_name: "Categories",
-          title: "Categories",
-          url: "/master-data/categories",
+          menu_name: "Master Data",
+          title: "Master Data",
+          url: "/master-data",
           icon: "/Design/Layers.svg",
-          childs: [],
+          childs: [
+            {
+              menu_id: 1,
+              pid: 0,
+              menu_name: "UOM",
+              title: "UOM",
+              url: "/master-data/uom",
+              icon: "/Design/Layers.svg",
+              childs: [],
+            },
+            {
+              menu_id: 1,
+              pid: 0,
+              menu_name: "Categories",
+              title: "Categories",
+              url: "/master-data/categories",
+              icon: "/Design/Layers.svg",
+              childs: [],
+            },
+            {
+              menu_id: 1,
+              pid: 0,
+              menu_name: "Users",
+              title: "Users",
+              url: "/master-data/users",
+              icon: "/Design/Layers.svg",
+              childs: [],
+            },
+          ],
         },
-        {
-          menu_id: 1,
-          pid: 0,
-          menu_name: "Users",
-          title: "Users",
-          url: "/master-data/users",
-          icon: "/Design/Layers.svg",
-          childs: [],
-        },
-      ],
-    },
 
-    {
-      menu_id: 1,
-      pid: 0,
-      menu_name: "Products",
-      title: "Products",
-      url: "/products",
-      icon: "/Design/Layers.svg",
-      childs: [],
-    },
-    {
-      menu_id: 1,
-      pid: 0,
-      menu_name: "Transaction",
-      title: "Transaction",
-      url: "/transaction",
-      icon: "/Design/Layers.svg",
-      childs: [],
-    },
-    {
-      menu_id: 1,
-      pid: 0,
-      menu_name: "Prediksi Exponential Smoothing",
-      title: "Prediksi Exponential Smoothing",
-      url: "/metodelogi",
-      icon: "/Design/Layers.svg",
-      childs: [],
-    },
-  ];
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Products",
+          title: "Products",
+          url: "/products",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Transaction",
+          title: "Transaction",
+          url: "/transaction",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Prediksi Exponential Smoothing",
+          title: "Prediksi Exponential Smoothing",
+          url: "/metodelogi",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Prediksi Exponential Smoothing Report",
+          title: "Prediksi Exponential Smoothing",
+          url: "/report",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+      ];
+      setItem([...items, ...data]);
+    } else {
+      const data = [
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "dashboard",
+          title: "Dashboard",
+          url: "/dashboard",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Master Data",
+          title: "Master Data",
+          url: "/master-data",
+          icon: "/Design/Layers.svg",
+          childs: [
+            {
+              menu_id: 1,
+              pid: 0,
+              menu_name: "UOM",
+              title: "UOM",
+              url: "/master-data/uom",
+              icon: "/Design/Layers.svg",
+              childs: [],
+            },
+            {
+              menu_id: 1,
+              pid: 0,
+              menu_name: "Categories",
+              title: "Categories",
+              url: "/master-data/categories",
+              icon: "/Design/Layers.svg",
+              childs: [],
+            },
+          ],
+        },
+
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Products",
+          title: "Products",
+          url: "/products",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Transaction",
+          title: "Transaction",
+          url: "/transaction",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
+      ];
+
+      setItem([...items, ...data]);
+    }
+  }, [user]);
 
   return (
     <>

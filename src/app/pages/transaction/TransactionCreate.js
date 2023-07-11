@@ -21,6 +21,7 @@ import {
   showErrorDialog,
   showDialog,
   formatCurrency,
+  useForceUpdate,
 } from "../../../utility";
 import Select from "react-select";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
@@ -31,13 +32,14 @@ import cellEditFactory from "react-bootstrap-table2-editor";
 import SVG from "react-inlinesvg";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import { select } from "redux-saga/effects";
+import InputNumber from "../../../utility/InputNumber";
 
 export const TransactionCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
   const dataItems = useSelector(selectData);
-
+  const forceUpdate = useForceUpdate();
   const [customer, setCustomer] = useState("");
   const [email, setEmail] = useState("");
   const [tableItems, setTableItems] = useState([]);
@@ -62,6 +64,8 @@ export const TransactionCreate = () => {
         return {
           ...item,
           no: index + 1,
+          maxQty: item.qty,
+          totalPrice: "",
         };
       });
       setTableItems(initData);
@@ -107,24 +111,6 @@ export const TransactionCreate = () => {
     setShow(true);
   };
 
-  const handleQty = (e, row, rowIndex, formatExtraData) => {
-    if (parseFloat(row.outstandinG_PO) > row.available) {
-      row.outstandinG_PO = row.available;
-      return;
-    } else if (row.outstandinG_PO < 0) {
-      row.outstandinG_PO = 0;
-      return;
-    }
-  };
-
-  const inputQty = (e, row, rowIndex, formatExtraData) => {
-    return (
-      <div>
-        <Form.Control value={row.qty} maxLength={255} type="number" />
-      </div>
-    );
-  };
-
   const handleDelete = (row, rowIndex) => {
     const items = data.filter((item) => item.id !== row.id);
     setData(items);
@@ -135,6 +121,7 @@ export const TransactionCreate = () => {
 
   const handleCloseReport = () => {
     setShowReport(false);
+    history.goBack();
   };
   const handleShowReport = () => {
     setShowReport(true);
@@ -180,18 +167,9 @@ export const TransactionCreate = () => {
     {
       text: "Qty",
       dataField: "qty",
-      // formatter: inputQty,
-      // editorRenderer: (editorProps, value) => {
-      //   return <InputNumber {...editorProps} value={value} />;
-      // },
+
       style: { minWidth: "110px" },
     },
-    // {
-    //   text: "Action",
-    //   dataField: "action",
-    //   editable: false,
-    //   formatter: actionFormatter,
-    // },
   ];
 
   const columnsReport = [
@@ -209,10 +187,7 @@ export const TransactionCreate = () => {
     {
       text: "Qty",
       dataField: "qty",
-      // formatter: inputQty,
-      // editorRenderer: (editorProps, value) => {
-      //   return <InputNumber {...editorProps} value={value} />;
-      // },
+
       style: { minWidth: "110px" },
     },
     {
@@ -222,6 +197,39 @@ export const TransactionCreate = () => {
       formatter: formatCurrency,
     },
   ];
+
+  const handleQty = (e, row, rowIndex, formatExtraData) => {
+    console.log(formatExtraData, "test 2");
+
+    if (parseFloat(row.qty) > parseFloat(row.maxQty)) {
+      row.qty = row.maxQty;
+      forceUpdate();
+      return;
+    } else if (parseFloat(row.qty) < 0) {
+      row.qty = 0;
+      forceUpdate();
+      return;
+    }
+
+    let _totalPrice = row.qty * row.price;
+    formatExtraData[rowIndex].totalPrice = _totalPrice;
+
+    setData(formatExtraData);
+    forceUpdate();
+  };
+
+  const inputValue = (e, row, rowIndex, formatExtraData) => {
+    console.log(formatExtraData, "test 2");
+    return (
+      <input
+        type="number"
+        step="any"
+        className="input-box-table"
+        value={parseFloat(row.qty)}
+        onBlur={handleQty(e, row, rowIndex, formatExtraData)}
+      />
+    );
+  };
 
   const columnsData = [
     {
@@ -243,12 +251,26 @@ export const TransactionCreate = () => {
     {
       text: "Qty",
       dataField: "qty",
-      formatter: inputQty,
-      // editorRenderer: (editorProps, value) => {
-      //   return <InputNumber {...editorProps} value={value} />;
-      // },
+      formatter: inputValue,
+      editorRenderer: (editorProps, value) => {
+        return <InputNumber {...editorProps} value={value} />;
+      },
       style: { minWidth: "110px" },
+      formatExtraData: data,
     },
+    {
+      text: "Price",
+      dataField: "price",
+      editable: false,
+      formatter: formatCurrency,
+    },
+    {
+      text: "Total Price",
+      dataField: "totalPrice",
+      editable: false,
+      formatter: formatCurrency,
+    },
+
     // {
     //   text: "Action",
     //   dataField: "action",
@@ -289,7 +311,7 @@ export const TransactionCreate = () => {
   const handleSubmit = () => {
     setData((data) => [...data, ...selectedRows]);
     setSelectedRows([]);
-    setShowReport();
+    handleClose();
   };
 
   return loading ? (
@@ -407,7 +429,7 @@ export const TransactionCreate = () => {
               <i className="fa fa-arrow-left"></i>Cancel
             </Button>
 
-            <Button variant="warning" onClick={handleSubmit}>
+            <Button variant="danger" onClick={handleSubmit}>
               Submit
             </Button>
           </Row>
