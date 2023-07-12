@@ -24,6 +24,7 @@ import { UomPage } from "./pages/uom/UomPage";
 import { UOmEdit } from "./pages/uom/UomEdit";
 import { UomCreate } from "./pages/uom/UomCreate";
 import { ProductsEdit } from "./pages/products/ProductsEdit.js";
+import { MetodeLogiView } from "./pages/metodologi/MetodeLogiView";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 // import { TransactionCreate } from "./pages/orders/TransactionCreate";
 
@@ -60,14 +61,8 @@ export default function BasePage() {
         <ContentRoute path="/master-data/users" component={UsersPage} />
 
         {/* UOm */}
-        <ContentRoute
-          path="/master-data/uom/edit/:id"
-          component={UOmEdit}
-        />
-        <ContentRoute
-          path="/master-data/uom/create"
-          component={UomCreate}
-        />
+        <ContentRoute path="/master-data/uom/edit/:id" component={UOmEdit} />
+        <ContentRoute path="/master-data/uom/create" component={UomCreate} />
         <ContentRoute path="/master-data/uom" component={UomPage} />
 
         {/* users */}
@@ -108,6 +103,7 @@ export default function BasePage() {
         />
 
         <ContentRoute path="/metodelogi" component={MetodelogiPage} />
+        <ContentRoute path="/view-metodologi" component={MetodeLogiView} />
 
         <Route path="/user-profile" component={UserProfilepage} />
         <Redirect to="error/error-v1" />

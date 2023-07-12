@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAll } from "./metodelogiAPI";
+import { getAll, getAllMonthly } from "./metodelogiAPI";
 
 const initialState = {
   data: null,
+  dataTable: [],
   loading: false,
   error: null,
   pageNo: 1,
@@ -17,6 +18,13 @@ export const fetchmetodelogi = createAsyncThunk(
   "metodelogi/fetchmetodelogi",
   async (payload) => {
     const response = await getAll(payload);
+    return response;
+  }
+);
+export const fetchmetodelogiTable = createAsyncThunk(
+  "metodelogi/fetchmetodelogiTable",
+  async (payload) => {
+    const response = await getAllMonthly(payload);
     return response;
   }
 );
@@ -38,6 +46,13 @@ export const metodelogiSlice = createSlice({
       .addCase(fetchmetodelogi.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload.data.data;
+      })
+      .addCase(fetchmetodelogiTable.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchmetodelogiTable.fulfilled, (state, action) => {
+        state.loading = false;
+        state.dataTable = action.payload.data.data;
       });
   },
 });
@@ -45,6 +60,7 @@ export const metodelogiSlice = createSlice({
 export const { resetData, setSelected } = metodelogiSlice.actions;
 
 export const selectmetodelogi = (state) => state.metodelogi.data;
+export const selectmetodelogiTable = (state) => state.metodelogi.dataTable;
 export const selectLoading = (state) => state.metodelogi.loading;
 export const selectError = (state) => state.metodelogi.error;
 export const selectPageNo = (state) => state.metodelogi.pageNo;
