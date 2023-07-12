@@ -104,7 +104,7 @@ export function AsideMenuList({ layoutProps }) {
           menu_id: 1,
           pid: 0,
           menu_name: "Prediksi Exponential Smoothing Report",
-          title: "Prediksi Exponential Smoothing",
+          title: "Prediksi Exponential Smoothing Report",
           url: "/view-metodologi",
           icon: "/Design/Layers.svg",
           childs: [],

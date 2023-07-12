@@ -153,7 +153,7 @@ export const MetodeLogiView = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Prediksi Exponential Smoothing">
+      <CardHeader title="Prediksi Exponential Smoothing Report">
         <CardHeaderToolbar>
           {data.length > 0 && (
             <Button className="btn btn-danger" onClick={generatePDF}>
