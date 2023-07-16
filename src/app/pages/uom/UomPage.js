@@ -9,12 +9,7 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {
-  resetData,
-  selectData,
-  fetchAll,
-  selectLoading,
-} from "./uomSlice";
+import { resetData, selectData, fetchAll, selectLoading } from "./uomSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
 import { UomTable } from "./UomTable";
@@ -26,8 +21,7 @@ export const UomPage = () => {
   const loading = useSelector(selectLoading);
 
   // Filter
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     // Reset on first load
@@ -36,8 +30,7 @@ export const UomPage = () => {
 
   const handleSearch = async () => {
     const params = {
-      fullname: fullname,
-      email: email,
+      name: name,
       page: 1,
       page_size: 100,
     };
@@ -84,8 +77,9 @@ export const UomPage = () => {
                 <Col sm={6}>
                   <Form.Control
                     type="text"
-                    onChange={(e) => setFullname(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                     onKeyPress={handleKeyPress}
+                    value={name}
                   />
                 </Col>
               </Form.Group>

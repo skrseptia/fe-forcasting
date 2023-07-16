@@ -26,8 +26,7 @@ export const CategoriesPage = () => {
   const loading = useSelector(selectLoading);
 
   // Filter
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     // Reset on first load
@@ -36,7 +35,7 @@ export const CategoriesPage = () => {
 
   const handleSearch = async () => {
     const params = {
-      fullname: fullname,
+      name: name,
       page: 1,
       page_size: 100,
     };
@@ -83,8 +82,9 @@ export const CategoriesPage = () => {
                 <Col sm={6}>
                   <Form.Control
                     type="text"
-                    onChange={(e) => setFullname(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                     onKeyPress={handleKeyPress}
+                    value={name}
                   />
                 </Col>
               </Form.Group>

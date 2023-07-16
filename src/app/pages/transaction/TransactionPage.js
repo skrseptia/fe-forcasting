@@ -34,6 +34,8 @@ export const TransactionPage = () => {
   // Filter
   const [transaction, setTransaction] = useState("");
   const [customer, setCustomer] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     // Reset on first load
@@ -44,6 +46,8 @@ export const TransactionPage = () => {
     const params = {
       no_trx: transaction,
       customer: customer,
+      start_date: startDate,
+      end_date: endDate,
       page: 1,
       page_size: 10,
     };
@@ -64,7 +68,10 @@ export const TransactionPage = () => {
   ) => {
     if (type === "pagination") {
       const params = {
-        transaction: transaction,
+        no_trx: transaction,
+        customer: customer,
+        start_date: startDate,
+        end_date: endDate,
         page: page,
         page_size: sizePerPage,
       };
@@ -137,6 +144,18 @@ export const TransactionPage = () => {
                   />
                 </Col>
               </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm={3}>
+                  <b>Start Date</b>
+                </Form.Label>
+                <Col sm={6}>
+                  <Form.Control
+                    type="date"
+                    onChange={(e) => setStartDate(e.target.value)}
+                    value={startDate}
+                  />
+                </Col>
+              </Form.Group>
             </Col>
 
             {/* Right Row */}
@@ -151,6 +170,18 @@ export const TransactionPage = () => {
                     type="text"
                     onChange={(e) => setCustomer(e.target.value)}
                     value={customer}
+                  />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm={3}>
+                  <b>End Date</b>
+                </Form.Label>
+                <Col sm={6}>
+                  <Form.Control
+                    type="date"
+                    onChange={(e) => setEndDate(e.target.value)}
+                    value={endDate}
                   />
                 </Col>
               </Form.Group>

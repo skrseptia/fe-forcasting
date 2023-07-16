@@ -81,6 +81,7 @@ export const UsersPage = () => {
                     type="text"
                     onChange={(e) => setFullname(e.target.value)}
                     onKeyPress={handleKeyPress}
+                    value={fullname}
                   />
                 </Col>
               </Form.Group>
@@ -98,6 +99,7 @@ export const UsersPage = () => {
                     type="text"
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyPress={handleKeyPress}
+                    value={email}
                   />
                 </Col>
               </Form.Group>

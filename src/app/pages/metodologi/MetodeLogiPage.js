@@ -109,6 +109,7 @@ export const MetodelogiPage = () => {
       const response = await dispatch(fetchmetodelogi(params));
       console.log(response, "response");
       if (response.payload.data.success === true) {
+        setForecastData({});
         const dataChart = response.payload.data.data;
 
         const listLabel = dataChart.labels;
@@ -216,7 +217,7 @@ export const MetodelogiPage = () => {
       title: {
         display: true,
         align: "start",
-        text: "Today",
+
         font: {
           size: 30,
         },
@@ -315,7 +316,10 @@ export const MetodelogiPage = () => {
             <div key={item.label}>
               <h3>{item.label}</h3>
               {item.data.map((formulation) => (
-                <p key={formulation.formulation}>{formulation.formulation}</p>
+                <p key={formulation.formulation}>
+                  {" "}
+                  <b>{formulation.formulation} </b>
+                </p>
               ))}
             </div>
           ))}
@@ -324,6 +328,7 @@ export const MetodelogiPage = () => {
         <div className="mb-3">
           {Object.keys(forecastData).map((label) => (
             <h3 key={label} className="">
+              {" "}
               Hasil Prediksi {label} = {forecastData[label]}
             </h3>
           ))}
