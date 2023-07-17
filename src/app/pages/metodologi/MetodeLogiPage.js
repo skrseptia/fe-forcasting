@@ -117,9 +117,9 @@ export const MetodelogiPage = () => {
         const listDataDaily =
           dataChart.datasets !== null
             ? dataChart.datasets.map((item) => {
-                const red = Math.floor(Math.random() * 256);
-                const green = Math.floor(Math.random() * 256);
-                const blue = Math.floor(Math.random() * 256);
+                const red = Math.floor(Math.random() * 128);
+                const green = Math.floor(Math.random() * 128);
+                const blue = Math.floor(Math.random() * 128);
                 const alpha = Math.random();
                 if (item.label.includes("Forecast")) {
                   return {
