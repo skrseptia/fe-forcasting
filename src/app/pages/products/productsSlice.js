@@ -47,8 +47,8 @@ export const editItem = createAsyncThunk(
 );
 export const removeById = createAsyncThunk(
   "products/removeById",
-  async (payload) => {
-    const response = await deleteById(payload);
+  async (id) => {
+    const response = await deleteById(id);
     return response;
   }
 );

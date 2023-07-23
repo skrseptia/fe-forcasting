@@ -35,13 +35,10 @@ export const editItem = createAsyncThunk(
   }
 );
 
-export const removeById = createAsyncThunk(
-  "users/removeById",
-  async (payload) => {
-    const response = await deleteById(payload);
-    return response;
-  }
-);
+export const removeById = createAsyncThunk("users/removeById", async (id) => {
+  const response = await deleteById(id);
+  return response;
+});
 
 export const usersSlice = createSlice({
   name: "users",

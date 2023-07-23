@@ -34,12 +34,14 @@ export const CategoriesEdit = () => {
   useEffect(() => {
     if (dataId !== null) {
       setFullname(dataId.name);
+      setCode(dataId.code);
     }
   }, [dataId]);
 
   const handleSave = async () => {
     const id = dataId.id;
     const payload = {
+      code: code,
       name: fullname,
     };
 
@@ -65,6 +67,22 @@ export const CategoriesEdit = () => {
       <CardHeader title="Edit Categories"></CardHeader>
       <CardBody>
         <Form>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={2}>
+              <b>
+                Code <b className="color-red">*</b>
+              </b>
+            </Form.Label>
+            <Col sm={3}>
+              <Form.Control
+                type="text"
+                onChange={(e) => {
+                  setCode(e.target.value);
+                }}
+                value={code}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>

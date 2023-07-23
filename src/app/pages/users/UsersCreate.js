@@ -59,7 +59,7 @@ export const UsersCreate = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Create User Merchant"></CardHeader>
+      <CardHeader title="Create User "></CardHeader>
       <CardBody>
         <Form>
           <Form.Group as={Row} className="mb-3">

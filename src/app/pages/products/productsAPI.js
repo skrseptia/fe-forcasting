@@ -45,8 +45,6 @@ export const createItem = (payload) => {
   });
 };
 export const updateItem = (payload, id) => {
-  console.log(payload, "payload api");
-  console.log(id, "id api");
   return axios.put(`${URL}/${id}`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
@@ -58,8 +56,8 @@ export const updateItem = (payload, id) => {
   });
 };
 
-export const deleteById = (payload) => {
-  return axios.delete(URL, payload).catch((error) => {
+export const deleteById = (id) => {
+  return axios.delete(`${URL}/${id}`).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {

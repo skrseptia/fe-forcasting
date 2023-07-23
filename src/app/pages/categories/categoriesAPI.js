@@ -18,7 +18,6 @@ export const getAll = (payload) => {
     });
 };
 
-
 export const getId = (id) => {
   return axios
     .get(`${URL}/categories/${id}`, {
@@ -46,8 +45,7 @@ export const createItem = (payload) => {
     }
   });
 };
-export const updateItem = (id, payload ) => {
-
+export const updateItem = (id, payload) => {
   return axios.put(`${URL}/categories/${id}`, payload).catch((error) => {
     if (error.response) {
       return error.response.data;
@@ -59,8 +57,8 @@ export const updateItem = (id, payload ) => {
   });
 };
 
-export const deleteById = (payload) => {
-  return axios.delete(URL, payload).catch((error) => {
+export const deleteById = (id) => {
+  return axios.delete(`${URL}/categories/${id}`).catch((error) => {
     if (error.response) {
       return error.response.data;
     } else if (error.request) {

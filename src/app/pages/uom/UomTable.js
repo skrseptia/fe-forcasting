@@ -11,6 +11,12 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 import SVG from "react-inlinesvg";
+import { removeById } from "./uomSlice";
+import {
+  showDeleteDialog,
+  showErrorDialog,
+  showSuccessDialog,
+} from "../../../utility";
 
 export const UomTable = ({
   data,
@@ -33,6 +39,26 @@ export const UomTable = ({
 
   const [tableData, setTableData] = useState(data);
 
+  const handleDelete = async (row) => {
+    const id = row.id;
+
+    const action = await showDeleteDialog(`Are you sure want to delete?`);
+    if (action.isConfirmed) {
+      try {
+        const response = await dispatch(removeById(id));
+        if (response.payload.status === 200) {
+          const action = await showSuccessDialog(response.payload.data.message);
+          if (action.isConfirmed) await window.location.reload();
+        } else {
+          showErrorDialog(response.payload.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        showErrorDialog("Something went wrong!");
+      }
+    }
+  };
+
   const actionFormatter = (e, row) => {
     return (
       <div>
@@ -49,6 +75,18 @@ export const UomTable = ({
               <SVG
                 src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
               />
+            </span>
+          </div>
+        </OverlayTrigger>
+        <OverlayTrigger
+          overlay={<Tooltip id="products-delete-tooltip">Delete</Tooltip>}
+        >
+          <div
+            className="btn btn-icon btn-light btn-hover-danger btn-sm"
+            onClick={() => handleDelete(row)}
+          >
+            <span className="svg-icon svg-icon-md svg-icon-danger">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/General/Trash.svg")} />
             </span>
           </div>
         </OverlayTrigger>

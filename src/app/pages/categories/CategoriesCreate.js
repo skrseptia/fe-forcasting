@@ -15,10 +15,12 @@ export const CategoriesCreate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(selectLoading);
+  const [code, setCode] = useState("");
   const [fullname, setFullname] = useState("");
 
   const handleSave = async () => {
     const params = {
+      code: code,
       name: fullname,
     };
 
@@ -45,6 +47,22 @@ export const CategoriesCreate = () => {
       <CardHeader title="Create  Categories"></CardHeader>
       <CardBody>
         <Form>
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={2}>
+              <b>
+                Code <b className="color-red">*</b>
+              </b>
+            </Form.Label>
+            <Col sm={3}>
+              <Form.Control
+                type="text"
+                onChange={(e) => {
+                  setCode(e.target.value.toLocaleUpperCase());
+                }}
+                value={code}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
