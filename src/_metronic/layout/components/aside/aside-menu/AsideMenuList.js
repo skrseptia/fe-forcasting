@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/role-supports-aria-props */
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid */
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
 import SVG from "react-inlinesvg";
@@ -109,6 +109,15 @@ export function AsideMenuList({ layoutProps }) {
           icon: "/Design/Layers.svg",
           childs: [],
         },
+        // {
+        //   menu_id: 1,
+        //   pid: 0,
+        //   menu_name: "Test Coding",
+        //   title: "Test Coding",
+        //   url: "/test",
+        //   icon: "/Design/Layers.svg",
+        //   childs: [],
+        // },
       ];
       setItem([...items, ...data]);
     } else {
