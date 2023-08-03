@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAll, getAllMonthly, getArima } from "./metodelogiAPI";
+import { getAll, getAllMonthly, getArima, getExpo } from "./metodelogiAPI";
 
 const initialState = {
   data: null,
@@ -37,6 +37,16 @@ export const fetchmetodelogiArima = createAsyncThunk(
   }
 );
 
+
+export const fetchmetodelogiExpo = createAsyncThunk(
+  "metodelogi/fetchmetodelogiExpo",
+  async (payload) => {
+    const response = await getExpo(payload);
+    return response;
+  }
+);
+
+
 export const metodelogiSlice = createSlice({
   name: "metodelogi",
   initialState,
@@ -68,6 +78,13 @@ export const metodelogiSlice = createSlice({
       .addCase(fetchmetodelogiTable.fulfilled, (state, action) => {
         state.loading = false;
         state.dataTable = action.payload.data.data;
+      })
+      .addCase(fetchmetodelogiExpo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchmetodelogiExpo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data.data;
       });
   },
 });

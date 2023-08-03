@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import {
   Card,
@@ -14,7 +14,6 @@ import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { getValueOptions, showDialog, showErrorDialog } from "../../../utility";
 import {
   fetchmetodelogi,
-  fetchmetodelogiExpo,
   resetData,
   selectLoading,
   selectmetodelogi,
@@ -44,8 +43,6 @@ import {
 import { fetchAll, selectData } from "../products/productsSlice";
 import Select from "react-select";
 import MultiSelectAll from "../../../utility/MultiSelectAll";
-import BootstrapTable from "react-bootstrap-table-next";
-import { useReactToPrint } from "react-to-print";
 
 export const MetodelogiPage = () => {
   const dispatch = useDispatch();
@@ -53,7 +50,6 @@ export const MetodelogiPage = () => {
   const data = useSelector(selectmetodelogi);
   const loading = useSelector(selectLoading);
   const dataProduct = useSelector(selectData);
-  const conponentPDF = useRef();
 
   ChartJS.register(
     LinearScale,
@@ -68,7 +64,7 @@ export const MetodelogiPage = () => {
   );
 
   // Filter
-  const [prediksi, setPrediksi] = useState(12);
+  const [startDate, setStartDate] = useState("2023-01-01");
   const [endDate, setEndDate] = useState("2023-05-31");
   const [product, setProduct] = useState([]);
 
@@ -79,11 +75,6 @@ export const MetodelogiPage = () => {
   const [dataChartDaily, setDataChartDaily] = useState([]);
   const [forecastData, setForecastData] = useState({});
   const [formulationData, setFormulationData] = useState([]);
-  const [predicted, setPredicted] = useState([]);
-  const [table, setTable] = useState([]);
-  const [MAE, setMAE] = useState(null);
-  const [MSE, setMSE] = useState(null);
-  const [MAPE, setMAPE] = useState(null);
 
   useEffect(() => {
     // Reset on first load
@@ -98,21 +89,24 @@ export const MetodelogiPage = () => {
   }, [dispatch]);
 
   const handleSearch = async () => {
+    if (startDate === "") {
+      return showDialog("Please Input Date");
+    }
+    if (endDate === "") {
+      return showDialog("Please Input Date");
+    }
     if (product.length < 1) {
       return showDialog("Please Input product");
     }
-    if (prediksi === "") {
-      return showDialog("Please Input product");
-    }
     const params = {
-      alpha: 0.3,
-      pl: parseInt(prediksi),
+      start_date: startDate,
+      end_date: endDate,
       product_id: product.toString(),
     };
 
     console.log(params, "params");
     try {
-      const response = await dispatch(fetchmetodelogiExpo(params));
+      const response = await dispatch(fetchmetodelogi(params));
       console.log(response, "response");
       if (response.payload.data.success === true) {
         setForecastData({});
@@ -144,45 +138,31 @@ export const MetodelogiPage = () => {
               })
             : [];
 
-        // setFormulationData(filteredData);
+        const filteredData = dataChart.datasets
+          .filter((item) => item.label.includes("Formulation -"))
+          .map((item) => ({
+            label: item.label,
+            data: item.data.map((formulation) => ({
+              formulation,
+            })),
+          }));
+
+        // Update forecastData state with the latest forecast values
+        for (const item of dataChart.datasets) {
+          if (item.label.includes("Forecast")) {
+            const labelName = item.label.replace("Forecast - ", "");
+            const lastData =
+              item.data[item.data.length - 1].toString() + "  " + item.uom;
+            setForecastData((prevState) => ({
+              ...prevState,
+              [labelName]: lastData,
+            }));
+          }
+        }
+
+        setFormulationData(filteredData);
         setLabels(listLabel);
         setDataChartDaily(listDataDaily);
-
-        // new
-
-        const nilai = listDataDaily[1].data;
-
-        console.log(nilai, "nilai");
-        console.log(listLabel, "listLabel");
-
-        const hasil = listLabel.map((week, index) => ({
-          no: index + 1,
-          week,
-          value: nilai[index],
-        }));
-
-        console.log(hasil, "hasil");
-
-        const dataActual = dataChart.actual;
-
-        const indexDataActual = dataActual.length;
-
-        const hasilPrediksi = dataChart.prediction;
-
-        const _hasilPrediksi = hasilPrediksi.map((item, index) => ({
-          no: indexDataActual + index + 1,
-          label: `Week ${indexDataActual + index + 1} - ${item.toFixed(2)}`,
-        }));
-
-        const hasilMAE = dataChart.mean_absolute_error;
-        const hasilMSE = dataChart.mse.toFixed(2);
-        const hasilMAPE = dataChart.mape.toFixed(2);
-
-        setPredicted(_hasilPrediksi);
-        setMAE(hasilMAE);
-        setMAPE(hasilMAPE);
-
-        setTable(hasil);
       } else {
         showErrorDialog(response.payload.error);
       }
@@ -258,18 +238,6 @@ export const MetodelogiPage = () => {
     datasets: dataChartDaily,
   };
 
-  const columns = [
-    { text: "No", dataField: "no" },
-    { text: "Week", dataField: "week" },
-    { text: "qty", dataField: "value" },
-  ];
-
-  const generatePDF = useReactToPrint({
-    content: () => conponentPDF.current,
-    documentTitle: "Userdata",
-    onAfterPrint: () => alert("Data saved in PDF"),
-  });
-
   return loading ? (
     <LayoutSplashScreen />
   ) : (
@@ -282,13 +250,13 @@ export const MetodelogiPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Prediksi </b>
+                  <b>Start Date</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control
-                    type="number"
-                    onChange={(e) => setPrediksi(e.target.value)}
-                    value={prediksi}
+                    type="date"
+                    onChange={(e) => setStartDate(e.target.value)}
+                    value={startDate}
                   />
                 </Col>
               </Form.Group>
@@ -299,21 +267,33 @@ export const MetodelogiPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
+                  <b>End Date</b>
+                </Form.Label>
+                <Col sm={6}>
+                  <Form.Control
+                    type="date"
+                    onChange={(e) => setEndDate(e.target.value)}
+                    value={endDate}
+                  />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm={3}>
                   <b>Product Name</b>
                 </Form.Label>
                 <Col sm={6}>
-                  <Select
+                  {/* <Select
                     options={productOptions}
                     value={getValueOptions(product, productOptions)}
                     onChange={handleChangeProduct}
                     className="mt-4 ml-3"
-                  />
-                  {/* <MultiSelectAll
+                  /> */}
+                  <MultiSelectAll
                     options={productOptions}
                     value={getValueProduct(product)}
                     onChange={handleProductChange}
                     placeholder="Select"
-                  /> */}
+                  />
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>
@@ -332,31 +312,27 @@ export const MetodelogiPage = () => {
         </div>
 
         <div>
-          <h3>Hasil Predisi</h3>
-          {predicted.map((item) => (
+          {formulationData.map((item) => (
             <div key={item.label}>
               <h3>{item.label}</h3>
+              {item.data.map((formulation) => (
+                <p key={formulation.formulation}>
+                  {" "}
+                  <b>{formulation.formulation} </b>
+                </p>
+              ))}
             </div>
           ))}
-
-          <h3>MAE : {MAE}</h3>
-          <h3>MAPE : {MAPE} %</h3>
         </div>
 
-        <>
-          <div ref={conponentPDF}>
-            <BootstrapTable
-              wrapperClasses="table-responsive"
-              classes="table table-head-custom table-vertical-center overflow-hidden"
-              bootstrap4
-              bordered={false}
-              keyField="id"
-              data={table}
-              columns={columns}
-              hover
-            ></BootstrapTable>
-          </div>
-        </>
+        <div className="mb-3">
+          {Object.keys(forecastData).map((label) => (
+            <h3 key={label} className="">
+              {" "}
+              Hasil Prediksi {label} = {forecastData[label]}
+            </h3>
+          ))}
+        </div>
       </CardBody>
     </Card>
   );
