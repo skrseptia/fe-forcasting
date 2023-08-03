@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import {
   Card,
@@ -44,6 +44,8 @@ import {
 import { fetchAll, selectData } from "../products/productsSlice";
 import Select from "react-select";
 import MultiSelectAll from "../../../utility/MultiSelectAll";
+import BootstrapTable from "react-bootstrap-table-next";
+import { useReactToPrint } from "react-to-print";
 
 export const MetodeLogiArimaPage = () => {
   const dispatch = useDispatch();
@@ -51,6 +53,7 @@ export const MetodeLogiArimaPage = () => {
   const data = useSelector(selectmetodelogi);
   const loading = useSelector(selectLoading);
   const dataProduct = useSelector(selectData);
+  const conponentPDF = useRef();
 
   ChartJS.register(
     LinearScale,
@@ -76,6 +79,11 @@ export const MetodeLogiArimaPage = () => {
   const [dataChartDaily, setDataChartDaily] = useState([]);
   const [forecastData, setForecastData] = useState({});
   const [formulationData, setFormulationData] = useState([]);
+  const [predicted, setPredicted] = useState([]);
+  const [table, setTable] = useState([]);
+  const [MAE, setMAE] = useState(null);
+  const [MSE, setMSE] = useState(null);
+  const [MAPE, setMAPE] = useState(null);
 
   useEffect(() => {
     // Reset on first load
@@ -138,6 +146,34 @@ export const MetodeLogiArimaPage = () => {
               })
             : [];
 
+        const nilai = listDataDaily[0].data;
+
+        const hasil = listLabel.map((week, index) => ({
+          no: index + 1,
+          week,
+          value: nilai[index],
+        }));
+
+        const dataActual = dataChart.actual;
+
+        const indexDataActual = dataActual.length;
+
+        const hasilPrediksi = dataChart.predicted;
+
+        const _hasilPrediksi = hasilPrediksi.map((item, index) => ({
+          no: indexDataActual + index + 1,
+          label: `Week ${indexDataActual + index + 1} - ${item.toFixed(2)}`,
+        }));
+
+        const hasilMAE = dataChart.mean_absolute_error;
+        const hasilMSE = dataChart.mse.toFixed(2);
+        const hasilMAPE = dataChart.mape.toFixed(2);
+
+        setPredicted(_hasilPrediksi);
+        setMAE(hasilMAE);
+        setMAPE(hasilMAPE);
+
+        setTable(hasil);
         setLabels(listLabel);
         setDataChartDaily(listDataDaily);
       } else {
@@ -215,11 +251,29 @@ export const MetodeLogiArimaPage = () => {
     datasets: dataChartDaily,
   };
 
+  const columns = [
+    { text: "No", dataField: "no" },
+    { text: "Week", dataField: "week" },
+    { text: "qty", dataField: "value" },
+  ];
+
+  const generatePDF = useReactToPrint({
+    content: () => conponentPDF.current,
+    documentTitle: "Userdata",
+    onAfterPrint: () => alert("Data saved in PDF"),
+  });
+
   return loading ? (
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Prediksi Exponential Smoothing"></CardHeader>
+      <CardHeader title="Prediksi Exponential Smoothing">
+        <CardHeaderToolbar>
+          <Button className="btn btn-danger" onClick={generatePDF}>
+            PDF
+          </Button>
+        </CardHeaderToolbar>
+      </CardHeader>
       <CardBody>
         {/* Filter */}
         <Form className="mb-5">
@@ -275,6 +329,33 @@ export const MetodeLogiArimaPage = () => {
         <div style={{ heigth: "800px" }}>
           <Bar options={options} data={chart} />
         </div>
+
+        <div>
+          <h3>Hasil Predisi</h3>
+          {predicted.map((item) => (
+            <div key={item.label}>
+              <h3>{item.label}</h3>
+            </div>
+          ))}
+
+          <h3>MAE : {MAE}</h3>
+          <h3>MAPE : {MAPE} %</h3>
+        </div>
+
+        <>
+          <div ref={conponentPDF}>
+            <BootstrapTable
+              wrapperClasses="table-responsive"
+              classes="table table-head-custom table-vertical-center overflow-hidden"
+              bootstrap4
+              bordered={false}
+              keyField="id"
+              data={table}
+              columns={columns}
+              hover
+            ></BootstrapTable>
+          </div>
+        </>
       </CardBody>
     </Card>
   );
