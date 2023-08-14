@@ -274,7 +274,13 @@ export const MetodelogiPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Prediksi Exponential Smoothing"></CardHeader>
+      <CardHeader title="Prediksi Exponential Smoothing">
+        <CardHeaderToolbar>
+          <Button className="btn btn-danger" onClick={generatePDF}>
+            PDF
+          </Button>
+        </CardHeaderToolbar>
+      </CardHeader>
       <CardBody>
         {/* Filter */}
         <Form className="mb-5">
