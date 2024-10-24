@@ -198,11 +198,12 @@ export function AsideMenuList({ layoutProps }) {
       {/* Menu Nav */}
       <ul className={`menu-nav ${layoutProps.ulClasses}`}>
         {/* Loop Menu Level 1 */}
-        {items.map((menu) => {
+        {items.map((menu, i) => {
           if (menu.childs.length === 0) {
             // Render don't have child
             return (
               <li
+                key={i}
                 className={`menu-item ${getMenuItemActive(
                   `${menu.url}`,
                   false
@@ -221,6 +222,7 @@ export function AsideMenuList({ layoutProps }) {
             // Render if have child
             return (
               <li
+              key={i}
                 className={`menu-item menu-item-submenu ${getMenuItemActive(
                   `${menu.url}`,
                   true
@@ -242,11 +244,12 @@ export function AsideMenuList({ layoutProps }) {
                   <ul className="menu-subnav">
                     <ul className="menu-subnav">
                       {/* Loop Menu Level 2 */}
-                      {menu.childs.map((submenu) => {
+                      {menu.childs.map((submenu, i) => {
                         if (submenu.childs.length === 0) {
                           // Render if don't have child
                           return (
                             <li
+                              key={i}
                               className={`menu-item ${getMenuItemActive(
                                 `${submenu.url}`
                               )}`}
@@ -266,6 +269,7 @@ export function AsideMenuList({ layoutProps }) {
                           // Render if have child
                           return (
                             <li
+                            key={i}
                               className={`menu-item menu-item-submenu ${getMenuItemActive(
                                 `${submenu.url}`,
                                 true
