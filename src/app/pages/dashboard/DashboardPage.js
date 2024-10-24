@@ -103,27 +103,27 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
 
       const listDataDaily =
         dataChart.daily_trx_amount_chart.datasets !== null
-          ? dataChart.daily_trx_amount_chart.datasets.map((item) => {
-              const red = Math.floor(Math.random() * 256);
-              const green = Math.floor(Math.random() * 256);
-              const blue = Math.floor(Math.random() * 256);
-              const alpha = Math.random();
+          ? dataChart?.daily_trx_amount_chart?.datasets?.map((item) => {
+            const red = Math.floor(Math.random() * 256);
+            const green = Math.floor(Math.random() * 256);
+            const blue = Math.floor(Math.random() * 256);
+            const alpha = Math.random();
 
-              return {
-                ...item,
-                backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                barThickness: 30,
-                categoryPercentage: 1,
-                borderRadius: 10,
-              };
-            })
+            return {
+              ...item,
+              backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+              barThickness: 30,
+              categoryPercentage: 1,
+              borderRadius: 10,
+            };
+          })
           : [];
 
       setLabels(listLabel);
       setDataChartDaily(listDataDaily);
 
       const listLabelMonthly = dataChart.monthly_trx_amount_chart.labels;
-      const listDataMonthly = dataChart.monthly_trx_amount_chart.datasets.map(
+      const listDataMonthly = dataChart?.monthly_trx_amount_chart?.datasets?.map(
         (item) => {
           const red = Math.floor(Math.random() * 256);
           const green = Math.floor(Math.random() * 256);
@@ -147,7 +147,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
 
   useEffect(() => {
     if (data !== null) {
-      const listTopTrx = data.top_10_trx.map((item, index) => {
+      const listTopTrx = data?.top_10_trx?.map((item, index) => {
         return {
           ...item,
           no: index + 1,
@@ -155,12 +155,12 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
       });
       const listStock =
         data.stock_alert !== null
-          ? data.stock_alert.map((item, index) => {
-              return {
-                ...item,
-                no: index + 1,
-              };
-            })
+          ? data?.stock_alert?.map((item, index) => {
+            return {
+              ...item,
+              no: index + 1,
+            };
+          })
           : [];
 
       setDataTopTrx(listTopTrx);
@@ -310,20 +310,19 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
-                  backgroundImage: `url(${toAbsoluteUrl(
-                    "/media/bg/cardBlack.png"
-                  )})`,
+                  backgroundColor: "#FFFFF",
+
                   backgroundSize: "cover",
                   borderRadius: "10px",
                 }}
               >
                 <div className="card-body p-0 m-0 ">
                   <div className="card-body">
-                    <h3 className="title text-white font-size-h2 font-weight-boldest ">
+                    <h3 className="title text-grey font-size-h2 font-weight-boldest ">
                       Total Transaction
                     </h3>
 
-                    <div className="text-white font-weight-bolder  display3 mt-3">
+                    <div className="text-grey font-weight-bolder  display3 mt-3">
                       {data.summary.total_transaction}
                       {/* <div className="row">
                   <div className="col">277</div>
@@ -341,20 +340,18 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
-                  backgroundImage: `url(${toAbsoluteUrl(
-                    "/media/bg/cardOrange.png"
-                  )})`,
+                  backgroundColor: "#FFFFF",
                   backgroundSize: "cover",
                   borderRadius: "10px",
                 }}
               >
                 <div className="card-body p-0 m-0 ">
                   <div className="card-body">
-                    <h3 className="title text-white font-size-h2 font-weight-boldest">
+                    <h3 className="title text-grey font-size-h2 font-weight-boldest">
                       Total Customer
                     </h3>
 
-                    <div className="text-white font-weight-bolder display3 mt-3">
+                    <div className="text-grey font-weight-bolder display3 mt-3">
                       {data.summary.total_customer}
                     </div>
                   </div>
@@ -366,20 +363,19 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
-                  backgroundImage: `url(${toAbsoluteUrl(
-                    "/media/bg/cardBlack.png"
-                  )})`,
+                  backgroundColor: "#FFFFF",
+
                   backgroundSize: "cover",
                   borderRadius: "10px",
                 }}
               >
                 <div className="card-body p-0 m-0 ">
                   <div className="card-body">
-                    <h3 className="title text-white font-size-h2 font-weight-boldest">
+                    <h3 className="title text-grey font-size-h2 font-weight-boldest">
                       Total Product
                     </h3>
 
-                    <div className="text-white font-weight-bolder display3  mt-3">
+                    <div className="text-grey font-weight-bolder display3  mt-3">
                       {data.summary.total_product}
                     </div>
                   </div>
@@ -391,19 +387,18 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
-                  backgroundImage: `url(${toAbsoluteUrl(
-                    "/media/bg/cardOrange.png"
-                  )})`,
+                  backgroundColor: "#FFFFF",
+
                   backgroundSize: "cover",
                   borderRadius: "10px",
                 }}
               >
                 <div className="card-body p-0 m-0 ">
                   <div className="card-body">
-                    <h3 className="title text-white font-size-h2 font-weight-boldest">
+                    <h3 className="title text-grey font-size-h2 font-weight-boldest">
                       Total Category
                     </h3>
-                    <div className="text-white font-weight-bolder display3 mt-3">
+                    <div className="text-grey font-weight-bolder display3 mt-3">
                       <p> {data.summary.total_category}</p>
                     </div>
                   </div>
