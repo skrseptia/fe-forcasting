@@ -33,6 +33,7 @@ export const ProductPage = () => {
   useEffect(() => {
     // Reset on first load
     dispatch(resetData());
+    handleSearch()
   }, [dispatch]);
 
   const initData = data.map((item, index) => {

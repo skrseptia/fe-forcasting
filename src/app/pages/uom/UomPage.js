@@ -26,6 +26,7 @@ export const UomPage = () => {
   useEffect(() => {
     // Reset on first load
     dispatch(resetData());
+    handleSearch()
   }, [dispatch]);
 
   const handleSearch = async () => {

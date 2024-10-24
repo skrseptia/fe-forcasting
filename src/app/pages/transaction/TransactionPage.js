@@ -40,6 +40,7 @@ export const TransactionPage = () => {
   useEffect(() => {
     // Reset on first load
     dispatch(resetData());
+
   }, [dispatch]);
 
   const handleSearch = async () => {
