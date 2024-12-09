@@ -71,13 +71,13 @@ export const TransactionTable = ({
       headerSortingClasses,
     },
 
-    {
-      text: "transaction",
-      dataField: "trx_id",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
+    // {
+    //   text: "transaction",
+    //   dataField: "trx_id",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    // },
     {
       text: "created by",
       dataField: "created_by",
@@ -85,13 +85,13 @@ export const TransactionTable = ({
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      text: "customer",
-      dataField: "customer",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
+    // {
+    //   text: "customer",
+    //   dataField: "customer",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    // },
     {
       text: "total",
       dataField: "total",
@@ -124,7 +124,7 @@ export const TransactionTable = ({
       headerSortingClasses,
     },
     {
-      text: "name",
+      text: "category",
       dataField: "name",
       sort: true,
       sortCaret: sortCaret,
@@ -144,21 +144,21 @@ export const TransactionTable = ({
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      text: "price",
-      dataField: "price",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      text: "sub total",
-      dataField: "sub_total",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-      formatter: formatCurrency,
-    },
+    // {
+    //   text: "price",
+    //   dataField: "price",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    // },
+    // {
+    //   text: "sub total",
+    //   dataField: "sub_total",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    //   formatter: formatCurrency,
+    // },
   ];
 
   const expandRow = {

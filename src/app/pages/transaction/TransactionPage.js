@@ -133,7 +133,7 @@ export const TransactionPage = () => {
         <Form className="mb-5">
           <Form.Group as={Row}>
             <Col sm={6}>
-              <Form.Group as={Row}>
+              {/* <Form.Group as={Row}>
                 <Form.Label column sm={3}>
                   <b>Transaction</b>
                 </Form.Label>
@@ -144,7 +144,7 @@ export const TransactionPage = () => {
                     value={transaction}
                   />
                 </Col>
-              </Form.Group>
+              </Form.Group> */}
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
                   <b>Start Date</b>
@@ -162,7 +162,7 @@ export const TransactionPage = () => {
             {/* Right Row */}
 
             <Col sm={6}>
-              <Form.Group as={Row}>
+              {/* <Form.Group as={Row}>
                 <Form.Label column sm={3}>
                   <b>Customer</b>
                 </Form.Label>
@@ -173,7 +173,7 @@ export const TransactionPage = () => {
                     value={customer}
                   />
                 </Col>
-              </Form.Group>
+              </Form.Group> */}
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
                   <b>End Date</b>

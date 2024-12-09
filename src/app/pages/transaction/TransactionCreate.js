@@ -74,7 +74,7 @@ export const TransactionCreate = () => {
 
   const handleSave = async () => {
     const params = {
-      customer: customer,
+      customer: 'A',
       transaction_lines: data.map((item) => {
         return {
           product_id: item.id,
@@ -159,17 +159,17 @@ export const TransactionCreate = () => {
       editable: false,
     },
     {
-      text: "name",
+      text: "category",
       dataField: "name",
       editable: false,
     },
 
-    {
-      text: "Qty",
-      dataField: "qty",
+    // {
+    //   text: "Qty",
+    //   dataField: "qty",
 
-      style: { minWidth: "110px" },
-    },
+    //   style: { minWidth: "110px" },
+    // },
   ];
 
   const columnsReport = [
@@ -179,7 +179,7 @@ export const TransactionCreate = () => {
       editable: false,
     },
     {
-      text: "name",
+      text: "category",
       dataField: "name",
       editable: false,
     },
@@ -190,12 +190,12 @@ export const TransactionCreate = () => {
 
       style: { minWidth: "110px" },
     },
-    {
-      text: "Sub Total",
-      dataField: "sub_total",
-      editable: false,
-      formatter: formatCurrency,
-    },
+    // {
+    //   text: "Sub Total",
+    //   dataField: "sub_total",
+    //   editable: false,
+    //   formatter: formatCurrency,
+    // },
   ];
 
   const handleQty = (e, row, rowIndex, formatExtraData) => {
@@ -243,7 +243,7 @@ export const TransactionCreate = () => {
       editable: false,
     },
     {
-      text: "name",
+      text: "category",
       dataField: "name",
       editable: false,
     },
@@ -258,18 +258,18 @@ export const TransactionCreate = () => {
       style: { minWidth: "110px" },
       formatExtraData: data,
     },
-    {
-      text: "Price",
-      dataField: "price",
-      editable: false,
-      formatter: formatCurrency,
-    },
-    {
-      text: "Total Price",
-      dataField: "totalPrice",
-      editable: false,
-      formatter: formatCurrency,
-    },
+    // {
+    //   text: "Price",
+    //   dataField: "price",
+    //   editable: false,
+    //   formatter: formatCurrency,
+    // },
+    // {
+    //   text: "Total Price",
+    //   dataField: "totalPrice",
+    //   editable: false,
+    //   formatter: formatCurrency,
+    // },
 
     // {
     //   text: "Action",
@@ -319,10 +319,10 @@ export const TransactionCreate = () => {
   ) : (
     <>
       <Card>
-        <CardHeader title="Create  Merchant"></CardHeader>
+        <CardHeader title="Create  Transaction"></CardHeader>
         <CardBody>
           <Form>
-            <Form.Group as={Row} className="mb-3">
+            {/* <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={2}>
                 <b>
                   Customer <b className="color-red">*</b>
@@ -337,7 +337,7 @@ export const TransactionCreate = () => {
                   value={customer}
                 />
               </Col>
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group as={Row} className="mb-3">
               <Form.Label column sm={2}>
@@ -390,7 +390,7 @@ export const TransactionCreate = () => {
                 <div>
                   <Row>
                     <Col>
-                      <h3> Product</h3>
+                      <h3> Category</h3>
                     </Col>
                     <Col>
                       <div className="float-right">
@@ -438,7 +438,7 @@ export const TransactionCreate = () => {
       {report && (
         <Modal show={showReport} onHide={handleCloseReport} size="lg">
           <Modal.Body>
-            <Form>
+            {/* <Form>
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>
                   <b>No Transaction</b>
@@ -467,7 +467,7 @@ export const TransactionCreate = () => {
                   />
                 </Col>
               </Form.Group>
-            </Form>
+            </Form> */}
             <BootstrapTable
               wrapperClasses="table-responsive"
               classes="table table-head-custom table-vertical-center overflow-hidden"

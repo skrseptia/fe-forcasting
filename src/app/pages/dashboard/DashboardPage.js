@@ -68,7 +68,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
   // const totalRecord = useSelector(selectTotalRecord);
 
   console.log(dataChart, "dataChart");
-
+console.log(data,'data')
   ChartJS.register(
     ArcElement,
     Tooltip,
@@ -147,7 +147,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
 
   useEffect(() => {
     if (data !== null) {
-      const listTopTrx = data?.top_10_trx?.map((item, index) => {
+      const listTopTrx = data?.top_5_product?.map((item, index) => {
         return {
           ...item,
           no: index + 1,
@@ -177,27 +177,26 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
       headerSortingClasses,
     },
     {
-      text: "Customer",
-      dataField: "customer",
+      text: "name",
+      dataField: "name",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
     },
+    // {
+    //   text: "total",
+    //   dataField: "total",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    //   formatter: formatCurrency,
+    // },
     {
-      text: "total",
-      dataField: "total",
+      text: "total qty",
+      dataField: "total_qty",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
-      formatter: formatCurrency,
-    },
-    {
-      text: "transaction date",
-      dataField: "trx_date",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-      formatter: formatDate,
     },
   ];
 
@@ -306,7 +305,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
           {/* header */}
           <div className="row">
             {/* Total Transaction */}
-            <div className="col-md-3 col-xs-12 mb-3 ">
+            <div className="col-md-6 col-xs-12 mb-3 ">
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
@@ -336,7 +335,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
               </div>
             </div>
             {/* Total Customer */}
-            <div className="col-md-3 col-xs-12 mb-3 ">
+            {/* <div className="col-md-3 col-xs-12 mb-3 ">
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
@@ -357,9 +356,9 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Total Product */}
-            <div className="col-md-3 col-xs-12 mb-3 ">
+            {/* <div className="col-md-3 col-xs-12 mb-3 ">
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
@@ -381,9 +380,9 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Total Category*/}
-            <div className="col-md-3 col-xs-12 mb-3 ">
+            <div className="col-md-6 col-xs-12 mb-3 ">
               <div
                 className={`card card-custom p-0 m-0 `}
                 style={{
@@ -428,10 +427,10 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
           {/* header */}
           <div className="row">
             {/* active User */}
-            <div className="col-md-6 col-xs-12 mb-3 ">
-              <div className={`card card-custom ${className}`}>
+            {/* <div className="col-md-6 col-xs-12 mb-3 ">
+              <div className={`card card-custom ${className}`}> */}
                 {/* Head */}
-                <div
+                {/* <div
                   className="card-header border-0"
                   style={{ backgroundColor: "#FFFFFF" }}
                 >
@@ -440,10 +439,10 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
                       Stock Limit
                     </span>
                   </h3>
-                </div>
+                </div> */}
 
                 {/* Body */}
-                <div className="card-body pt-2">
+                {/* <div className="card-body pt-2">
                   <BootstrapTable
                     wrapperClasses="table-responsive"
                     classes="table table-head-custom table-vertical-center overflow-hidden"
@@ -454,9 +453,9 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
                     columns={columnsStock}
                     hover
                   ></BootstrapTable>
-                </div>
-              </div>
-            </div>
+                </div> */}
+              {/* </div>
+            </div> */}
             {/* No active User */}
             <div className="col-md-6 col-xs-12 mb-3 ">
               <div className={`card card-custom ${className}`}>
@@ -467,7 +466,7 @@ export const DashboardPage = ({ className, symbolShape, baseColor }) => {
                 >
                   <h3 className="card-title font-weight-bolder align-items-start text-dark flex-column">
                     <span className="card-label font-weight-bolder text-dark">
-                      TOP 10 Transaction
+                      TOP 10 Category
                     </span>
                   </h3>
                 </div>

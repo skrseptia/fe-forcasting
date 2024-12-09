@@ -153,7 +153,7 @@ export const ProductsEdit = () => {
     <>
       {dataId && (
         <Card>
-          <CardHeader title="Edit Product"></CardHeader>
+          <CardHeader title="Edit Category"></CardHeader>
           <CardBody>
             <Form>
               <Form.Group as={Row} className="mb-3">
@@ -176,7 +176,7 @@ export const ProductsEdit = () => {
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>
                   <b>
-                    Name <b className="color-red">*</b>
+                    Category <b className="color-red">*</b>
                   </b>
                 </Form.Label>
                 <Col sm={3}>
@@ -222,7 +222,7 @@ export const ProductsEdit = () => {
                   />
                 </Col>
               </Form.Group>
-              <Form.Group as={Row} className="mb-3">
+              {/* <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>
                   <b>
                     Price <b className="color-red">*</b>
@@ -237,7 +237,7 @@ export const ProductsEdit = () => {
                     value={price}
                   />
                 </Col>
-              </Form.Group>
+              </Form.Group> */}
 
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>

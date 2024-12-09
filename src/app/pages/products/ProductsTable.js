@@ -101,7 +101,7 @@ export const ProductsTable = ({ data, loading }) => {
       headerSortingClasses,
     },
     {
-      text: "name",
+      text: "category",
       dataField: "name",
       sort: true,
       sortCaret: sortCaret,
@@ -128,13 +128,13 @@ export const ProductsTable = ({ data, loading }) => {
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      text: "price",
-      dataField: "price",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
+    // {
+    //   text: "price",
+    //   dataField: "price",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    // },
     {
       text: "Action",
       dataField: "action",

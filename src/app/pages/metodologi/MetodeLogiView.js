@@ -198,7 +198,7 @@ export const MetodeLogiView = () => {
               </Form.Group>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Product Name</b>
+                  <b>Category Name</b>
                 </Form.Label>
                 <Col sm={6}>
                   <MultiSelectAll

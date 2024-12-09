@@ -72,7 +72,7 @@ export const ProductPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Products">
+      <CardHeader title="Category">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
@@ -89,7 +89,7 @@ export const ProductPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Name</b>
+                  <b>Category</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Form.Control

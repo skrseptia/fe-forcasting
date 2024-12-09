@@ -110,7 +110,7 @@ export const ProductCreate = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Create Product"></CardHeader>
+      <CardHeader title="Create Category"></CardHeader>
       <CardBody>
         <Form>
           <Form.Group as={Row} className="mb-3">
@@ -132,7 +132,7 @@ export const ProductCreate = () => {
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={2}>
               <b>
-                Name <b className="color-red">*</b>
+                Category <b className="color-red">*</b>
               </b>
             </Form.Label>
             <Col sm={3}>

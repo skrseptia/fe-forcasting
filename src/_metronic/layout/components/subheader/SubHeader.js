@@ -8,6 +8,7 @@ import {getBreadcrumbsAndTitle, useSubheader} from "../../_core/MetronicSubheade
 import {useHtmlClassService} from "../../_core/MetronicLayout"
 
 export function SubHeader() {
+  const today = new Date();
   const uiService = useHtmlClassService();
   const location = useLocation();
   const subheader = useSubheader();
@@ -77,7 +78,7 @@ export function SubHeader() {
             <a href="#" className="btn btn-light btn-sm font-weight-bold" id="kt_dashboard_daterangepicker"
                data-toggle="tooltip" title="Select dashboard daterange" data-placement="left">
               <span className="text-muted font-weight-bold mr-2" id="kt_dashboard_daterangepicker_title">Today</span>
-              <span className="text-primary font-weight-bold" id="kt_dashboard_daterangepicker_date">Aug 16</span>
+              <span className="text-primary font-weight-bold" id="kt_dashboard_daterangepicker_date">{today.toLocaleString()}</span>
             </a>
             <QuickActions/>
           </div>

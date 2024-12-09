@@ -274,7 +274,7 @@ export const MetodelogiPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="Prediksi Exponential Smoothing">
+      <CardHeader title="Prediksi Triple Exponential Smoothing">
         <CardHeaderToolbar>
           <Button className="btn btn-danger" onClick={generatePDF}>
             PDF
@@ -305,7 +305,7 @@ export const MetodelogiPage = () => {
             <Col sm={6}>
               <Form.Group as={Row}>
                 <Form.Label column sm={3}>
-                  <b>Product Name</b>
+                  <b>Category Name</b>
                 </Form.Label>
                 <Col sm={6}>
                   <Select
