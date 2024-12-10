@@ -82,7 +82,6 @@ export const MetodeLogiArimaPage = () => {
   const [predicted, setPredicted] = useState([]);
   const [table, setTable] = useState([]);
   const [MAE, setMAE] = useState(null);
-  const [MSE, setMSE] = useState(null);
   const [MAPE, setMAPE] = useState(null);
 
   useEffect(() => {
@@ -108,6 +107,10 @@ export const MetodeLogiArimaPage = () => {
       p: 1,
       d: 0,
       q: 1,
+      P: 1,  // Seasonal AR order
+      D: 0,  // Seasonal differencing order
+      Q: 1,  // Seasonal MA order
+      s: 12, // Seasonal period (e.g., 12 for monthly data, 4 for triwulan, 7 for weekly)
       pl: prediksi,
       product_id: product.toString(),
     };
@@ -125,25 +128,25 @@ export const MetodeLogiArimaPage = () => {
         const listDataDaily =
           dataChart.datasets !== null
             ? dataChart.datasets.map((item) => {
-                const red = Math.floor(Math.random() * 128);
-                const green = Math.floor(Math.random() * 128);
-                const blue = Math.floor(Math.random() * 128);
-                const alpha = Math.random();
-                if (item.label.includes("Forecast")) {
-                  return {
-                    type: "line",
-                    borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                    borderWidth: 2,
-                    fill: false,
-                    ...item,
-                  };
-                } else {
-                  return {
-                    backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                    ...item,
-                  };
-                }
-              })
+              const red = Math.floor(Math.random() * 128);
+              const green = Math.floor(Math.random() * 128);
+              const blue = Math.floor(Math.random() * 128);
+              const alpha = Math.random();
+              if (item.label.includes("Forecast")) {
+                return {
+                  type: "line",
+                  borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                  borderWidth: 2,
+                  fill: false,
+                  ...item,
+                };
+              } else {
+                return {
+                  backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                  ...item,
+                };
+              }
+            })
             : [];
 
         const nilai = listDataDaily[0].data;
@@ -168,11 +171,11 @@ export const MetodeLogiArimaPage = () => {
         const hasilMAE = dataChart.mean_absolute_error;
         const hasilMSE = dataChart.mse.toFixed(2);
         const hasilMAPE = dataChart.mape.toFixed(2);
+        console.log({ hasilMSE })
 
         setPredicted(_hasilPrediksi);
         setMAE(hasilMAE);
         setMAPE(hasilMAPE);
-
         setTable(hasil);
         setLabels(listLabel);
         setDataChartDaily(listDataDaily);
@@ -208,7 +211,7 @@ export const MetodeLogiArimaPage = () => {
   const handleProductChange = (selectedOptions) => {
     if (selectedOptions && Array.isArray(selectedOptions)) {
       setProduct(
-        selectedOptions.map(function(selectedOption) {
+        selectedOptions.map(function (selectedOption) {
           if (selectedOption) {
             return selectedOption.value;
           }
