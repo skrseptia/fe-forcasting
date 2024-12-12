@@ -110,7 +110,7 @@ export const MetodeLogiArimaPage = () => {
       P: 1,  // Seasonal AR order
       D: 0,  // Seasonal differencing order
       Q: 1,  // Seasonal MA order
-      s: 12, // Seasonal period (e.g., 12 for monthly data, 4 for triwulan, 7 for weekly)
+      s: 35, // Seasonal period (e.g., 12 for monthly data, 4 for triwulan, 7 for weekly)
       pl: prediksi,
       product_id: product.toString(),
     };
@@ -123,7 +123,7 @@ export const MetodeLogiArimaPage = () => {
         setForecastData({});
         const dataChart = response.payload.data.data;
 
-        const listLabel = dataChart.labels;
+        const listLabel = dataChart.labels.slice(-20);
 
         const listDataDaily =
           dataChart.datasets !== null
@@ -131,7 +131,7 @@ export const MetodeLogiArimaPage = () => {
               const red = Math.floor(Math.random() * 128);
               const green = Math.floor(Math.random() * 128);
               const blue = Math.floor(Math.random() * 128);
-              const alpha = Math.random();
+              const alpha = 0.7;
               if (item.label.includes("Forecast")) {
                 return {
                   type: "line",
@@ -157,11 +157,11 @@ export const MetodeLogiArimaPage = () => {
           value: nilai[index],
         }));
 
-        const dataActual = dataChart.actual;
+        const dataActual = dataChart.actual.slice(-20);
 
-        const indexDataActual = dataActual.length;
+        const indexDataActual = dataChart.actual.length;
 
-        const hasilPrediksi = dataChart.predicted;
+        const hasilPrediksi = dataChart.predicted.slice(-20);
 
         const _hasilPrediksi = hasilPrediksi.map((item, index) => ({
           no: indexDataActual + index + 1,

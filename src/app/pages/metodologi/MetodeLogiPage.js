@@ -105,7 +105,10 @@ export const MetodelogiPage = () => {
       return showDialog("Please Input product");
     }
     const params = {
-      alpha: 0.3,
+      alpha: 0.8,
+      beta: 0.5,
+      gamma: 0.5,
+      seasonLength: 7,
       pl: parseInt(prediksi),
       product_id: product.toString(),
     };
@@ -123,25 +126,25 @@ export const MetodelogiPage = () => {
         const listDataDaily =
           dataChart.datasets !== null
             ? dataChart.datasets.map((item) => {
-                const red = Math.floor(Math.random() * 128);
-                const green = Math.floor(Math.random() * 128);
-                const blue = Math.floor(Math.random() * 128);
-                const alpha = Math.random();
-                if (item.label.includes("Forecast")) {
-                  return {
-                    type: "line",
-                    borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                    borderWidth: 2,
-                    fill: false,
-                    ...item,
-                  };
-                } else {
-                  return {
-                    backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                    ...item,
-                  };
-                }
-              })
+              const red = Math.floor(Math.random() * 128);
+              const green = Math.floor(Math.random() * 128);
+              const blue = Math.floor(Math.random() * 128);
+              const alpha = 0.7;
+              if (item.label.includes("Forecast")) {
+                return {
+                  type: "line",
+                  borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                  borderWidth: 2,
+                  fill: false,
+                  ...item,
+                };
+              } else {
+                return {
+                  backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                  ...item,
+                };
+              }
+            })
             : [];
 
         // setFormulationData(filteredData);
@@ -215,7 +218,7 @@ export const MetodelogiPage = () => {
   const handleProductChange = (selectedOptions) => {
     if (selectedOptions && Array.isArray(selectedOptions)) {
       setProduct(
-        selectedOptions.map(function(selectedOption) {
+        selectedOptions.map(function (selectedOption) {
           if (selectedOption) {
             return selectedOption.value;
           }
