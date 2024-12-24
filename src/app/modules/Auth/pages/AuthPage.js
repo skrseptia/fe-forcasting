@@ -39,7 +39,7 @@ export function AuthPage() {
               {/* start:: Aside content */}
               <div className="flex-column-fluid d-flex flex-column justify-content-center">
                 <h3 className="font-size-h1 mb-5 text-white">
-                  Welcome to Andhiga Pupuk
+                  Welcome to Toko Pancing Putri Bandung
                 </h3>
               </div>
               {/* end:: Aside content */}
@@ -47,7 +47,7 @@ export function AuthPage() {
               {/* start:: Aside footer for desktop */}
               <div className="d-none flex-column-auto d-lg-flex justify-content-between mt-10">
                 <div className="opacity-70 font-weight-bold	text-white">
-                  &copy; 2023
+                  &copy; 2024
                 </div>
               </div>
               {/* end:: Aside footer for desktop */}
