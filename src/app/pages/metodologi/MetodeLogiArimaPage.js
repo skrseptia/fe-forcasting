@@ -70,7 +70,7 @@ export const MetodeLogiArimaPage = () => {
   // Filter
 
   const [product, setProduct] = useState([]);
-  const [prediksi, setPrediksi] = useState("");
+  const [prediksi, setPrediksi] = useState(4);
 
   const [listQty, setListQty] = useState(null);
   const [listPredictions, setListPredictions] = useState(null);
@@ -142,6 +142,8 @@ export const MetodeLogiArimaPage = () => {
                 };
               } else {
                 return {
+                  type: "line",
+
                   backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
                   ...item,
                 };

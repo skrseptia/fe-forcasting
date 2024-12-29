@@ -21,6 +21,8 @@ import {
 import { LayoutSplashScreen } from "../../../_metronic/layout";
 import { showErrorDialog } from "../../../utility";
 import { TransactionTable } from "./TransactionTable";
+import ExcelJS from 'exceljs'
+
 
 export const TransactionPage = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,7 @@ export const TransactionPage = () => {
   const [customer, setCustomer] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [dataFile, setDataFile] = useState([]);
 
   useEffect(() => {
     // Reset on first load
@@ -109,6 +112,63 @@ export const TransactionPage = () => {
     }
   };
 
+  const handleImport = async (event) => {
+    console.log('awkow')
+    const file = event.target.files[0]; // Ambil file yang diunggah
+    if (!file) return;
+    console.log(file, 'file')
+    const fileExtension = file.name.split(".").pop(); // Cek ekstensi file
+
+    if (fileExtension === "xlsx" || fileExtension === "xls") {
+      await readExcelFile(file);
+    } else if (fileExtension === "csv") {
+      await readCSVFile(file);
+    } else {
+      alert("File format tidak didukung. Harap unggah file Excel atau CSV.");
+    }
+
+  }
+
+  const readExcelFile = async (file) => {
+    const workbook = new ExcelJS.Workbook();
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      const buffer = e.target.result;
+      await workbook.xlsx.load(buffer);
+
+      const worksheet = workbook.getWorksheet(1); // Worksheet pertama
+      const rows = [];
+
+      worksheet.eachRow((row) => {
+        rows.push(row.values.slice(1)); // Hapus indeks kosong
+      });
+
+      setDataFile(rows);
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  const readCSVFile = async (file) => {
+    const workbook = new ExcelJS.Workbook();
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      const text = e.target.result;
+      const worksheet = await workbook.csv.load(text);
+
+      const rows = [];
+      worksheet.eachRow((row) => {
+        rows.push(row.values.slice(1)); // Hapus indeks kosong
+      });
+
+      setDataFile(rows);
+    };
+
+    reader.readAsText(file);
+  };
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSearch();
@@ -126,6 +186,20 @@ export const TransactionPage = () => {
           >
             Create
           </Button>
+          <input
+            type="file"
+            accept=".xlsx, .xls, .csv"
+            onChange={handleImport}
+            // style={{ display: "none" }}
+            id="file-input"
+          />
+          <label htmlFor="file-input">
+            <button
+              className="btn btn-danger ml-2"
+            >
+              Import
+            </button>
+          </label>
         </CardHeaderToolbar>
       </CardHeader>
       <CardBody>

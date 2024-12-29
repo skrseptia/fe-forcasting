@@ -68,7 +68,7 @@ export const MetodelogiPage = () => {
   );
 
   // Filter
-  const [prediksi, setPrediksi] = useState(12);
+  const [prediksi, setPrediksi] = useState(4);
   const [endDate, setEndDate] = useState("2023-05-31");
   const [product, setProduct] = useState([]);
 
@@ -125,27 +125,23 @@ export const MetodelogiPage = () => {
 
         const listDataDaily =
           dataChart.datasets !== null
-            ? dataChart.datasets.map((item) => {
-              const red = Math.floor(Math.random() * 128);
-              const green = Math.floor(Math.random() * 128);
-              const blue = Math.floor(Math.random() * 128);
-              const alpha = 0.7;
-              if (item.label.includes("Forecast")) {
-                return {
-                  type: "line",
-                  borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                  borderWidth: 2,
-                  fill: false,
-                  ...item,
-                };
-              } else {
-                return {
-                  backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
-                  ...item,
-                };
-              }
+            ? dataChart.datasets.map((item, index) => {
+              const colors = [
+                { borderColor: "rgba(255, 0, 0, 0.8)", backgroundColor: "rgba(255, 0, 0, 0.8)" }, // Merah
+                { borderColor: "rgba(0, 0, 255, 0.8)", backgroundColor: "rgba(0, 0, 255, 0.8)" }, // Biru
+              ];
+              const color = colors[index % colors.length];
+              return {
+                type: "line",
+                borderColor: color.borderColor,
+                backgroundColor: color.backgroundColor,
+                borderWidth: 2,
+                fill: false,
+                ...item,
+              };
             })
             : [];
+
 
         // setFormulationData(filteredData);
         setLabels(listLabel);
