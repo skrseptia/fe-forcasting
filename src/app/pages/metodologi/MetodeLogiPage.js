@@ -105,8 +105,8 @@ export const MetodelogiPage = () => {
       return showDialog("Please Input product");
     }
     const params = {
-      alpha: 0.8,
-      beta: 0.5,
+      alpha: 0.3,
+      beta: 0.3,
       gamma: 0.5,
       seasonLength: 7,
       pl: parseInt(prediksi),

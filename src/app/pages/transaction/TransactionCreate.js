@@ -56,7 +56,6 @@ export const TransactionCreate = () => {
       })
     );
   }, [dispatch]);
-  console.log(dataItems, "dataItems");
 
   useEffect(() => {
     if (dataItems !== null) {
@@ -280,7 +279,7 @@ export const TransactionCreate = () => {
   ];
 
   const [selectedRows, setSelectedRows] = useState([]);
-
+  console.log(data, 'data')
   const onSelectRow = {
     mode: "checkbox",
     // clickToSelect: true,

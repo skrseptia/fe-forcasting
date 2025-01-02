@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import BootstrapTable from "react-bootstrap-table-next";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Form, Col, Row, Modal } from "react-bootstrap";
 import {
   Card,
   CardBody,
@@ -17,9 +18,10 @@ import {
   selectPageNo,
   selectPageSize,
   selectTotalRecord,
+  addItem,
 } from "./transactionSlice";
 import { LayoutSplashScreen } from "../../../_metronic/layout";
-import { showErrorDialog } from "../../../utility";
+import { showErrorDialog, showSuccessDialog } from "../../../utility";
 import { TransactionTable } from "./TransactionTable";
 import ExcelJS from 'exceljs'
 
@@ -39,6 +41,41 @@ export const TransactionPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [dataFile, setDataFile] = useState([]);
+  const [showReport, setShowReport] = useState(false);
+  const [report, setReport] = useState(null);
+
+  const inputRef = useRef();
+
+  const handleButtonClick = () => {
+    inputRef.current.click();
+  };
+
+  const columnsReport = [
+    {
+      text: "code",
+      dataField: "code",
+      editable: false,
+    },
+    {
+      text: "category",
+      dataField: "name",
+      editable: false,
+    },
+
+    {
+      text: "Qty",
+      dataField: "qty",
+
+      style: { minWidth: "110px" },
+    },
+    // {
+    //   text: "Sub Total",
+    //   dataField: "sub_total",
+    //   editable: false,
+    //   formatter: formatCurrency,
+    // },
+  ];
+
 
   useEffect(() => {
     // Reset on first load
@@ -115,16 +152,15 @@ export const TransactionPage = () => {
   const handleImport = async (event) => {
     console.log('awkow')
     const file = event.target.files[0]; // Ambil file yang diunggah
+
     if (!file) return;
-    console.log(file, 'file')
+
     const fileExtension = file.name.split(".").pop(); // Cek ekstensi file
 
     if (fileExtension === "xlsx" || fileExtension === "xls") {
       await readExcelFile(file);
-    } else if (fileExtension === "csv") {
-      await readCSVFile(file);
     } else {
-      alert("File format tidak didukung. Harap unggah file Excel atau CSV.");
+      showErrorDialog("File format tidak didukung. Harap unggah file Excel");
     }
 
   }
@@ -140,33 +176,70 @@ export const TransactionPage = () => {
       const worksheet = workbook.getWorksheet(1); // Worksheet pertama
       const rows = [];
 
-      worksheet.eachRow((row) => {
-        rows.push(row.values.slice(1)); // Hapus indeks kosong
+      worksheet.eachRow((row, rowIndex) => {
+        if (rowIndex > 1) { // Lewati header
+          rows.push({
+            id: row.getCell(1).value, // Kolom 1 untuk id
+            code: row.getCell(2).value, // Kolom 2 untuk code
+            name: row.getCell(3).value, // Kolom 3 untuk name
+            description: row.getCell(4).value, // Kolom 4 untuk description
+            image_url: row.getCell(5).value || "", // Kolom 5 untuk image_url
+            qty: row.getCell(6).value, // Kolom 6 untuk qty
+            uom: {
+              id: row.getCell(7).value, // Kolom 7 untuk uom.id
+              name: row.getCell(8).value, // Kolom 8 untuk uom.name
+            },
+            price: row.getCell(9).value, // Kolom 9 untuk price
+            no: row.getCell(10).value, // Kolom 10 untuk no
+            maxQty: row.getCell(11).value, // Kolom 11 untuk maxQty
+            totalPrice: row.getCell(12).value, // Kolom 12 untuk totalPrice
+          });
+        }
       });
 
       setDataFile(rows);
+
+      console.log(rows, 'rows')
+      await handleSave(rows);
     };
+    console.log(dataFile, 'dataFile')
 
     reader.readAsArrayBuffer(file);
   };
 
-  const readCSVFile = async (file) => {
-    const workbook = new ExcelJS.Workbook();
-    const reader = new FileReader();
-
-    reader.onload = async (e) => {
-      const text = e.target.result;
-      const worksheet = await workbook.csv.load(text);
-
-      const rows = [];
-      worksheet.eachRow((row) => {
-        rows.push(row.values.slice(1)); // Hapus indeks kosong
-      });
-
-      setDataFile(rows);
+  const handleSave = async (rows) => {
+    const params = {
+      customer: 'A',
+      transaction_lines: rows.map((item) => {
+        return {
+          product_id: item.id,
+          qty: parseInt(item.qty),
+        };
+      }),
     };
 
-    reader.readAsText(file);
+    console.log(params, "params");
+    try {
+      const response = await dispatch(addItem(params));
+      console.log(response, "response");
+      if (response.payload.status === 200) {
+        const action = await showSuccessDialog(response.payload.message);
+        if (action.isConfirmed) setReport(response.payload.data.data);
+        handleShowReport();
+      } else {
+        showErrorDialog(response.payload.error);
+      }
+    } catch (error) {
+      showErrorDialog(error.message);
+      console.log(error.message);
+    }
+  };
+
+  const handleShowReport = () => {
+    setShowReport(true);
+  };
+  const handleCloseReport = () => {
+    setShowReport(false);
   };
 
   const handleKeyPress = (event) => {
@@ -185,21 +258,26 @@ export const TransactionPage = () => {
             onClick={() => history.push("/transaction/create")}
           >
             Create
-          </Button>
-          <input
-            type="file"
-            accept=".xlsx, .xls, .csv"
-            onChange={handleImport}
-            // style={{ display: "none" }}
-            id="file-input"
-          />
+            </Button>
+            <input
+              type="file"
+              ref={inputRef}
+              accept=".xlsx, .xls"
+              onChange={handleImport}
+              style={{ display: "none" }}
+              id="file-input"
+            />
           <label htmlFor="file-input">
             <button
+                onClick={handleButtonClick}
               className="btn btn-danger ml-2"
             >
               Import
             </button>
           </label>
+
+            {/* <pre>{JSON.stringify(dataFile)}</pre> */}
+
         </CardHeaderToolbar>
       </CardHeader>
       <CardBody>
@@ -283,6 +361,32 @@ export const TransactionPage = () => {
           />
         )}
       </CardBody>
+
+        {report && (
+          <Modal show={showReport} onHide={handleCloseReport} size="lg">
+            <Modal.Body>
+              <BootstrapTable
+                wrapperClasses="table-responsive"
+                classes="table table-head-custom table-vertical-center overflow-hidden"
+                bootstrap4
+                bordered={false}
+                keyField="id"
+                data={report.transaction_lines}
+                columns={columnsReport}
+              />
+
+              <Row className="mt-6">
+                <Button
+                  variant="light"
+                  className="mr-3"
+                  onClick={() => handleCloseReport()}
+                >
+                  <i className="fa fa-arrow-left"></i>Close
+                </Button>
+              </Row>
+            </Modal.Body>
+          </Modal>
+        )}
     </Card>
   );
 };
