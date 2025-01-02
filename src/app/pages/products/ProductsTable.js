@@ -121,13 +121,13 @@ export const ProductsTable = ({ data, loading }) => {
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      text: " qty",
-      dataField: "qty",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
+    // {
+    //   text: " qty",
+    //   dataField: "qty",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    //   headerSortingClasses,
+    // },
     // {
     //   text: "price",
     //   dataField: "price",
