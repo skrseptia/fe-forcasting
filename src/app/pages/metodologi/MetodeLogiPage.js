@@ -294,6 +294,7 @@ export const MetodelogiPage = () => {
                 <Col sm={6}>
                   <Form.Control
                     type="number"
+                    min={1}
                     onChange={(e) => setPrediksi(e.target.value)}
                     value={prediksi}
                   />
