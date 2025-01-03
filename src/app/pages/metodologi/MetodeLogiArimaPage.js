@@ -152,7 +152,7 @@ export const MetodeLogiArimaPage = () => {
             })
             : [];
 
-        const nilai = listDataDaily[0].data;
+        const nilai = listDataDaily[1].data;
 
         const hasil = listLabel.map((week, index) => ({
           no: index + 1,
@@ -291,6 +291,7 @@ export const MetodeLogiArimaPage = () => {
                 <Col sm={6}>
                   <Form.Control
                     type="number"
+                    min={1}
                     onChange={(e) => setPrediksi(e.target.value)}
                     value={prediksi}
                   />
