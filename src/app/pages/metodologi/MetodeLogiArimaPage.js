@@ -123,15 +123,16 @@ export const MetodeLogiArimaPage = () => {
         setForecastData({});
         const dataChart = response.payload.data.data;
 
-        const listLabel = dataChart.labels.slice(-20);
+        // const listLabel = dataChart.labels.slice(-20);
+        const listLabel = dataChart.labels;
 
-        const listDataDaily =
+        let listDataDaily =
           dataChart.datasets !== null
             ? dataChart.datasets.map((item) => {
               const red = Math.floor(Math.random() * 128);
               const green = Math.floor(Math.random() * 128);
               const blue = Math.floor(Math.random() * 128);
-              const alpha = 0.7;
+              const alpha = 0.9;
               if (item.label.includes("Forecast")) {
                 return {
                   type: "line",
@@ -159,11 +160,11 @@ export const MetodeLogiArimaPage = () => {
           value: nilai[index],
         }));
 
-        const dataActual = dataChart.actual.slice(-20);
+        const dataActual = dataChart.actual
 
         const indexDataActual = dataChart.actual.length;
 
-        const hasilPrediksi = dataChart.predicted.slice(-20);
+        const hasilPrediksi = dataChart.predicted;
 
         const _hasilPrediksi = hasilPrediksi.map((item, index) => ({
           no: indexDataActual + index + 1,
@@ -173,7 +174,6 @@ export const MetodeLogiArimaPage = () => {
         const hasilMAE = dataChart.mean_absolute_error;
         const hasilMSE = dataChart.mse.toFixed(2);
         const hasilMAPE = dataChart.mape.toFixed(2);
-        console.log({ hasilMSE })
 
         setPredicted(_hasilPrediksi);
         setMAE(hasilMAE);

@@ -193,6 +193,7 @@ export const TransactionPage = () => {
             no: row.getCell(10).value, // Kolom 10 untuk no
             maxQty: row.getCell(11).value, // Kolom 11 untuk maxQty
             totalPrice: row.getCell(12).value, // Kolom 12 untuk totalPrice
+            trx_date: row.getCell(13).value, // Kolom 13 untuk trxDate
           });
         }
       });
@@ -200,32 +201,58 @@ export const TransactionPage = () => {
       setDataFile(rows);
 
       console.log(rows, 'rows')
-      await handleSave(rows);
+      const paramsArray = rows.map((item) => {
+        return {
+          customer: 'A',
+          trx_date: item.trx_date, // Ambil trx_date sesuai dengan masing-masing item
+          transaction_lines: [
+            {
+              product_id: item.id,
+              qty: parseInt(item.qty),
+            }
+          ],
+        };
+      });
+      console.log({ paramsArray });
+
+      let response
+      for (const params of paramsArray) {
+        response = await handleSave(params);
+
+      }
+
+      const action = await showSuccessDialog(response.payload.message);
+      if (action.isConfirmed) setReport(response.payload.data.data);
+      handleShowReport();
+
     };
     console.log(dataFile, 'dataFile')
 
     reader.readAsArrayBuffer(file);
   };
 
-  const handleSave = async (rows) => {
-    const params = {
-      customer: 'A',
-      transaction_lines: rows.map((item) => {
-        return {
-          product_id: item.id,
-          qty: parseInt(item.qty),
-        };
-      }),
-    };
+  const handleSave = async (params) => {
+  // const params = {
+  //   customer: 'A',
+  //   trx_date: '2024-01-01',
+  //   transaction_lines: rows.map((item) => {
+  //     return {
+  //       product_id: item.id,
+  //       qty: parseInt(item.qty),
+  //     };
+  //   }),
+  // };
 
     console.log(params, "params");
     try {
       const response = await dispatch(addItem(params));
       console.log(response, "response");
       if (response.payload.status === 200) {
-        const action = await showSuccessDialog(response.payload.message);
-        if (action.isConfirmed) setReport(response.payload.data.data);
-        handleShowReport();
+        // const action = await showSuccessDialog(response.payload.message);
+        // if (action.isConfirmed) setReport(response.payload.data.data);
+        // handleShowReport();
+
+        return response
       } else {
         showErrorDialog(response.payload.error);
       }

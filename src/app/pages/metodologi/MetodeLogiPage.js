@@ -105,8 +105,8 @@ export const MetodelogiPage = () => {
       return showDialog("Please Input product");
     }
     const params = {
-      alpha: 0.3,
-      beta: 0.3,
+      alpha: 0.2,
+      beta: 0.2,
       gamma: 0.5,
       seasonLength: 7,
       pl: parseInt(prediksi),
@@ -142,6 +142,7 @@ export const MetodelogiPage = () => {
             })
             : [];
 
+        console.log({ dataChart })
 
         // setFormulationData(filteredData);
         setLabels(listLabel);
@@ -180,7 +181,8 @@ export const MetodelogiPage = () => {
         setPredicted(_hasilPrediksi);
         setMAE(hasilMAE);
         setMAPE(hasilMAPE);
-
+        console.log({ listLabel })
+        console.log({ listDataDaily })
         setTable(hasil);
       } else {
         showErrorDialog(response.payload.error);
