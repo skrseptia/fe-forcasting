@@ -337,7 +337,23 @@ export const MetodeLogiArimaPage = () => {
         </div>
 
         <div>
-          <h3>Hasil Predisi</h3>
+          <h3>Hasil Prediksi</h3>
+          <h3>----------------------------------</h3>
+          <h3>Dengan Parameter : </h3>
+          <h3>p : 1</h3>
+          <h3>d : 0</h3>
+          <h3>q : 1</h3>
+          <h3>P : 1</h3>
+          <h3>D : 0</h3>
+          <h3>Q : 1</h3>
+          <h3>s : 35</h3>
+          <h3>----------------------------------</h3>
+
+
+
+
+
+
           {predicted.map((item) => (
             <div key={item.label}>
               <h3>{item.label}</h3>

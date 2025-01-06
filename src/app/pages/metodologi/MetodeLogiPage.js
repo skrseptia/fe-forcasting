@@ -341,6 +341,16 @@ export const MetodelogiPage = () => {
 
         <div>
           <h3>Hasil Predisi</h3>
+
+          <h3>----------------------------------</h3>
+          <h3>Dengan Parameter : </h3>
+          <h3>alpha         : 0.2</h3>
+          <h3>beta          : 0.2</h3>
+          <h3>gama          : 0.51</h3>
+          <h3>seasonLength  : 7</h3>
+          <h3>----------------------------------</h3>
+
+
           {predicted.map((item) => (
             <div key={item.label}>
               <h3>{item.label}</h3>
