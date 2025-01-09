@@ -127,8 +127,8 @@ export const MetodelogiPage = () => {
           dataChart.datasets !== null
             ? dataChart.datasets.map((item, index) => {
               const colors = [
-                { borderColor: "rgba(255, 0, 0, 0.8)", backgroundColor: "rgba(255, 0, 0, 0.8)" }, // Merah
-                { borderColor: "rgba(0, 0, 255, 0.8)", backgroundColor: "rgba(0, 0, 255, 0.8)" }, // Biru
+                { borderColor: "rgba(232, 104, 104, 0.8)", backgroundColor: "rgba(232, 104, 104, 0.8)" }, // Merah
+                { borderColor: "rgba(66, 181, 248, 0.8)", backgroundColor: "rgba(66, 181, 248, 0.8)" }, // Biru
               ];
               const color = colors[index % colors.length];
               return {

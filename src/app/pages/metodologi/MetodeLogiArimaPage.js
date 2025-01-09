@@ -128,15 +128,17 @@ export const MetodeLogiArimaPage = () => {
 
         let listDataDaily =
           dataChart.datasets !== null
-            ? dataChart.datasets.map((item) => {
-              const red = Math.floor(Math.random() * 128);
-              const green = Math.floor(Math.random() * 128);
-              const blue = Math.floor(Math.random() * 128);
-              const alpha = 0.9;
+            ? dataChart.datasets.map((item, index) => {
+              const colors = [
+                { borderColor: "rgba(232, 104, 104, 0.8)", backgroundColor: "rgba(232, 104, 104, 0.8)" }, // Merah
+                { borderColor: "rgba(66, 181, 248, 0.8)", backgroundColor: "rgba(66, 181, 248, 0.8)" }, // Biru
+              ];
+              const color = colors[index % colors.length];
               if (item.label.includes("Forecast")) {
                 return {
                   type: "line",
-                  borderColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                  borderColor: color.borderColor,
+                  backgroundColor: color.backgroundColor,
                   borderWidth: 2,
                   fill: false,
                   ...item,
@@ -145,7 +147,8 @@ export const MetodeLogiArimaPage = () => {
                 return {
                   type: "line",
 
-                  backgroundColor: `rgba(${red}, ${green}, ${blue}, ${alpha})`,
+                  borderColor: color.borderColor,
+                backgroundColor: color.backgroundColor,
                   ...item,
                 };
               }
