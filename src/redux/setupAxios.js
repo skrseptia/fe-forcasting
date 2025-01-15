@@ -7,6 +7,7 @@ export default function setupAxios(axios, store) {
 
       if (authToken) {
         config.headers.Authorization = `Bearer ${authToken}`;
+        config.headers["ngrok-skip-browser-warning"] = true;
       }
 
       return config;

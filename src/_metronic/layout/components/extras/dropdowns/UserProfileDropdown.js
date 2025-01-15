@@ -89,19 +89,7 @@ export function UserProfileDropdown() {
         </>
         <div className="navi-link">
           <div className="navi navi-spacer-x-0 pt-5 prof">
-            <Link to="/user-profile" className="navi-item ">
-              <div className="navi-link" style={{ paddingLeft: "1rem" }}>
-                <div className="navi-icon mr-2">
-                  <i className="flaticon2-user flaticon2-line- "></i>
-                </div>
-                <div className="navi-text">
-                  <div className="font-weight-bold cursor-pointer">
-                    My Profile
-                  </div>
-                  <div className="text-muted">Account settings and more</div>
-                </div>
-              </div>
-            </Link>
+            
             <div className="navi-separator mt-3"></div>
             <div className="navi-footer  px-8 py-5 ">
               <Link
