@@ -83,6 +83,13 @@ export const MetodeLogiArimaPage = () => {
   const [table, setTable] = useState([]);
   const [MAE, setMAE] = useState(null);
   const [MAPE, setMAPE] = useState(null);
+  const [showParams, setShowParams] = useState(false);
+
+  const toggleParams = () => {
+    setShowParams((prev) => !prev);
+  };
+
+
 
   useEffect(() => {
     // Reset on first load
@@ -342,14 +349,34 @@ export const MetodeLogiArimaPage = () => {
         <div>
           <h3>Hasil Prediksi</h3>
           <h3>----------------------------------</h3>
-          <h3>Dengan Parameter : </h3>
+          {/* <h3>Dengan Parameter : </h3>
           <h3>p : 1</h3>
           <h3>d : 0</h3>
           <h3>q : 1</h3>
           <h3>P : 1</h3>
           <h3>D : 0</h3>
           <h3>Q : 1</h3>
-          <h3>s : 35</h3>
+          <h3>s : 35</h3> */}
+           <div className="mb-3">
+          <Button onClick={toggleParams} className="btn btn-danger">
+            {showParams ? "Tutup" : "Cek Param Prediksi"}
+          </Button>
+        </div>
+
+        
+
+        {showParams && (
+          <div>
+            <h3>Dengan Parameter :</h3>
+            <h3>p : 1</h3>
+            <h3>d : 0</h3>
+            <h3>q : 1</h3>
+            <h3>P : 1</h3>
+            <h3>D : 0</h3>
+            <h3>Q : 1</h3>
+            <h3>s : 12</h3>
+          </div>
+        )}
           <h3>----------------------------------</h3>
 
 
