@@ -56,7 +56,7 @@ export const UomPage = () => {
     <LayoutSplashScreen />
   ) : (
     <Card>
-      <CardHeader title="UOM">
+      <CardHeader title="UOM (Unit Of Measure)">
         <CardHeaderToolbar>
           <Button
             className="btn btn-danger"
