@@ -95,6 +95,7 @@ export const TransactionPage = () => {
     try {
       const response = await dispatch(fetchAll(params));
       if (response.payload.data.success === true) {
+        console.log(response.payload.data.data)
       } else {
         showErrorDialog(response.payload.error);
       }

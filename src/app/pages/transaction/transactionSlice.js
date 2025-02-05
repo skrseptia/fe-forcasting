@@ -18,12 +18,54 @@ const initialState = {
   result: null,
   dataId: null,
 };
+const mergeTransactionsByDateAndCreator = (transactions) => {
+  return Object.values(
+    transactions.reduce((acc, trx) => {
+      // Ambil hanya tanggal dari trx_date (tanpa jam)
+      const dateOnly = trx.trx_date.split(" ")[0]; // Format: YYYY-MM-DD
+      const key = `${dateOnly}-${trx.created_by}`; // Gabungkan dengan created_by
+
+      if (!acc[key]) {
+        // Simpan properti dari transaksi pertama yang ditemukan
+        acc[key] = {
+          id: trx.id,
+          trx_date: trx.trx_date, // Hanya menyimpan tanggal
+          trx_id: trx.trx_id,
+          created_by: trx.created_by,
+          customer: trx.customer,
+          total: 0, // Akan dihitung ulang
+          transaction_lines: [],
+        };
+      }
+
+      // Gabungkan transaction_lines
+      acc[key].transaction_lines.push(...trx.transaction_lines);
+
+      // Hitung ulang total
+      acc[key].total += trx.total;
+
+      return acc;
+    }, {})
+  );
+};
 
 export const fetchAll = createAsyncThunk(
   "transaction/fetchAll",
   async (payload) => {
     const response = await getAll(payload);
-    return response;
+    if (response.data.success) {
+      const mergedData = mergeTransactionsByDateAndCreator(response.data.data);
+
+      return {
+        ...response,
+        data: {
+          ...response.data,
+          data: mergedData, // Pastikan tetap dalam response.data.data
+        },
+      };
+    }
+
+    return response; // Jika gagal, tetap kembalikan response asli
   }
 );
 

@@ -14,6 +14,8 @@ const initialValues = {
 function ForgotPassword(props) {
   const { intl } = props;
   const [isRequested, setIsRequested] = useState(false);
+  const [password, setPassword] = useState(null);
+
   const ForgotPasswordSchema = Yup.object().shape({
     email: Yup.string()
       .email("Wrong email format")
@@ -43,8 +45,12 @@ function ForgotPassword(props) {
     validationSchema: ForgotPasswordSchema,
     onSubmit: (values, { setStatus, setSubmitting }) => {
       requestPassword(values.email)
-        .then(() => setIsRequested(true))
+        .then((res) => {
+          setPassword(res?.data?.data?.password)
+          setIsRequested(true)
+        })
         .catch(() => {
+          setPassword(null)
           setIsRequested(false);
           setSubmitting(false);
           setStatus(
@@ -59,63 +65,71 @@ function ForgotPassword(props) {
 
   return (
     <>
-      {isRequested && <Redirect to="/auth" />}
-      {!isRequested && (
-        <div className="login-form login-forgot" style={{ display: "block" }}>
-          <div className="text-center mb-10 mb-lg-20">
-            <h3 className="font-size-h1">Forgotten Password ?</h3>
-            <div className="text-muted font-weight-bold">
-              Enter your email to reset your password
-            </div>
+      <div className="login-form login-forgot" style={{ display: "block" }}>
+        <div className="text-center mb-10 mb-lg-20">
+          <h3 className="font-size-h1">Forgotten Password ?</h3>
+          <div className="text-muted font-weight-bold">
+            Enter your email to show your password
           </div>
-          <form
-            onSubmit={formik.handleSubmit}
-            className="form fv-plugins-bootstrap fv-plugins-framework animated animate__animated animate__backInUp"
-          >
-            {formik.status && (
-              <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-                <div className="alert-text font-weight-bold">
-                  {formik.status}
-                </div>
+        </div>
+        <form
+          onSubmit={formik.handleSubmit}
+          className="form fv-plugins-bootstrap fv-plugins-framework animated animate__animated animate__backInUp"
+        >
+          {!password && formik.status && (
+            <div className="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+              <div className="alert-text font-weight-bold">
+                {formik.status}
               </div>
-            )}
-            <div className="form-group fv-plugins-icon-container">
-              <input
-                type="email"
-                className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
-                  "email"
-                )}`}
-                name="email"
-                {...formik.getFieldProps("email")}
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <div className="fv-plugins-message-container">
-                  <div className="fv-help-block">{formik.errors.email}</div>
-                </div>
-              ) : null}
             </div>
-            <div className="form-group d-flex flex-wrap flex-center">
+          )}
+          <div className="form-group fv-plugins-icon-container">
+            <input
+              type="email"
+              className={`form-control form-control-solid h-auto py-5 px-6 ${getInputClasses(
+                "email"
+              )}`}
+              name="email"
+              {...formik.getFieldProps("email")}
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="fv-plugins-message-container">
+                <div className="fv-help-block">{formik.errors.email}</div>
+              </div>
+            ) : null}
+          </div>
+          <div className="form-group d-flex flex-wrap flex-center">
+            <button
+              id="kt_login_forgot_submit"
+              type="submit"
+              className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4"
+            // disabled={formik.isSubmitting}
+            >
+              Show password
+            </button>
+            <Link to="/auth">
               <button
-                id="kt_login_forgot_submit"
-                type="submit"
-                className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4"
-                disabled={formik.isSubmitting}
+                type="button"
+                id="kt_login_forgot_cancel"
+                className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
               >
-                Submit
+                Cancel
               </button>
-              <Link to="/auth">
-                <button
-                  type="button"
-                  id="kt_login_forgot_cancel"
-                  className="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4"
-                >
-                  Cancel
-                </button>
-              </Link>
-            </div>
-          </form>
+            </Link>
+          </div>
+        </form>
+        {password && (
+          <div className="mt-6">
+            <label className="block text-gray-700">Your Password:</label>
+            <input
+              type="text"
+              value={password}
+              readOnly
+              className={`form-control form-control-solid h-auto py-5 px-6}`}
+            />
         </div>
       )}
+      </div>
     </>
   );
 }

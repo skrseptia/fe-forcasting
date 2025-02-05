@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 function Login(props) {
+  const history = useHistory()
   const { intl } = props;
   const [loading, setLoading] = useState(false);
   const LoginSchema = Yup.object().shape({
@@ -176,6 +177,18 @@ function Login(props) {
           </button>
         </div>
       </form>
+      <div className="form-group d-flex flex-wrap justify-content-center align-items-center">
+        <button
+          disabled={formik.isSubmitting}
+          className={"btn btn-primary font-weight-bold px-9 py-4 my-3"}
+          onClick={() => {
+            history.push('/auth/forgot-password')
+          }}
+        >
+          <span>Forgot password</span>
+          {loading && <span className="ml-3 spinner spinner-white"></span>}
+        </button>
+      </div>
       {/*end::Form*/}
     </div>
   );
