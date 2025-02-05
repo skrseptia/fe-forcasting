@@ -109,6 +109,15 @@ export function AsideMenuList({ layoutProps }) {
           icon: "/Design/Layers.svg",
           childs: [],
         },
+        {
+          menu_id: 1,
+          pid: 0,
+          menu_name: "Perbandingan Sarima Dan Triple Exponential Smoothing ",
+          title: "Perbandingan Sarima Dan Triple Exponential Smoothing ",
+          url: "/perbandingan-metodologi",
+          icon: "/Design/Layers.svg",
+          childs: [],
+        },
         // {
         //   menu_id: 1,
         //   pid: 0,
