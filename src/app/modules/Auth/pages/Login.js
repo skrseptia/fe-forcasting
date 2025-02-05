@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
@@ -31,6 +31,8 @@ if (process.env.NODE_ENV === "development") {
 function Login(props) {
   const { intl } = props;
   const [loading, setLoading] = useState(false);
+  const history = useHistory()
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .email("Wrong email format")
@@ -111,7 +113,7 @@ function Login(props) {
               })
             );
           })
-          .finally(() => {});
+          .finally(() => { });
       }, 1000);
     },
   });
@@ -166,6 +168,18 @@ function Login(props) {
         </div>
         <div className="form-group d-flex flex-wrap justify-content-center align-items-center">
           <button
+            disabled={formik.isSubmitting}
+            className={`btn text-primary font-weight-bold px-9 py-4 my-3`}
+            onClick={() => {
+              history.push('/auth/forgot-password')
+            }}
+          >
+            <span>Forgot Password</span>
+            {loading && <span className="ml-3 spinner spinner-white"></span>}
+          </button>
+        </div>
+        <div className="form-group d-flex flex-wrap justify-content-center align-items-center">
+          <button
             id="kt_login_signin_submit"
             type="submit"
             disabled={formik.isSubmitting}
@@ -176,6 +190,7 @@ function Login(props) {
           </button>
         </div>
       </form>
+
       {/*end::Form*/}
     </div>
   );
