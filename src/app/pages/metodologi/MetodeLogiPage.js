@@ -84,6 +84,12 @@ export const MetodelogiPage = () => {
   const [MAE, setMAE] = useState(null);
   const [MSE, setMSE] = useState(null);
   const [MAPE, setMAPE] = useState(null);
+  const [showParams, setShowParams] = useState(false);
+
+  const toggleParams = () => {
+    setShowParams((prev) => !prev);
+  };
+
 
   useEffect(() => {
     // Reset on first load
@@ -342,17 +348,26 @@ export const MetodelogiPage = () => {
         <div>
           <h3>Hasil Prediksi</h3>
 
-          {predicted && 
-          <>
-            <h3>----------------------------------</h3>
-            <h3>Dengan Parameter : </h3>
-            <h3>alpha         : 0.2</h3>
-            <h3>beta          : 0.2</h3>
-            <h3>gama          : 0.51</h3>
-            <h3>seasonLength  : 7</h3>
-            <h3>----------------------------------</h3>
-          </>
-          }
+
+          <div className="mb-3">
+            <Button onClick={toggleParams} className="btn btn-danger">
+              {showParams ? "Tutup" : "Cek Param Prediksi"}
+            </Button>
+          </div>
+
+
+
+          {showParams && (
+            <div>
+              <h3>----------------------------------</h3>
+              <h3>Dengan Parameter : </h3>
+              <h3>alpha         : 0.2</h3>
+              <h3>beta          : 0.2</h3>
+              <h3>gama          : 0.51</h3>
+              <h3>seasonLength  : 7</h3>
+              <h3>----------------------------------</h3>
+            </div>
+          )}
 
 
           {predicted.map((item) => (
