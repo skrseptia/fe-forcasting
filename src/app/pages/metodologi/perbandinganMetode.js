@@ -49,6 +49,7 @@ export const CombinedMetodePage = () => {
     const [MAPEExpo, setMAPEExpo] = useState(null);
     const [MAEArima, setMAEArima] = useState(null);
     const [MAPEArima, setMAPEArima] = useState(null);
+    const [predict, setPredict] = useState([]);
 
     useEffect(() => {
         dispatch(resetData());
@@ -59,18 +60,23 @@ export const CombinedMetodePage = () => {
         if (product.length < 1) return showDialog("Please select a product");
         if (prediksi === "") return showDialog("Please enter prediction value");
 
+        let adjustedPrediksi = prediksi;
+        if (predict === "month") {
+            adjustedPrediksi *= 4;  // Pastikan nilai dikalikan 4 sebelum digunakan
+        }
+
         const paramsExpo = {
             alpha: 0.2,
             beta: 0.2,
             gamma: 0.5,
             seasonLength: 7,
-            pl: parseInt(prediksi),
+            pl: parseInt(adjustedPrediksi),
             product_id: product.toString(),
         };
 
         const paramsArima = {
             p: 1, d: 0, q: 1, P: 1, D: 0, Q: 1, s: 35,
-            pl: parseInt(prediksi),
+            pl: parseInt(adjustedPrediksi),
             product_id: product.toString(),
         };
 
@@ -133,6 +139,21 @@ export const CombinedMetodePage = () => {
 
     const productOptions = dataProduct.map((e) => ({ value: e.id, label: e.name }));
 
+    const predictOptions = [
+        {
+            label: 'Month',
+            value: 'month',
+        },
+        {
+            label: 'Week',
+            value: 'week',
+        },
+    ]
+
+    const handleChangePredict = (value) => {
+        setPredict(value.value);
+    };
+
     const generatePDF = useReactToPrint({
         content: () => conponentPDF.current,
         documentTitle: "Forecasting Results",
@@ -157,8 +178,25 @@ export const CombinedMetodePage = () => {
                             <Col sm={6}>
                                 <Form.Group as={Row}>
                                     <Form.Label column sm={3}><b>Prediction Period</b></Form.Label>
-                                    <Col sm={6}>
-                                        <Form.Control type="number" min={1} onChange={(e) => setPrediksi(e.target.value)} value={prediksi} />
+                                        <Col sm={9}>
+                                            <Row className="g-1">
+                                                <Col xs={3}>
+                                                    <Form.Control
+                                                        type="number"
+                                                        min={1}
+                                                        onChange={(e) => setPrediksi(e.target.value)}
+                                                        value={prediksi}
+                                                    />
+                                                </Col>
+                                                <Col xs={6}>
+                                                    <Select
+                                                        options={predictOptions}
+                                                        value={getValueOptions(predict, predictOptions)}
+                                                        onChange={handleChangePredict}
+                                                        className="w-100"
+                                                    />
+                                                </Col>
+                                            </Row>
                                     </Col>
                                 </Form.Group>
                             </Col>

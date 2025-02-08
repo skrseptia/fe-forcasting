@@ -150,6 +150,7 @@ console.log(data,'data')
       const listTopTrx = data?.top_5_product?.map((item, index) => {
         return {
           ...item,
+          total_qty: `${item.total_qty} PCS`,
           no: index + 1,
         };
       });

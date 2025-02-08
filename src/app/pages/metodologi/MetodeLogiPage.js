@@ -85,6 +85,7 @@ export const MetodelogiPage = () => {
   const [MSE, setMSE] = useState(null);
   const [MAPE, setMAPE] = useState(null);
   const [showParams, setShowParams] = useState(false);
+  const [predict, setPredict] = useState([]);
 
   const toggleParams = () => {
     setShowParams((prev) => !prev);
@@ -110,12 +111,18 @@ export const MetodelogiPage = () => {
     if (prediksi === "") {
       return showDialog("Please Input product");
     }
+    let adjustedPrediksi = prediksi;
+    if (predict === "month") {
+      adjustedPrediksi *= 4;  // Pastikan nilai dikalikan 4 sebelum digunakan
+    }
+
+
     const params = {
       alpha: 0.2,
       beta: 0.2,
       gamma: 0.5,
       seasonLength: 7,
-      pl: parseInt(prediksi),
+      pl: parseInt(adjustedPrediksi),
       product_id: product.toString(),
     };
 
@@ -211,6 +218,21 @@ export const MetodelogiPage = () => {
     setProduct(value.value);
   };
 
+  const predictOptions = [
+    {
+      label: 'Month',
+      value: 'month',
+    },
+    {
+      label: 'Week',
+      value: 'week',
+    },
+  ]
+
+  const handleChangePredict = (value) => {
+    setPredict(value.value);
+  };
+
   function getValueProduct(products) {
     let output = [];
     products.map((val) => {
@@ -297,17 +319,28 @@ export const MetodelogiPage = () => {
                 <Form.Label column sm={3}>
                   <b>Prediksi </b>
                 </Form.Label>
-                <Col sm={6}>
-                  <Form.Control
-                    type="number"
-                    min={1}
-                    onChange={(e) => setPrediksi(e.target.value)}
-                    value={prediksi}
-                  />
-                </Col>
-              </Form.Group>
-            </Col>
-
+                  <Col sm={9}>
+                    <Row className="g-1">
+                      <Col xs={3}>
+                        <Form.Control
+                          type="number"
+                          min={1}
+                          onChange={(e) => setPrediksi(e.target.value)}
+                          value={prediksi}
+                        />
+                      </Col>
+                      <Col xs={6}>
+                        <Select
+                          options={predictOptions}
+                          value={getValueOptions(predict, predictOptions)}
+                          onChange={handleChangePredict}
+                          className="w-100"
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Form.Group>
+              </Col>
             {/* Right Row */}
 
             <Col sm={6}>

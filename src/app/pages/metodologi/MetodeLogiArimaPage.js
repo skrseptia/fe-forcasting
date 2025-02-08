@@ -84,12 +84,11 @@ export const MetodeLogiArimaPage = () => {
   const [MAE, setMAE] = useState(null);
   const [MAPE, setMAPE] = useState(null);
   const [showParams, setShowParams] = useState(false);
+  const [predict, setPredict] = useState([]);
 
   const toggleParams = () => {
     setShowParams((prev) => !prev);
   };
-
-
 
   useEffect(() => {
     // Reset on first load
@@ -110,6 +109,11 @@ export const MetodeLogiArimaPage = () => {
     if (prediksi === "") {
       return showDialog("Please Input product");
     }
+    let adjustedPrediksi = prediksi;
+    if (predict === "month") {
+      adjustedPrediksi *= 4;  // Pastikan nilai dikalikan 4 sebelum digunakan
+    }
+
     const params = {
       p: 1,
       d: 0,
@@ -118,7 +122,7 @@ export const MetodeLogiArimaPage = () => {
       D: 0,  // Seasonal differencing order
       Q: 1,  // Seasonal MA order
       s: 35, // Seasonal period (e.g., 12 for monthly data, 4 for triwulan, 7 for weekly)
-      pl: prediksi,
+      pl: adjustedPrediksi,
       product_id: product.toString(),
     };
 
@@ -155,7 +159,7 @@ export const MetodeLogiArimaPage = () => {
                   type: "line",
 
                   borderColor: color.borderColor,
-                backgroundColor: color.backgroundColor,
+                  backgroundColor: color.backgroundColor,
                   ...item,
                 };
               }
@@ -210,6 +214,21 @@ export const MetodeLogiArimaPage = () => {
 
   const handleChangeProduct = (value) => {
     setProduct(value.value);
+  };
+
+  const predictOptions = [
+    {
+      label: 'Month',
+      value: 'month',
+    },
+    {
+      label: 'Week',
+      value: 'week',
+    },
+  ]
+
+  const handleChangePredict = (value) => {
+    setPredict(value.value);
   };
 
   function getValueProduct(products) {
@@ -298,13 +317,25 @@ export const MetodeLogiArimaPage = () => {
                 <Form.Label column sm={3}>
                   <b>Prediksi </b>
                 </Form.Label>
-                <Col sm={6}>
-                  <Form.Control
-                    type="number"
-                    min={1}
-                    onChange={(e) => setPrediksi(e.target.value)}
-                    value={prediksi}
-                  />
+                  <Col sm={9}>
+                    <Row className="g-1">
+                      <Col xs={3}>
+                        <Form.Control
+                          type="number"
+                          min={1}
+                          onChange={(e) => setPrediksi(e.target.value)}
+                          value={prediksi}
+                        />
+                      </Col>
+                      <Col xs={6}>
+                        <Select
+                          options={predictOptions}
+                          value={getValueOptions(predict, predictOptions)}
+                          onChange={handleChangePredict}
+                          className="w-100"
+                        />
+                      </Col>
+                    </Row>
                 </Col>
               </Form.Group>
             </Col>
@@ -349,27 +380,27 @@ export const MetodeLogiArimaPage = () => {
         <div>
           <h3>Hasil Prediksi</h3>
           <h3>----------------------------------</h3>
-         
-           <div className="mb-3">
-          <Button onClick={toggleParams} className="btn btn-danger">
-            {showParams ? "Tutup" : "Cek Param Prediksi"}
-          </Button>
-        </div>
 
-        
+            <div className="mb-3">
+              <Button onClick={toggleParams} className="btn btn-danger">
+                {showParams ? "Tutup" : "Cek Param Prediksi"}
+              </Button>
+            </div>
 
-        {showParams && (
-          <div>
-            <h3>Dengan Parameter :</h3>
-            <h3>p : 1</h3>
-            <h3>d : 0</h3>
-            <h3>q : 1</h3>
-            <h3>P : 1</h3>
-            <h3>D : 0</h3>
-            <h3>Q : 1</h3>
-            <h3>s : 12</h3>
-          </div>
-        )}
+
+
+            {showParams && (
+              <div>
+                <h3>Dengan Parameter :</h3>
+                <h3>p : 1</h3>
+                <h3>d : 0</h3>
+                <h3>q : 1</h3>
+                <h3>P : 1</h3>
+                <h3>D : 0</h3>
+                <h3>Q : 1</h3>
+                <h3>s : 12</h3>
+              </div>
+            )}
           <h3>----------------------------------</h3>
 
 
