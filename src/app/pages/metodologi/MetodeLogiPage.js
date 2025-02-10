@@ -68,7 +68,7 @@ export const MetodelogiPage = () => {
   );
 
   // Filter
-  const [prediksi, setPrediksi] = useState(4);
+  // const [prediksi, setPrediksi] = useState(4);
   const [endDate, setEndDate] = useState("2023-05-31");
   const [product, setProduct] = useState([]);
 
@@ -86,7 +86,51 @@ export const MetodelogiPage = () => {
   const [MAPE, setMAPE] = useState(null);
   const [showParams, setShowParams] = useState(false);
   const [predict, setPredict] = useState([]);
+  const years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+  
+  // Fungsi untuk generate bulan berdasarkan tahun
+  const generateMonths = (year) => {
+    const months2024 = [
+      { label: "September", value: "09", prediksi: 4 },
+      { label: "Oktober", value: "10", prediksi: 8 },
+      { label: "November", value: "11", prediksi: 12 },
+      { label: "Desember", value: "12", prediksi: 16 },
+    ];
+  
+    const months2025 = [
+      { label: "Januari", value: "01", prediksi: 20 },
+      { label: "Februari", value: "02", prediksi: 24 },
+      { label: "Maret", value: "03", prediksi: 28 },
+      { label: "April", value: "04", prediksi: 32 },
+      { label: "Mei", value: "05", prediksi: 36 },
+    ];
+  
+    return year === "2024" ? months2024 : months2025;
+  };
 
+  const [selectedYear, setSelectedYear] = useState(years[0]);
+  const [months, setMonths] = useState(generateMonths(years[0].value));
+  const [selectedMonth, setSelectedMonth] = useState(months[0]);
+  const [prediksi, setPrediksi] = useState(months[0].prediksi);
+
+  // Saat tahun berubah
+  const handleYearChange = (selectedOption) => {
+    setSelectedYear(selectedOption);
+    const newMonths = generateMonths(selectedOption.value);
+    setMonths(newMonths);
+    setSelectedMonth(newMonths[0]); // Reset bulan ke default pertama
+    setPrediksi(newMonths[0].prediksi); // Reset prediksi
+  };
+
+  // Saat bulan berubah
+  const handleMonthChange = (selectedOption) => {
+    setSelectedMonth(selectedOption);
+    setPrediksi(selectedOption.prediksi);
+  };
+  
   const toggleParams = () => {
     setShowParams((prev) => !prev);
   };
@@ -319,28 +363,43 @@ export const MetodelogiPage = () => {
                 <Form.Label column sm={3}>
                   <b>Prediksi </b>
                 </Form.Label>
-                  <Col sm={9}>
-                    <Row className="g-1">
-                      <Col xs={3}>
-                        <Form.Control
+                <Col sm={9}>
+                  <Row className="g-1">
+                    <Col xs={6}>
+                      {/* <Form.Control
                           type="number"
                           min={1}
                           onChange={(e) => setPrediksi(e.target.value)}
                           value={prediksi}
-                        />
+                        /> */}
+                      <Select
+                        options={months}
+                        value={selectedMonth}
+                        onChange={handleMonthChange}
+                        className="w-100 mb-2"
+                        placeholder="Select Monthr"
+                      />
                       </Col>
                       <Col xs={6}>
                         <Select
-                          options={predictOptions}
-                          value={getValueOptions(predict, predictOptions)}
-                          onChange={handleChangePredict}
+                          options={years}
+                          value={selectedYear}
+                          onChange={handleYearChange}
                           className="w-100"
+                          placeholder="Select Year"
+                          // isDisabled={!selectedYear} // Nonaktifkan jika tahun belum dipilih
                         />
                       </Col>
-                    </Row>
-                  </Col>
-                </Form.Group>
-              </Col>
+                    {/* <Select
+                        options={predictOptions}
+                        value={getValueOptions(predict, predictOptions)}
+                        onChange={handleChangePredict}
+                        className="w-100"
+                      /> */}
+                  </Row>
+                </Col>
+              </Form.Group>
+            </Col>
             {/* Right Row */}
 
             <Col sm={6}>
