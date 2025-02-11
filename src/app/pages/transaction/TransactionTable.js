@@ -193,7 +193,8 @@ export const TransactionTable = ({
         keyField="id"
         data={tableData}
         columns={columns}
-        pagination={paginationFactory(options)}
+        // Hide pagination
+        // pagination={paginationFactory(options)}
         onTableChange={onTableChange}
         hover
         expandRow={expandRow}
