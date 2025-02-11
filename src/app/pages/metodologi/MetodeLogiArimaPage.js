@@ -389,18 +389,18 @@ export const MetodeLogiArimaPage = () => {
 
 
 
-            {showParams && (
-              <div>
-                <h3>Dengan Parameter :</h3>
-                <h3>p : 1</h3>
-                <h3>d : 0</h3>
-                <h3>q : 1</h3>
-                <h3>P : 1</h3>
-                <h3>D : 0</h3>
-                <h3>Q : 1</h3>
-                <h3>s : 12</h3>
-              </div>
-            )}
+          {showParams && (
+            <div>
+              <h3>Dengan Parameter :</h3>
+              <h3>p : 1 - Model memiliki 1 lag autoregressive (AR), artinya nilai saat ini dipengaruhi oleh nilai sebelumnya.</h3>
+              <h3>d : 0 - Tidak ada differencing, menunjukkan bahwa data dianggap sudah stasioner secara non-musiman.</h3>
+              <h3>q : 1 - Model memiliki 1 lag moving average (MA), artinya nilai saat ini juga dipengaruhi oleh kesalahan (error) satu periode sebelumnya.</h3>
+              <h3>P : 1 - Model memiliki 1 lag autoregressive musiman (SAR), menunjukkan bahwa nilai saat ini juga dipengaruhi oleh nilai di periode musiman sebelumnya</h3>
+              <h3>D : 0 - Tidak ada differencing musiman, artinya pola musiman dianggap sudah stasioner.</h3>
+              <h3>Q : 1 - Model memiliki 1 lag moving average musiman (SMA), yang berarti kesalahan dari periode musiman sebelumnya juga diperhitungkan.</h3>
+              <h3>s : 35 -  Panjang periode musiman adalah 35, artinya pola musiman berulang setiap 35 langkah dalam data.</h3>
+            </div>
+          )}
           <h3>----------------------------------</h3>
 
 

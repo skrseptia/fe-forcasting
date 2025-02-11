@@ -450,15 +450,16 @@ export const MetodelogiPage = () => {
 
 
           {showParams && (
-            <div>
-              <h3>----------------------------------</h3>
-              <h3>Dengan Parameter : </h3>
-              <h3>alpha         : 0.2</h3>
-              <h3>beta          : 0.2</h3>
-              <h3>gama          : 0.51</h3>
-              <h3>seasonLength  : 7</h3>
-              <h3>----------------------------------</h3>
-            </div>
+           <div>
+           <h3>----------------------------------</h3>
+           <h3>Dengan Parameter : </h3>
+           <h3>Alpha (0.2) → Model memberikan bobot lebih pada data sebelumnya daripada yang terbaru.</h3>
+           <h3>Beta (0.2) → Tren berubah secara bertahap dan tidak terlalu cepat.</h3>
+           <h3>Gamma (0.5 atau 0.51) → Pola musiman diperbarui dengan 50% data terbaru dan 50% pola sebelumnya.</h3>
+           <h3>seasonLength = 7 → Model memperkirakan pola berulang setiap 7 hari.</h3>
+           <h3>----------------------------------</h3>
+         </div>
+         
           )}
 
 
