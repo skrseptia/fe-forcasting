@@ -93,19 +93,20 @@ export const MetodeLogiArimaPage = () => {
   // Fungsi untuk generate bulan berdasarkan tahun
   const generateMonths = (year) => {
     const months2024 = [
-      { label: "September", value: "09", prediksi: 4 },
-      { label: "Oktober", value: "10", prediksi: 8 },
-      { label: "November", value: "11", prediksi: 12 },
-      { label: "Desember", value: "12", prediksi: 16 },
+      { label: "September", value: "09", prediksi: 5 }, // 5 minggu
+      { label: "Oktober", value: "10", prediksi: 9 },   // 5 minggu
+      { label: "November", value: "11", prediksi: 13 },  // 4 minggu
+      { label: "Desember", value: "12", prediksi: 17 },  // 5 minggu
     ];
 
     const months2025 = [
-      { label: "Januari", value: "01", prediksi: 20 },
-      { label: "Februari", value: "02", prediksi: 24 },
-      { label: "Maret", value: "03", prediksi: 28 },
-      { label: "April", value: "04", prediksi: 32 },
-      { label: "Mei", value: "05", prediksi: 36 },
+      { label: "Januari", value: "01", prediksi: 21 },  // 4 minggu
+      { label: "Februari", value: "02", prediksi: 25 }, // 4 minggu
+      { label: "Maret", value: "03", prediksi: 30 },    // 5 minggu
+      { label: "April", value: "04", prediksi: 34 },    // 4 minggu
+      { label: "Mei", value: "05", prediksi: 39 },      // 5 minggu
     ];
+
 
     return year === "2024" ? months2024 : months2025;
   };
