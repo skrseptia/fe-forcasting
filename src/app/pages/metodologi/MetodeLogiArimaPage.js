@@ -70,10 +70,10 @@ export const MetodeLogiArimaPage = () => {
   // Filter
 
   const [product, setProduct] = useState([]);
-  // const [prediksi, setPrediksi] = useState(4);
+  const [startDate, setStartDate] = useState("2024-09-01"); // Default tanggal mulai
+  const [endDate, setEndDate] = useState("2024-09-30");   // Default tanggal akhir
+  const [prediksi, setPrediksi] = useState(5); // Default prediksi
 
-  const [listQty, setListQty] = useState(null);
-  const [listPredictions, setListPredictions] = useState(null);
 
   const [labels, setLabels] = useState([]);
   const [dataChartDaily, setDataChartDaily] = useState([]);
@@ -85,51 +85,75 @@ export const MetodeLogiArimaPage = () => {
   const [MAPE, setMAPE] = useState(null);
   const [showParams, setShowParams] = useState(false);
   const [predict, setPredict] = useState([]);
-  const years = [
-    { label: "2024", value: "2024" },
-    { label: "2025", value: "2025" },
+
+  const dateMapping = [
+    { month: "2024-09", prediksi: 5 },
+    { month: "2024-10", prediksi: 9 },
+    { month: "2024-11", prediksi: 13 },
+    { month: "2024-12", prediksi: 17 },
+    { month: "2025-01", prediksi: 21 },
+    { month: "2025-02", prediksi: 25 },
+    { month: "2025-03", prediksi: 30 },
+    { month: "2025-04", prediksi: 34 },
+    { month: "2025-05", prediksi: 39 }
   ];
+  // Fungsi untuk menghitung prediksi berdasarkan range date
+  const calculatePrediksi = (start, end) => {
+    // Mendapatkan bulan dari tanggal
+    const startMonth = start.substring(0, 7);
+    const endMonth = end.substring(0, 7);
 
-  // Fungsi untuk generate bulan berdasarkan tahun
-  const generateMonths = (year) => {
-    const months2024 = [
-      { label: "September", value: "09", prediksi: 5 }, // 5 minggu
-      { label: "Oktober", value: "10", prediksi: 9 },   // 5 minggu
-      { label: "November", value: "11", prediksi: 13 },  // 4 minggu
-      { label: "Desember", value: "12", prediksi: 17 },  // 5 minggu
-    ];
+    // Jika bulan sama, gunakan prediksi dari mapping
+    if (startMonth === endMonth) {
+      const mapping = dateMapping.find(m => m.month === startMonth);
+      return mapping ? mapping.prediksi : 5;
+    } else {
+      // Jika beda bulan, hitung prediksi berdasarkan selisih minggu
+      // Dapatkan indeks bulan awal dan akhir
+      const startIdx = dateMapping.findIndex(m => m.month === startMonth);
+      const endIdx = dateMapping.findIndex(m => m.month === endMonth);
 
-    const months2025 = [
-      { label: "Januari", value: "01", prediksi: 21 },  // 4 minggu
-      { label: "Februari", value: "02", prediksi: 25 }, // 4 minggu
-      { label: "Maret", value: "03", prediksi: 30 },    // 5 minggu
-      { label: "April", value: "04", prediksi: 34 },    // 4 minggu
-      { label: "Mei", value: "05", prediksi: 39 },      // 5 minggu
-    ];
-
-
-    return year === "2024" ? months2024 : months2025;
+      if (startIdx !== -1 && endIdx !== -1) {
+        // Dapatkan prediksi akhir (dari bulan akhir)
+        return dateMapping[endIdx].prediksi;
+      } else {
+        return 5; // Default jika tidak ditemukan
+      }
+    }
   };
 
-  const [selectedYear, setSelectedYear] = useState(years[0]);
-  const [months, setMonths] = useState(generateMonths(years[0].value));
-  const [selectedMonth, setSelectedMonth] = useState(months[0]);
-  const [prediksi, setPrediksi] = useState(months[0].prediksi);
-
-  // Saat tahun berubah
-  const handleYearChange = (selectedOption) => {
-    setSelectedYear(selectedOption);
-    const newMonths = generateMonths(selectedOption.value);
-    setMonths(newMonths);
-    setSelectedMonth(newMonths[0]); // Reset bulan ke default pertama
-    setPrediksi(newMonths[0].prediksi); // Reset prediksi
+  // Handler untuk perubahan tanggal mulai
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    // Update prediksi jika endDate sudah ada
+    if (endDate) {
+      const newPrediksi = calculatePrediksi(date, endDate);
+      setPrediksi(newPrediksi);
+    }
   };
 
-  // Saat bulan berubah
-  const handleMonthChange = (selectedOption) => {
-    setSelectedMonth(selectedOption);
-    setPrediksi(selectedOption.prediksi);
+  // Handler untuk perubahan tanggal akhir
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+    // Update prediksi jika startDate sudah ada
+    if (startDate) {
+      const newPrediksi = calculatePrediksi(startDate, date);
+      setPrediksi(newPrediksi);
+    }
   };
+
+  // Function to format date for display
+  const formatDateDisplay = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+
 
   const toggleParams = () => {
     setShowParams((prev) => !prev);
@@ -146,6 +170,47 @@ export const MetodeLogiArimaPage = () => {
       })
     );
   }, [dispatch]);
+
+  const filterDataByDateRange = (data, labels, startDate, endDate) => {
+    // Convert string dates to Date objects for comparison
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Extract dates from labels (Format: "1 Jan 2024 - 7 Jan 2024")
+    const filteredIndices = labels.reduce((indices, label, index) => {
+      // Extract the end date from the label (after the " - ")
+      const labelEndDate = label.split(" - ")[1];
+      // Parse the date (day month year format)
+      const [day, month, year] = labelEndDate.split(" ");
+      const monthMap = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+      };
+      const labelDate = new Date(parseInt(year), monthMap[month], parseInt(day));
+
+      // Check if this label's date falls within our range
+      if (labelDate >= start && labelDate <= end) {
+        indices.push(index);
+      }
+      return indices;
+    }, []);
+
+    // Filter labels and datasets
+    const filteredLabels = filteredIndices.map(i => labels[i]);
+    const filteredDatasets = data.map(dataset => {
+      // Clone dataset with filtered data
+      return {
+        ...dataset,
+        data: filteredIndices.map(i => dataset.data[i])
+      };
+    });
+
+    return {
+      filteredLabels,
+      filteredDatasets
+    };
+  };
+
 
   const handleSearch = async () => {
     if (product.length < 1) {
@@ -211,9 +276,17 @@ export const MetodeLogiArimaPage = () => {
             })
             : [];
 
-        const nilai = listDataDaily[1].data;
+        const { filteredLabels, filteredDatasets } = filterDataByDateRange(
+          listDataDaily,
+          listLabel,
+          startDate,
+          endDate
+        );
 
-        const hasil = listLabel.map((week, index) => ({
+
+        const nilai = filteredDatasets[1]?.data || [];
+
+        const hasil = filteredLabels.map((week, index) => ({
           no: index + 1,
           week,
           value: nilai[index],
@@ -238,8 +311,8 @@ export const MetodeLogiArimaPage = () => {
         setMAE(hasilMAE);
         setMAPE(hasilMAPE);
         setTable(hasil);
-        setLabels(listLabel);
-        setDataChartDaily(listDataDaily);
+        setLabels(filteredLabels);
+        setDataChartDaily(filteredDatasets);
       } else {
         showErrorDialog(response.payload.error);
       }
@@ -357,48 +430,42 @@ export const MetodeLogiArimaPage = () => {
         {/* Filter */}
         <Form className="mb-5">
           <Form.Group as={Row}>
-            <Col sm={6}>
-              <Form.Group as={Row}>
-                <Form.Label column sm={3}>
-                  <b>Prediksi </b>
-                </Form.Label>
-                <Col sm={9}>
-                  <Row className="g-1">
-                    <Col xs={6}>
-                      {/* <Form.Control
-                          type="number"
-                          min={1}
-                          onChange={(e) => setPrediksi(e.target.value)}
-                          value={prediksi}
-                        /> */}
-                      <Select
-                        options={months}
-                        value={selectedMonth}
-                        onChange={handleMonthChange}
-                        className="w-100 mb-2"
-                        placeholder="Select Monthr"
-                      />
-                    </Col>
-                    <Col xs={6}>
-                      <Select
-                        options={years}
-                        value={selectedYear}
-                        onChange={handleYearChange}
-                        className="w-100"
-                        placeholder="Select Year"
-                      // isDisabled={!selectedYear} // Nonaktifkan jika tahun belum dipilih
-                      />
-                    </Col>
-                    {/* <Select
-                        options={predictOptions}
-                        value={getValueOptions(predict, predictOptions)}
-                        onChange={handleChangePredict}
-                        className="w-100"
-                      /> */}
-                  </Row>
-                </Col>
-              </Form.Group>
-            </Col>
+              <Col sm={6}>
+                <Form.Group as={Row}>
+                  <Form.Label column sm={3}>
+                    <b>Rentang Tanggal</b>
+                  </Form.Label>
+                  <Col sm={9}>
+                    <Row className="g-1 mb-2">
+                      <Col xs={6}>
+                        <Form.Label><small>Tanggal Mulai</small></Form.Label>
+                        <Form.Control
+                          type="date"
+                          value={startDate}
+                          onChange={(e) => handleStartDateChange(e.target.value)}
+                          min="2024-09-01"
+                          max="2025-05-31"
+                          className="w-100"
+                        />
+                      </Col>
+                      <Col xs={6}>
+                        <Form.Label><small>Tanggal Akhir</small></Form.Label>
+                        <Form.Control
+                          type="date"
+                          value={endDate}
+                          onChange={(e) => handleEndDateChange(e.target.value)}
+                          min={startDate}
+                          max="2025-05-31"
+                          className="w-100"
+                        />
+                      </Col>
+                    </Row>
+                    <div className="text-muted small">
+                      <strong>Rentang Tanggal:</strong> {formatDateDisplay(startDate)} s/d {formatDateDisplay(endDate)}<br />
+                    </div>
+                  </Col>
+                </Form.Group>
+              </Col>
             {/* Right Row */}
             <Col sm={6}>
               <Form.Group as={Row}>
